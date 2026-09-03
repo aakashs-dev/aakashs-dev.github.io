@@ -1,8 +1,8 @@
 .footer {
   margin-top: auto;
   padding: 2rem;
-  border-top: 1px solid rgba(141, 110, 99, 0.15);
-  background: rgba(248, 241, 229, 0.5);
+  border-top: 1px solid rgba(42, 36, 33, 0.1);
+  background: rgba(250, 247, 242, 0.5);
 
   .footer-content {
     display: flex;
@@ -10,7 +10,7 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    color: #795548;
+    color: #685E5A;
     font-size: 0.875rem;
 
     p {
@@ -22,13 +22,13 @@
       gap: 1rem;
 
       a {
-        color: #795548;
+        color: #685E5A;
         text-decoration: none;
         font-weight: 500;
         transition: color 0.2s ease;
 
         &:hover {
-          color: #3e2723;
+          color: #2A2421;
         }
       }
     }
