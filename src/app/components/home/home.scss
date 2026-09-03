@@ -1,0 +1,91 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/hero_background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-top: -3rem; /* Offset the padding from layout */
+  margin-left: -4rem;
+  margin-right: -4rem;
+  width: calc(100% + 8rem);
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(9, 9, 11, 0.3) 0%, rgba(9, 9, 11, 0.9) 100%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+      font-size: 2rem;
+      font-weight: 300;
+      color: #a1a1aa;
+      
+      .typewriter-text {
+        color: #a855f7;
+        font-weight: 500;
+      }
+      
+      .cursor {
+        color: #a855f7;
+        margin-left: 2px;
+        opacity: 1;
+        
+        &.blink {
+          opacity: 0;
+        }
+      }
+    }
+  }
+}
+
+/* Base styles for sections so they have min-height and padding */
+.page-section {
+  min-height: 80vh;
+  padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hero-section {
+    margin-top: -2rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    width: calc(100% + 4rem);
+  }
+}
