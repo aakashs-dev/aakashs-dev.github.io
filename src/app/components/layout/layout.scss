@@ -1,8 +1,8 @@
 .app-container {
   display: flex;
   min-height: 100vh;
-  background-color: #09090b; /* Deep sleek black background */
-  color: #ededed;
+  background-color: #f8f1e5; /* Light sepia background */
+  color: #3e2723;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
 }
@@ -23,7 +23,7 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 30%, rgba(141, 110, 99, 0.08) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
