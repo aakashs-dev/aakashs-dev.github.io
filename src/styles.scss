@@ -12,10 +12,14 @@ html {
 html, body {
   height: 100%;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #09090b;
-  color: #ededed;
+  background-color: #f8f1e5;
+  color: #3e2723;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
 }
 
 body {
