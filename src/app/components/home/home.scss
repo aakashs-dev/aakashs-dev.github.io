@@ -26,7 +26,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(180deg, rgba(248, 241, 229, 0.3) 0%, rgba(248, 241, 229, 0.95) 100%);
+    background: linear-gradient(180deg, rgba(250, 247, 242, 0.4) 0%, rgba(250, 247, 242, 1) 100%);
     z-index: 1;
   }
 
@@ -39,7 +39,7 @@
     .hero-title {
       font-size: 4rem;
       font-weight: 700;
-      color: #3e2723;
+      color: #2A2421;
       margin-bottom: 1rem;
       letter-spacing: -1px;
     }
@@ -47,15 +47,15 @@
     .hero-subtitle {
       font-size: 2rem;
       font-weight: 300;
-      color: #5d4037;
+      color: #685E5A;
       
       .typewriter-text {
-        color: #8d6e63;
+        color: #C85A17; /* Terracotta accent */
         font-weight: 500;
       }
       
       .cursor {
-        color: #8d6e63;
+        color: #C85A17;
         margin-left: 2px;
         opacity: 1;
         
@@ -74,7 +74,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-bottom: 1px solid rgba(62, 39, 35, 0.1);
+  border-bottom: 1px solid rgba(42, 36, 33, 0.08);
   
   &:last-child {
     border-bottom: none;
