@@ -1,0 +1,32 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Hello, I'm Aakash</h1>
+      <h2 class="hero-subtitle">
+        I am a <span class="typewriter-text">{{ displayedText() }}</span><span class="cursor" [class.blink]="showCursor()">|</span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- Content Sections -->
+  <section id="about" class="page-section">
+    <app-about></app-about>
+  </section>
+  <section id="resume" class="page-section">
+    <app-resume></app-resume>
+  </section>
+  <section id="extracurricular" class="page-section">
+    <app-extracurricular></app-extracurricular>
+  </section>
+  <section id="portfolio" class="page-section">
+    <app-projects></app-projects>
+  </section>
+  <section id="certifications" class="page-section">
+    <app-certifications></app-certifications>
+  </section>
+  <section id="contact" class="page-section">
+    <app-contact></app-contact>
+  </section>
+</div>
