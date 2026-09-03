@@ -14,7 +14,7 @@ import { Contact } from '../contact/contact';
   styleUrl: './home.scss'
 })
 export class Home implements OnInit, OnDestroy {
-  roles = ['Data Analyst', 'Data Scientist', 'Software Engineer'];
+  roles = ['Data Analyst', 'Data Engineer', 'Software Engineer'];
   currentRoleIndex = 0;
   
   displayedText = signal('');
