@@ -1,0 +1,58 @@
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #09090b; /* Deep sleek black background */
+  color: #ededed;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 280px; /* Offset for always-visible sidenav */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  
+  /* Subtle ambient glow effect in the background */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: 3rem 4rem;
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Base styles / globals */
+:host {
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .content-wrapper {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
