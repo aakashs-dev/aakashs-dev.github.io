@@ -1,0 +1,145 @@
+.resume-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #2A2421;
+  font-weight: 700;
+  position: relative;
+  margin: 0;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #C85A17;
+    border-radius: 2px;
+  }
+}
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #C85A17;
+  color: #FAF7F2;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(200, 90, 23, 0.2);
+
+  &:hover {
+    background-color: #b04910;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(200, 90, 23, 0.3);
+  }
+
+  .icon {
+    font-weight: bold;
+  }
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.column-title {
+  font-size: 1.5rem;
+  color: #2A2421;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(42, 36, 33, 0.1);
+    border-radius: 2px;
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -1.8rem;
+  top: 0.25rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FAF7F2;
+  border: 2px solid #C85A17;
+  z-index: 1;
+}
+
+.timeline-content {
+  .job-title {
+    font-size: 1.25rem;
+    color: #2A2421;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .company-info {
+    font-size: 0.9rem;
+    color: #C85A17;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+
+    span {
+      color: rgba(42, 36, 33, 0.3);
+      margin: 0 0.25rem;
+    }
+  }
+
+  .description {
+    color: #685E5A;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
