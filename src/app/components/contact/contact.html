@@ -1,1 +1,51 @@
-<p>contact works!</p>
+<div class="contact-container">
+  <div class="contact-grid">
+    <!-- Contact Info -->
+    <div class="contact-info">
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="contact-description">
+        I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Let's build something great together.
+      </p>
+      
+      <div class="contact-details">
+        <div class="detail-item">
+          <span class="icon">✉</span>
+          <div class="detail-text">
+            <h4>Email</h4>
+            <p><a href="mailto:hello@example.com">hello@example.com</a></p>
+          </div>
+        </div>
+        
+        <div class="detail-item">
+          <span class="icon">📍</span>
+          <div class="detail-text">
+            <h4>Location</h4>
+            <p>San Francisco, CA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form-wrapper">
+      <form class="contact-form" (submit)="$event.preventDefault()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="John Doe">
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="john@example.com">
+        </div>
+        
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="5" placeholder="How can I help you?"></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
