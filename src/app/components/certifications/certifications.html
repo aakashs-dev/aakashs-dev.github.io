@@ -1,4 +1,30 @@
-<div class="section-content">
-  <h2>Certifications</h2>
-  <p>Details about certifications will go here.</p>
+<div class="cert-container">
+  <div class="cert-header">
+    <h2 class="section-title">Certifications</h2>
+    <p class="section-subtitle">Professional credentials across cloud architecture, data engineering, and analytics.</p>
+  </div>
+
+  <div class="cert-grid">
+    @for (cert of certifications; track cert.title) {
+      <div class="cert-card">
+        <div class="cert-icon">
+          <span class="icon">🎓</span>
+        </div>
+        <div class="cert-content">
+          <h3 class="cert-title">{{ cert.title }}</h3>
+          <div class="cert-issuer">{{ cert.issuer }}</div>
+          
+          <div class="cert-details">
+            <span class="cert-date">Issued {{ cert.date }}</span>
+            <span class="cert-divider">•</span>
+            <span class="cert-id">Credential ID: {{ cert.credentialId }}</span>
+          </div>
+
+          <a [href]="cert.credentialUrl" class="verify-btn" target="_blank" (click)="$event.preventDefault()">
+            Verify Credential <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
 </div>
