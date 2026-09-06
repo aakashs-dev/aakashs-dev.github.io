@@ -1,4 +1,19 @@
-<div class="section-content">
-  <h2>Extra Curricular</h2>
-  <p>Details about extra curricular activities will go here.</p>
+<div class="extra-container">
+  <div class="extra-header">
+    <h2 class="section-title">Extracurriculars</h2>
+    <p class="section-subtitle">What I do when I'm not writing code or analyzing data.</p>
+  </div>
+
+  <div class="extra-grid">
+    @for (activity of activities; track activity.title) {
+      <div class="activity-card">
+        <div class="activity-icon">{{ activity.icon }}</div>
+        <div class="activity-content">
+          <h3 class="activity-title">{{ activity.title }}</h3>
+          <div class="activity-role">{{ activity.role }}</div>
+          <p class="activity-description">{{ activity.description }}</p>
+        </div>
+      </div>
+    }
+  </div>
 </div>
