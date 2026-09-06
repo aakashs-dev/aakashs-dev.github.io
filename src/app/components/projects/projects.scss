@@ -1,0 +1,134 @@
+.projects-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.projects-header {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #2A2421;
+  font-weight: 700;
+  position: relative;
+  margin: 0 0 1.5rem 0;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #C85A17;
+    border-radius: 2px;
+  }
+}
+
+.section-subtitle {
+  color: #685E5A;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2.5rem;
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(250, 247, 242, 0.8);
+  border-radius: 20px;
+  border: 1px solid rgba(42, 36, 33, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(42, 36, 33, 0.04);
+  height: 100%;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(42, 36, 33, 0.08);
+    border-color: rgba(200, 90, 23, 0.2);
+  }
+}
+
+.project-content {
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: #2A2421;
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+}
+
+.project-description {
+  color: #685E5A;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  flex: 1;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.tech-tag {
+  padding: 0.35rem 0.75rem;
+  background: rgba(200, 90, 23, 0.08);
+  color: #C85A17;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.project-links {
+  display: flex;
+  padding: 1.5rem 2rem;
+  background: rgba(42, 36, 33, 0.02);
+  border-top: 1px solid rgba(42, 36, 33, 0.05);
+  gap: 1rem;
+}
+
+.btn-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #685E5A;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #2A2421;
+  }
+
+  &.live-link {
+    color: #C85A17;
+    margin-left: auto;
+
+    &:hover {
+      color: #b04910;
+    }
+  }
+
+  .icon {
+    font-size: 1.1rem;
+  }
+}
