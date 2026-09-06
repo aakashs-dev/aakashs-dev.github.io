@@ -1,0 +1,109 @@
+.extra-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.extra-header {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #2A2421;
+  font-weight: 700;
+  position: relative;
+  margin: 0 0 1.5rem 0;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #C85A17;
+    border-radius: 2px;
+  }
+}
+
+.section-subtitle {
+  color: #685E5A;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2.5rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.activity-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: rgba(250, 247, 242, 0.8);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(42, 36, 33, 0.08);
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(42, 36, 33, 0.02);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(42, 36, 33, 0.06);
+    border-color: rgba(200, 90, 23, 0.2);
+    
+    .activity-icon {
+      background: #C85A17;
+      color: #FAF7F2;
+      transform: scale(1.05);
+    }
+  }
+}
+
+.activity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(200, 90, 23, 0.08);
+  color: #C85A17;
+  border-radius: 16px;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: #2A2421;
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+}
+
+.activity-role {
+  font-size: 0.9rem;
+  color: #C85A17;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.activity-description {
+  color: #685E5A;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
