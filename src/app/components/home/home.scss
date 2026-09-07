@@ -15,10 +15,10 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin-top: -3rem; /* Offset the padding from layout */
-  margin-left: -4rem;
-  margin-right: -4rem;
-  width: calc(100% + 8rem);
+  margin-top: -4rem; /* Offset the padding from layout (4rem) */
+  margin-left: -6rem; /* Offset the padding from layout (6rem) */
+  margin-right: -6rem;
+  width: calc(100% + 12rem);
   
   .hero-overlay {
     position: absolute;
