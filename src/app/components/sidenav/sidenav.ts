@@ -54,4 +54,12 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       }
     });
   }
+
+  scrollTo(sectionId: string, event: Event) {
+    event.preventDefault();
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
 }
