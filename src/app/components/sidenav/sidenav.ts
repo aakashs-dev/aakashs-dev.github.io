@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 
 @Component({
@@ -9,7 +9,7 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
   styleUrl: './sidenav.scss'
 })
 export class Sidenav implements AfterViewInit, OnDestroy {
-  activeSection: string = 'home';
+  activeSection = signal('home');
   private observer: IntersectionObserver | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
@@ -19,7 +19,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       // Small timeout to ensure child routes (like Home) have rendered their sections
       setTimeout(() => {
         this.setupIntersectionObserver();
-      }, 200);
+      }, 500);
     }
   }
 
@@ -40,7 +40,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       // Sort entries by intersection ratio or just take the intersecting one
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          this.activeSection = entry.target.id;
+          this.activeSection.set(entry.target.id);
         }
       });
     }, options);
