@@ -29,6 +29,10 @@ describe('Portfolio cards', () => {
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(root.querySelector('#' + button.getAttribute('aria-controls'))).not.toBeNull();
     }
+    const titles = fixture.componentInstance.projects.map((p) => p.title);
+    for (const [i, button] of toggles().entries()) {
+      expect(button.getAttribute('aria-label')).toBe(`View plan for ${titles[i]}`);
+    }
   });
 
   it('opens a plan on click and closes it on a second click', () => {

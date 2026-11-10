@@ -45,10 +45,10 @@ export class Projects {
       status: 'In progress · private',
       technologies: ['C# .NET', 'Python', 'React', 'DuckDB', 'Parquet', 'Arrow Flight'],
       problem: 'Staying correct under real constraints: an undocumented byte order in the market-data feed, broker rate limits, partial fills, daily login tokens, exchange holidays, and stopping safely when something goes wrong.',
-      progress: 'Phases 0 to 3 are done: governance, an audit of what is actually built, documentation tooling, and corrective design decisions. Phase 4, a code re-layout that changes no behaviour, is in progress.',
+      progress: 'Phases 0 to 3 are done: governance, an audit of what is actually built, documentation tooling, and corrective design decisions. Phase 4, a code re-layout, is in progress: two behaviour fixes landed first, and the moves after them change no behaviour.',
       nextStepsHeading: 'Next',
       nextSteps: [
-        'Phase 5: bug fixes, each against an accepted design decision',
+        'Phase 5: bug fixes',
         'Phase 6: refactors',
         'Phase 7: the remaining documentation',
         'Live-readiness gate: written criteria, each met and evidenced, before any real money'
@@ -63,7 +63,7 @@ export class Projects {
       firstRelease: 'Twelve months of three dispatch tables across all regions, with a research notebook and a Power BI report.',
       status: 'Planned · not started',
       technologies: ['Python', 'Polars', 'DuckDB', 'Parquet', 'Power BI', 'Angular'],
-      problem: 'The data is public but awkward: zipped CSVs that mix several tables in one file, dispatch runs that are revised so an interval can appear more than once, and tens of millions of rows across five regions.',
+      problem: 'The data is public but awkward: zipped CSVs that mix several tables in one file, dispatch runs that are revised so an interval can appear more than once, and years of five-minute data across five regions and hundreds of generating units that run to tens of millions of rows.',
       progress: 'Plan written; nothing built yet.',
       nextStepsHeading: 'After the first release',
       nextSteps: [
@@ -145,8 +145,8 @@ export class Projects {
       firstRelease: 'A proof of concept on a fixed set of US companies: gather the data, then check feasibility before building further.',
       status: 'Design reviewed · not started',
       technologies: ['Python', 'Polars', 'DuckDB', 'Parquet', 'Quarto', 'React'],
-      problem: 'Valuation models are commonly built by copying line items from filings into spreadsheets, and many datasets overwrite original figures with restated ones, so a past valuation silently uses numbers that were not known at the time.',
-      progress: 'Plan written and reviewed twice; nothing built yet.',
+      problem: 'The premise, to be checked against existing tools before any build work: valuation models are often built by copying line items from filings into spreadsheets, and restated figures can overwrite the originals, so a past valuation may use numbers that were not known at the time.',
+      progress: 'Plan written and design-reviewed; nothing built yet.',
       nextStepsHeading: 'Phases',
       nextSteps: [
         'Phase 0: repository setup and a sourced comparison with existing tools',
