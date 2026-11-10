@@ -45,7 +45,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       });
     }, options);
 
-    const sections = ['home', 'about', 'resume', 'extracurricular', 'portfolio', 'certifications', 'contact'];
+    const sections = ['home', 'about', 'resume', 'portfolio', 'certifications', 'contact'];
     
     sections.forEach(id => {
       const element = document.getElementById(id);
