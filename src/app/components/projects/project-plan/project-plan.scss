@@ -1,0 +1,134 @@
+@use '../../../../styles/tokens' as *;
+
+// display: block would override the browser's own [hidden] rule, so the closed state is restated here.
+:host([hidden]) {
+  display: none;
+}
+
+:host {
+  display: block;
+  margin: 0 0 1.5rem 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(42, 36, 33, 0.08);
+  color: #685E5A;
+  font-size: 0.95rem;
+  line-height: 1.6;
+
+  h4 {
+    margin: 0 0 0.4rem 0;
+    color: #2A2421;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0 0 1rem 0;
+  }
+}
+
+// The open card's plan: stages on a vertical line, each holding its phases on a line of their own.
+.stages,
+.steps {
+  list-style: none;
+  margin: 0 0 1.25rem 0;
+  padding: 0;
+}
+
+.stage .steps {
+  margin: 0.75rem 0 0 0;
+}
+
+.stage,
+.step {
+  position: relative;
+  display: flex;
+  gap: 0.9rem;
+  padding-bottom: 0.9rem;
+
+  .dot {
+    margin-top: 0.35rem;
+  }
+
+  &:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1.3rem;
+    bottom: 0;
+    width: 2px;
+    background: $line;
+  }
+}
+
+.step-body {
+  flex: 1;
+}
+
+.step-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.step-title,
+.stage-title {
+  color: #2A2421;
+  font-weight: 500;
+}
+
+.stage-title {
+  font-weight: 600;
+}
+
+.step-state {
+  color: #685E5A;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+// Only the row's own state, not the states of the phases nested under a stage.
+.current > .step-body > .step-head > .step-state {
+  color: $accent;
+}
+
+:host .step-done-when,
+:host .stage-summary {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.9rem;
+}
+
+:host strong {
+  color: #2A2421;
+}
+
+.plan-description {
+  color: #2A2421;
+}
+
+.fold {
+  margin-top: 0.4rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: $accent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.plan-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tech-tag {
+  padding: 0.35rem 0.75rem;
+  background: rgba($accent, 0.08);
+  color: $accent;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
