@@ -1,12 +1,12 @@
 <div class="projects-container">
   <div class="projects-header">
-    <h2 class="section-title">Project Roadmap</h2>
-    <p class="section-subtitle">What I am building, and what I plan to build next, each planned project with a deliberately limited first release. Each card shows its status as of {{ statusDate }}.</p>
+    <h2 class="section-title">Portfolio</h2>
+    <p class="section-subtitle">My roadmap: what I am building, and what I plan to build next, each planned project with a deliberately limited first release. Open a card to see its plan. Status as of {{ statusDate }}.</p>
   </div>
 
   <div class="projects-grid">
-    @for (project of projects; track project.title) {
-      <div class="project-card">
+    @for (project of projects; track project.id) {
+      <div class="project-card" [class.open]="openId() === project.id">
         <div class="project-content">
           <div class="project-meta">
             <span class="project-domain">{{ project.domain }}</span>
@@ -21,6 +21,19 @@
             <p class="project-release">{{ project.note }}</p>
           }
 
+          <div class="project-plan" [id]="'plan-' + project.id" [hidden]="openId() !== project.id">
+            <h4>The problem</h4>
+            <p>{{ project.problem }}</p>
+            <h4>Progress so far</h4>
+            <p>{{ project.progress }}</p>
+            <h4>{{ project.nextStepsHeading }}</h4>
+            <ol>
+              @for (step of project.nextSteps; track step) {
+                <li>{{ step }}</li>
+              }
+            </ol>
+          </div>
+
           <div class="project-tech">
             @for (tech of project.technologies; track tech) {
               <span class="tech-tag">{{ tech }}</span>
@@ -28,20 +41,25 @@
           </div>
         </div>
 
-        @if (project.repoLink || project.requestLink) {
-          <div class="project-links">
-            @if (project.repoLink) {
-              <a [href]="project.repoLink" class="btn-link" target="_blank" rel="noopener">
-                <span class="icon">⎇</span> GitHub
-              </a>
-            }
-            @if (project.requestLink) {
-              <a [href]="project.requestLink" class="btn-link live-link">
-                <span class="icon">✉</span> Request a walkthrough
-              </a>
-            }
-          </div>
-        }
+        <div class="project-links">
+          <button type="button" class="btn-link plan-toggle"
+            [attr.aria-expanded]="openId() === project.id"
+            [attr.aria-controls]="'plan-' + project.id"
+            (click)="toggle(project.id)">
+            <span class="icon">{{ openId() === project.id ? '−' : '+' }}</span>
+            {{ openId() === project.id ? 'Hide plan' : 'View plan' }}
+          </button>
+          @if (project.repoLink) {
+            <a [href]="project.repoLink" class="btn-link" target="_blank" rel="noopener">
+              <span class="icon">⎇</span> GitHub
+            </a>
+          }
+          @if (project.requestLink) {
+            <a [href]="project.requestLink" class="btn-link live-link">
+              <span class="icon">✉</span> Request a walkthrough
+            </a>
+          }
+        </div>
       </div>
     }
   </div>
