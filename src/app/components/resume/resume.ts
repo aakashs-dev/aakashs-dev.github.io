@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PROFILE } from '../../profile';
 
 @Component({
   selector: 'app-resume',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './resume.html',
   styleUrl: './resume.scss',
 })
-export class Resume {}
+export class Resume {
+  readonly profile = PROFILE;
+}

@@ -49,64 +49,12 @@
   p {
     margin-bottom: 1.5rem;
   }
-
-  .journey-list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 1.5rem;
-
-    li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.75rem;
-
-      &::before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: #C85A17;
-        font-weight: bold;
-      }
-      
-      strong {
-        color: #2A2421;
-      }
-    }
-  }
 }
 
 .about-visuals {
   display: flex;
   flex-direction: column;
   gap: 3rem;
-}
-
-.headshot-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(42, 36, 33, 0.08);
-  
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(42, 36, 33, 0.1);
-    border-radius: 16px;
-  }
-
-  .headshot {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
 }
 
 .tech-stack {
@@ -146,10 +94,5 @@
   .about-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
-  }
-  
-  .headshot-wrapper {
-    max-width: 400px;
-    margin: 0 auto;
   }
 }

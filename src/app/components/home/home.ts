@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { About } from '../about/about';
 import { Resume } from '../resume/resume';
-import { Extracurricular } from '../extracurricular/extracurricular';
 import { Projects } from '../projects/projects';
 import { Certifications } from '../certifications/certifications';
 import { Contact } from '../contact/contact';
@@ -9,12 +8,12 @@ import { Contact } from '../contact/contact';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [About, Resume, Extracurricular, Projects, Certifications, Contact],
+  imports: [About, Resume, Projects, Certifications, Contact],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
 export class Home implements OnInit, OnDestroy {
-  roles = ['Data Analyst', 'Data Engineer', 'Software Engineer'];
+  roles = ['Data Analyst', 'Software Engineer'];
   currentRoleIndex = 0;
   
   displayedText = signal('');
