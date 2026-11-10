@@ -1,0 +1,62 @@
+<p class="plan-description">{{ project().description }}</p>
+@if (project().firstRelease) {
+  <p><strong>First release:</strong> {{ project().firstRelease }}</p>
+}
+@if (project().note) {
+  <p>{{ project().note }}</p>
+}
+
+<h4>The problem</h4>
+<p>{{ project().problem }}</p>
+
+<h4>{{ project().stagesHeading }}</h4>
+<ol class="stages">
+  @for (stage of project().stages; track stage.title) {
+    <li class="stage" [class]="stage.state">
+      <span class="dot" [class]="stage.state" aria-hidden="true"></span>
+      <div class="step-body">
+        <div class="step-head">
+          <span class="stage-title">{{ stage.title }}</span>
+          <span class="step-state">{{ stateText[stage.state] }}</span>
+        </div>
+        @if (stage.summary) {
+          <p class="stage-summary">{{ stage.summary }}</p>
+        }
+        @if (stage.exit) {
+          <p class="step-done-when"><em>Exit:</em> {{ stage.exit }}</p>
+        }
+        @if (stage.steps; as steps) {
+          <button type="button" class="fold"
+            [attr.aria-expanded]="isUnfolded(stage)"
+            [attr.aria-controls]="stepsId(stage)"
+            (click)="fold(stage)">
+            {{ isUnfolded(stage) ? 'Hide' : 'Show' }} {{ steps.length }} {{ steps.length === 1 ? 'phase' : 'phases' }}<span class="visually-hidden"> of {{ stage.title }}</span>
+          </button>
+          <ol class="steps" [id]="stepsId(stage)" [hidden]="!isUnfolded(stage)">
+            @for (s of steps; track s.label) {
+              <li class="step" [class]="s.state">
+                <span class="dot" [class]="s.state" aria-hidden="true"></span>
+                <div class="step-body">
+                  <div class="step-head">
+                    <span class="step-title">{{ stepName(s) }}</span>
+                    <span class="step-state">{{ stateText[s.state] }}</span>
+                  </div>
+                  <!-- Only the phase in progress, or the next to start, says when it is done. -->
+                  @if (s === active()?.step && s.doneWhen) {
+                    <p class="step-done-when"><em>Done when:</em> {{ s.doneWhen }}</p>
+                  }
+                </div>
+              </li>
+            }
+          </ol>
+        }
+      </div>
+    </li>
+  }
+</ol>
+
+<div class="plan-tech">
+  @for (tech of project().technologies; track tech) {
+    <span class="tech-tag">{{ tech }}</span>
+  }
+</div>

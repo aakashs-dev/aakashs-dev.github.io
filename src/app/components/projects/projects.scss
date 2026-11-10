@@ -1,3 +1,5 @@
+@use '../../../styles/tokens' as *;
+
 .projects-container {
   width: 100%;
   max-width: 1200px;
@@ -23,7 +25,7 @@
     left: 0;
     width: 60px;
     height: 4px;
-    background: #C85A17;
+    background: $accent;
     border-radius: 2px;
   }
 }
@@ -36,10 +38,9 @@
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  // One card per row, so each flow diagram has room.
+  grid-template-columns: 1fr;
   gap: 2.5rem;
-  // An open card spans the row; dense placement lets later cards fill the gap it leaves.
-  grid-auto-flow: dense;
 }
 
 .project-card {
@@ -56,7 +57,7 @@
   &:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(42, 36, 33, 0.08);
-    border-color: rgba(200, 90, 23, 0.2);
+    border-color: rgba($accent, 0.2);
   }
 }
 
@@ -97,42 +98,61 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.4rem;
   color: #2A2421;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.25rem 0;
   font-weight: 700;
 }
 
-.project-description {
-  color: #685E5A;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin: 0 0 1rem 0;
-}
-
-.project-release {
+.project-tagline {
   color: #685E5A;
   font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+}
 
-  strong {
-    color: #2A2421;
+// The flow diagram: boxes left to right, joined by arrows.
+.flow {
+  display: flex;
+  align-items: stretch;
+  gap: 1.1rem;
+  list-style: none;
+  margin: 0 0 1.25rem 0;
+  padding: 0;
+}
+
+.flow-node {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem;
+  border: 1px solid rgba($accent, 0.25);
+  border-radius: 10px;
+  background: rgba($accent, 0.05);
+
+  & + .flow-node::before {
+    content: '→';
+    position: absolute;
+    left: -1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $accent;
+    font-size: 0.85rem;
   }
 }
 
-.project-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: auto;
-}
-
-.tech-tag {
-  padding: 0.35rem 0.75rem;
-  background: rgba(200, 90, 23, 0.08);
-  color: #C85A17;
-  border-radius: 16px;
+.flow-label {
+  color: #2A2421;
   font-size: 0.8rem;
   font-weight: 600;
+  line-height: 1.25;
+}
+
+.flow-detail {
+  color: #685E5A;
+  font-size: 0.7rem;
+  line-height: 1.3;
 }
 
 .project-links {
@@ -158,7 +178,7 @@
   }
 
   &.live-link {
-    color: #C85A17;
+    color: $accent;
     margin-left: auto;
 
     &:hover {
@@ -171,37 +191,70 @@
   }
 }
 
-// An open card takes the full row, so its plan reads at a comfortable width.
-.project-card.open {
-  grid-column: 1 / -1;
+
+.track-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 1.25rem 0 0 0;
+  padding: 0;
+  color: #685E5A;
+  font-size: 0.9rem;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
 }
 
-.project-plan {
-  margin: 0 0 1.5rem 0;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(42, 36, 33, 0.08);
+// The closed card's track: phases left to right, joined by a line.
+.track {
+  display: flex;
+  list-style: none;
+  margin: 0 0 0.75rem 0;
+  padding: 0;
+}
+
+.track-step {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+
+  // The line from this phase's marker to the previous one.
+  & + .track-step::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: calc(50% + 8px);
+    width: calc(100% - 16px);
+    height: 2px;
+    background: $line;
+  }
+
+  &.done + .track-step::before,
+  &.current + .track-step::before {
+    background: rgba($accent, 0.5);
+  }
+}
+
+.track-label {
   color: #685E5A;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
 
-  h4 {
-    margin: 0 0 0.4rem 0;
+.track-now {
+  margin: 0 0 1.5rem 0;
+  color: #685E5A;
+  font-size: 0.9rem;
+
+  strong {
     color: #2A2421;
-    font-size: 0.95rem;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 0 0 1rem 0;
-  }
-
-  ol {
-    margin: 0;
-    padding-left: 1.4rem;
-  }
-
-  li + li {
-    margin-top: 0.3rem;
   }
 }
 
@@ -211,4 +264,19 @@
   padding: 0;
   font-family: inherit;
   cursor: pointer;
+}
+
+// On narrow screens the diagram wraps to two boxes per row, and the arrows give way to the layout.
+@media (max-width: 600px) {
+  .flow {
+    flex-wrap: wrap;
+  }
+
+  .flow-node {
+    flex: 1 1 40%;
+
+    & + .flow-node::before {
+      display: none;
+    }
+  }
 }

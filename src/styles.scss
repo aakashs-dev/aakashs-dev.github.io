@@ -1,3 +1,5 @@
+@use 'styles/tokens' as *;
+
 /* Global styles */
 * {
   margin: 0;
@@ -32,4 +34,43 @@ p {
 
 body {
   overflow-x: hidden;
+}
+
+// Shared by the Portfolio legend, phase tracks and step lists.
+// Phase markers: filled when done, half-filled in progress, hollow when planned.
+
+.dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid $accent;
+  background: transparent;
+  box-sizing: border-box;
+
+  &.done {
+    background: $accent;
+  }
+
+  &.current {
+    background: linear-gradient(90deg, $accent 50%, transparent 50%);
+  }
+
+  &.planned {
+    border-color: rgba(42, 36, 33, 0.35);
+  }
+}
+
+// Text for screen readers only.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

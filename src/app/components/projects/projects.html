@@ -1,7 +1,12 @@
 <div class="projects-container">
   <div class="projects-header">
     <h2 class="section-title">Portfolio</h2>
-    <p class="section-subtitle">My roadmap: what I am building, and what I plan to build next, each planned project with a deliberately limited first release. Open a card to see its plan. Status as of {{ statusDate }}.</p>
+    <p class="section-subtitle">What I am building, and what I plan to build next. Each diagram shows how the finished system will work; open a project for what it is and its step-by-step plan. Status as of {{ statusDate }}.</p>
+    <ul class="track-legend" aria-label="Stage markers">
+      <li><span class="dot done" aria-hidden="true"></span> Done</li>
+      <li><span class="dot current" aria-hidden="true"></span> In progress</li>
+      <li><span class="dot planned" aria-hidden="true"></span> Planned</li>
+    </ul>
   </div>
 
   <div class="projects-grid">
@@ -12,43 +17,47 @@
             <span class="project-domain">{{ project.domain }}</span>
             <span class="project-status">{{ project.status }}</span>
           </div>
-          <h3 class="project-title">{{ project.title }}</h3>
-          <p class="project-description">{{ project.description }}</p>
-          @if (project.firstRelease) {
-            <p class="project-release"><strong>First release:</strong> {{ project.firstRelease }}</p>
-          }
-          @if (project.note) {
-            <p class="project-release">{{ project.note }}</p>
-          }
 
-          <div class="project-plan" [id]="'plan-' + project.id" [hidden]="openId() !== project.id">
-            <h4>The problem</h4>
-            <p>{{ project.problem }}</p>
-            <h4>Progress so far</h4>
-            <p>{{ project.progress }}</p>
-            <h4>{{ project.nextStepsHeading }}</h4>
-            <ol>
-              @for (step of project.nextSteps; track step) {
-                <li>{{ step }}</li>
-              }
-            </ol>
-          </div>
-
-          <div class="project-tech">
-            @for (tech of project.technologies; track tech) {
-              <span class="tech-tag">{{ tech }}</span>
+          <!-- How the finished system will work, from the blueprint's design: a plan, not a screenshot. -->
+          <ol class="flow" [attr.aria-label]="'How ' + project.title + ' will work'">
+            @for (node of project.flow; track node.label) {
+              <li class="flow-node">
+                <span class="flow-label">{{ node.label }}</span>
+                <span class="flow-detail">{{ node.detail }}</span>
+              </li>
             }
-          </div>
+          </ol>
+
+          <h3 class="project-title">{{ project.title }}</h3>
+          <p class="project-tagline">{{ project.tagline }}</p>
+
+          <!-- The track: the project's stages, in order. -->
+          <ol class="track" [attr.aria-label]="project.title + ': ' + project.stagesHeading">
+            @for (stage of project.stages; track stage.title) {
+              <li class="track-step" [class]="stage.state">
+                <span class="dot" [class]="stage.state" aria-hidden="true"></span>
+                <span class="track-label" aria-hidden="true">{{ stage.short }}</span>
+                <span class="visually-hidden">{{ stage.title }}: {{ stateText[stage.state] }}</span>
+              </li>
+            }
+          </ol>
+          @if (now(project); as n) {
+            <p class="track-now">
+              <strong>{{ n.stage.state === 'current' ? 'Now' : 'Next' }}:</strong> {{ n.stage.title }}
+            </p>
+          }
+
+          <app-project-plan [project]="project" [attr.id]="'plan-' + project.id" [hidden]="openId() !== project.id" />
         </div>
 
         <div class="project-links">
           <button type="button" class="btn-link plan-toggle"
             [attr.aria-expanded]="openId() === project.id"
             [attr.aria-controls]="'plan-' + project.id"
-            [attr.aria-label]="(openId() === project.id ? 'Hide' : 'View') + ' plan for ' + project.title"
+            [attr.aria-label]="(openId() === project.id ? 'Hide' : 'View') + ' project: ' + project.title"
             (click)="toggle(project.id)">
             <span class="icon" aria-hidden="true">{{ openId() === project.id ? '−' : '+' }}</span>
-            {{ openId() === project.id ? 'Hide plan' : 'View plan' }}
+            {{ openId() === project.id ? 'Hide project' : 'View project' }}
           </button>
           @if (project.repoLink) {
             <a [href]="project.repoLink" class="btn-link" target="_blank" rel="noopener">
