@@ -45,8 +45,9 @@
           <button type="button" class="btn-link plan-toggle"
             [attr.aria-expanded]="openId() === project.id"
             [attr.aria-controls]="'plan-' + project.id"
+            [attr.aria-label]="(openId() === project.id ? 'Hide' : 'View') + ' plan for ' + project.title"
             (click)="toggle(project.id)">
-            <span class="icon">{{ openId() === project.id ? '−' : '+' }}</span>
+            <span class="icon" aria-hidden="true">{{ openId() === project.id ? '−' : '+' }}</span>
             {{ openId() === project.id ? 'Hide plan' : 'View plan' }}
           </button>
           @if (project.repoLink) {

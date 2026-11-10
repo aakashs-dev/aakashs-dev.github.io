@@ -38,6 +38,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2.5rem;
+  // An open card spans the row; dense placement lets later cards fill the gap it leaves.
+  grid-auto-flow: dense;
 }
 
 .project-card {
