@@ -1,102 +1,247 @@
 .sidenav {
-  width: 280px;
-  height: 100vh;
+  width: var(--sidenav-width);
+  height: 100svh;
   position: fixed;
-  left: 0;
+  inset-inline-start: 0;
   top: 0;
-  background: #2A2421;
-  border-right: 1px solid rgba(250, 247, 242, 0.1);
+  background: var(--sidenav-bg);
+  border-inline-end: 1px solid var(--sidenav-border);
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
-  z-index: 100;
-  box-shadow: 4px 0 24px rgba(42, 36, 33, 0.2);
+  padding: var(--space-8) 0 var(--space-5);
+  z-index: var(--z-sidenav);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  padding: 0 2rem;
+  margin-bottom: var(--space-8);
+  padding: 0 var(--space-6);
+}
 
-  .logo-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #FAF7F2;
-    letter-spacing: -0.5px;
-  }
+.logo-text,
+.mobile-brand {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--sidenav-text);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.logo-text {
+  font-size: 1.45rem;
 }
 
 .nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 0;
+}
 
-  .nav-item {
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-block-size: 2.75rem;
+  padding: var(--space-3) var(--space-6);
+  color: var(--sidenav-text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  position: relative;
+  transition: color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    color: rgba(250, 247, 242, 0.7);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    opacity: 0.85;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--sidenav-text);
+      background: oklch(1 0 0 / 0.06);
+      transform: translateX(3px);
+
+      .icon {
+        opacity: 1;
+        color: var(--sidenav-primary);
+      }
+    }
+  }
+
+  &.active {
+    color: var(--sidenav-text);
+    background: var(--sidenav-active-bg);
 
     .icon {
-      width: 20px;
-      height: 20px;
-      opacity: 0.7;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-      svg {
-        width: 100%;
-        height: 100%;
-      }
+      opacity: 1;
+      color: var(--sidenav-primary);
     }
 
-    &:hover {
-      color: #FAF7F2;
-      background: rgba(250, 247, 242, 0.06);
-      transform: translateX(4px);
-
-      .icon {
-        opacity: 1;
-        color: #C85A17;
-      }
-    }
-
-    &.active {
-      color: #FAF7F2;
-      background: rgba(200, 90, 23, 0.15);
-      
-      .icon {
-        opacity: 1;
-        color: #C85A17;
-      }
-
-      &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 4px;
-        height: 100%;
-        background: #C85A17;
-      }
+    &::before {
+      content: '';
+      position: absolute;
+      inset-inline-start: 0;
+      inset-block: 0;
+      width: 4px;
+      background: var(--sidenav-primary);
     }
   }
 }
 
-@media (max-width: 768px) {
+.theme-controls {
+  margin-top: auto;
+  padding: var(--space-5) var(--space-6) 0;
+  border-top: 1px solid var(--sidenav-border);
+}
+
+.theme-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+.theme-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+
+  label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sidenav-text-muted);
+  }
+}
+
+.season-select {
+  width: 100%;
+  min-block-size: 2.5rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--sidenav-border);
+  background: var(--sidenav-surface);
+  color: var(--sidenav-text);
+  font: 500 0.875rem var(--font-sans);
+  cursor: pointer;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--sidenav-border);
+  background: transparent;
+  color: var(--sidenav-text);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: oklch(1 0 0 / 0.1);
+      color: var(--sidenav-primary);
+    }
+  }
+}
+
+.scheme-btn {
+  min-inline-size: 2.5rem;
+  min-block-size: 2.5rem;
+}
+
+.scheme-btn-full {
+  width: 100%;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding-inline: var(--space-4);
+  font: 500 0.9rem var(--font-sans);
+}
+
+.mobile-header {
+  display: none;
+}
+
+.mobile-drawer {
+  inset: 0;
+  width: 100%;
+  height: 100svh;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  background: transparent;
+
+  &::backdrop {
+    background: oklch(0 0 0 / 0.55);
+  }
+}
+
+.drawer-sheet {
+  width: min(20rem, 84dvw);
+  height: 100svh;
+  background: var(--sidenav-bg);
+  color: var(--sidenav-text);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) 0 var(--space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-inline-end: 1px solid var(--sidenav-border);
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-4) var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--sidenav-border);
+  margin-bottom: var(--space-3);
+}
+
+@media (max-width: 959px) {
   .sidenav {
     display: none;
+  }
+
+  .mobile-header {
+    position: fixed;
+    top: 0;
+    inset-inline: 0;
+    height: var(--mobile-header-height);
+    background: var(--sidenav-bg);
+    border-bottom: 1px solid var(--sidenav-border);
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: var(--z-sidenav);
+  }
+
+  .mobile-brand {
+    font-size: 1.25rem;
+  }
+
+  .mobile-actions {
+    display: flex;
+    gap: var(--space-2);
   }
 }
