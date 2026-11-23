@@ -1,13 +1,13 @@
 <div class="home-container">
   <!-- Hero Section -->
   <section id="home" class="hero-section">
-    <div class="hero-overlay"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-content">
-      <h2 class="hero-greeting">You've reached</h2>
+      <p class="hero-greeting">You've reached</p>
       <h1 class="hero-title">Aakash Sharma</h1>
-      <h2 class="hero-subtitle">
-        I am a <span class="typewriter-text">{{ displayedText() }}</span><span class="cursor" [class.blink]="showCursor()">|</span>
-      </h2>
+      <p class="hero-subtitle">
+        I am a <span class="typewriter-text">{{ displayedText() }}</span>@if (!reducedMotion()) {<span class="cursor" [class.blink]="showCursor()" aria-hidden="true">|</span>}
+      </p>
     </div>
   </section>
 

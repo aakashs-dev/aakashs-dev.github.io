@@ -1,45 +1,62 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { About } from '../about/about';
-import { Resume } from '../resume/resume';
-import { Projects } from '../projects/projects';
 import { Certifications } from '../certifications/certifications';
 import { Contact } from '../contact/contact';
+import { Projects } from '../projects/projects';
+import { Resume } from '../resume/resume';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [About, Resume, Projects, Certifications, Contact],
   templateUrl: './home.html',
-  styleUrl: './home.scss'
+  styleUrl: './home.scss',
 })
 export class Home implements OnInit, OnDestroy {
-  roles = ['Data Analyst', 'Software Engineer'];
-  currentRoleIndex = 0;
-  
-  displayedText = signal('');
-  showCursor = signal(true);
-  
-  private typingSpeed = 100;
-  private deletingSpeed = 50;
-  private pauseDuration = 2000;
-  
-  private timeoutId: any;
-  private cursorIntervalId: any;
+  private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  ngOnInit() {
-    this.startTypewriter();
+  readonly roles = ['Data Analyst', 'Software Engineer'];
+  readonly displayedText = signal('Data Analyst & Software Engineer');
+  readonly showCursor = signal(true);
+  readonly reducedMotion = signal(false);
+
+  private currentRoleIndex = 0;
+  private readonly typingSpeed = 100;
+  private readonly deletingSpeed = 50;
+  private readonly pauseDuration = 2000;
+
+  private destroyed = false;
+  private timeoutId: ReturnType<typeof setTimeout> | null = null;
+  private cursorIntervalId: ReturnType<typeof setInterval> | null = null;
+
+  ngOnInit(): void {
+    if (!this.isBrowser) return;
+
+    const view = this.document.defaultView;
+    const prefersReduced =
+      typeof view?.matchMedia === 'function'
+        ? view.matchMedia('(prefers-reduced-motion: reduce)').matches
+        : false;
+    this.reducedMotion.set(prefersReduced);
+
+    if (prefersReduced) {
+      this.displayedText.set('Data Analyst & Software Engineer');
+      return;
+    }
+
+    this.displayedText.set('');
+    void this.typeNextRole();
     this.cursorIntervalId = setInterval(() => {
-      this.showCursor.update(v => !v);
+      this.showCursor.update((v) => !v);
     }, 500);
   }
 
-  ngOnDestroy() {
-    if (this.timeoutId) clearTimeout(this.timeoutId);
-    if (this.cursorIntervalId) clearInterval(this.cursorIntervalId);
-  }
-
-  private startTypewriter() {
-    this.typeNextRole();
+  ngOnDestroy(): void {
+    this.destroyed = true;
+    if (this.timeoutId !== null) clearTimeout(this.timeoutId);
+    if (this.cursorIntervalId !== null) clearInterval(this.cursorIntervalId);
   }
 
   private getCommonPrefix(s1: string, s2: string): string {
@@ -50,35 +67,33 @@ export class Home implements OnInit, OnDestroy {
     return s1.substring(0, i);
   }
 
-  private async typeNextRole() {
+  private async typeNextRole(): Promise<void> {
+    if (this.destroyed) return;
+
     const currentFullText = this.roles[this.currentRoleIndex];
     const nextIndex = (this.currentRoleIndex + 1) % this.roles.length;
     const nextFullText = this.roles[nextIndex];
-    
-    // 1. Type current role if it's empty (initial state)
+
     if (this.displayedText().length === 0) {
       await this.typeText(currentFullText);
       await this.sleep(this.pauseDuration);
     }
-    
-    // 2. Find common prefix between current and next
+
+    if (this.destroyed) return;
     const commonPrefix = this.getCommonPrefix(currentFullText, nextFullText);
-    
-    // 3. Delete characters down to the common prefix
     await this.deleteTextDownTo(commonPrefix.length);
-    
-    // 4. Type the rest of the next role
     await this.typeText(nextFullText, commonPrefix.length);
-    
+
     this.currentRoleIndex = nextIndex;
-    
-    // 5. Pause and recurse
     await this.sleep(this.pauseDuration);
-    this.typeNextRole();
+    if (!this.destroyed) {
+      void this.typeNextRole();
+    }
   }
 
-  private async typeText(target: string, startIndex: number = 0) {
+  private async typeText(target: string, startIndex = 0): Promise<void> {
     for (let i = startIndex; i <= target.length; i++) {
+      if (this.destroyed) return;
       this.displayedText.set(target.substring(0, i));
       if (i < target.length) {
         await this.sleep(this.typingSpeed);
@@ -86,17 +101,18 @@ export class Home implements OnInit, OnDestroy {
     }
   }
 
-  private async deleteTextDownTo(targetLength: number) {
+  private async deleteTextDownTo(targetLength: number): Promise<void> {
     let currentText = this.displayedText();
     while (currentText.length > targetLength) {
+      if (this.destroyed) return;
       currentText = currentText.substring(0, currentText.length - 1);
       this.displayedText.set(currentText);
       await this.sleep(this.deletingSpeed);
     }
   }
 
-  private sleep(ms: number) {
-    return new Promise(resolve => {
+  private sleep(ms: number): Promise<void> {
+    return new Promise((resolve) => {
       this.timeoutId = setTimeout(resolve, ms);
     });
   }
