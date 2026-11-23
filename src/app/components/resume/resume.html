@@ -1,88 +1,117 @@
 <div class="resume-container">
   <div class="resume-header">
     <h2 class="section-title">Resume</h2>
+    <p class="section-subtitle">
+      Experience across software engineering, NLP research, postgraduate teaching and venue operations, alongside formal data science and finance qualifications.
+    </p>
   </div>
 
   <div class="resume-grid">
     <!-- Experience -->
     <div class="resume-column">
-      <h3 class="column-title">Professional Experience</h3>
-      
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4 class="job-title">Gaming Supervisor</h4>
-            <div class="company-info">Highways Hotel (MRC), RSL Springvale & ALH Group, Melbourne <span>•</span> Jun 2022 - Present</div>
-            <div class="company-info">Gaming Attendant from Jun 2022; Gaming Supervisor by Jan 2023</div>
-            <ul class="bullets">
-              <li>Reconcile daily gaming-machine meter data (turnover, wins, net revenue) from the venue monitoring system against physical drop-box counts, and produce the daily clearance sheets.</li>
-              <li>Run AML/CTF customer identification (100-point ID checks, threshold register entries for large payouts) and responsible-gambling welfare checks.</li>
-              <li>Train junior attendants in float balancing, payout verification and responsible-gambling procedures.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4 class="job-title">Master of Data Science (Teaching & Research)</h4>
-            <div class="company-info">Monash University / CSIRO <span>•</span> Feb 2022 - Feb 2024</div>
-            <ul class="bullets">
-              <li>Teaching assistant for FIT5196 for one semester: taught data wrangling and Python to 60+ postgraduate students.</li>
-              <li>CSIRO research scholarship, a three-month project: built Python pipelines that extract text features from raw emails for malicious-email detection.</li>
-              <li>Compared standard classifiers and fine-tuned transformers with public LLM baselines, and reported the results to the project leads.</li>
-            </ul>
-          </div>
-        </div>
+      <h3 class="column-title">Experience</h3>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-dot current" aria-hidden="true"></span>
           <div class="timeline-content">
-            <h4 class="job-title">Software Engineer</h4>
-            <div class="company-info">NIIT Technologies Pvt Ltd, Delhi <span>•</span> Aug 2019 - Jul 2020</div>
+            <span class="entry-date">Jun 2022 – Present</span>
+            <h4 class="job-title">Gaming Supervisor</h4>
+            <div class="company-info">
+              Highways Hotel (MRC), RSL Springvale &amp; Doncaster Hotel (ALH Group) · Melbourne
+            </div>
+            <p class="role-progression">Gaming Attendant from Jun 2022; Gaming Supervisor by Jan 2023</p>
             <ul class="bullets">
-              <li>Trained by NIIT in full-stack development and the Sitecore CMS.</li>
-              <li>Built most of a video-streaming web application in a team of four: an Angular front end with cached loading, and video served from blob storage.</li>
-              <li>Login ran as a separate, light service that issued a JWT sent with each video-chunk request, so streaming could scale on its own.</li>
+              <li>Extract daily gaming-machine meter data (turnover, wins, net revenue) from the venue monitoring system, reconcile against physical drop-box counts and produce daily clearance sheets.</li>
+              <li>Run AML/CTF customer identification (100-point ID checks, threshold register entries for large payouts), self-exclusion checks and responsible-gambling welfare checks.</li>
+              <li>Maintain shift incident logs (hardware/meter faults, clearance discrepancies, payout disputes) and train junior attendants in float balancing, hopper fills and payout verification.</li>
             </ul>
           </div>
-        </div>
-      </div>
+        </li>
+
+        <li class="timeline-item">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <span class="entry-date">Nov 2023 – Jan 2024</span>
+            <h4 class="job-title">Summer Vacation Research Scholar</h4>
+            <div class="company-info">Monash University (Faculty of IT) / CSIRO · Melbourne</div>
+            <ul class="bullets">
+              <li>Built end-to-end Python extraction pipelines parsing unstructured <code>.eml</code> and <code>.txt</code> email payloads into text features for malicious-email detection in collaboration with CSIRO, storing outputs in MongoDB and CSV.</li>
+              <li>Evaluated standard classifiers, CNN/RCNN, fine-tuned transformers and a GAN setup targeting cognitive triggers (Cialdini's persuasion principles and Prospect Theory gain/loss framing) against zero-shot public LLM baselines, outperforming the LLM baselines.</li>
+              <li>Analysed precision, recall, F1 and error distributions, and reported accuracy, specificity, constraints and explainability trade-offs to project leads.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <span class="entry-date">Feb 2023 – May 2023</span>
+            <h4 class="job-title">Teaching Assistant — FIT5196 Data Wrangling</h4>
+            <div class="company-info">Monash University · Melbourne</div>
+            <ul class="bullets">
+              <li>Taught data wrangling and Python to 60+ postgraduate students across weekly classes, consultations and grading.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <span class="entry-date">Aug 2019 – Jul 2020</span>
+            <h4 class="job-title">Software Engineer</h4>
+            <div class="company-info">NIIT Technologies Pvt Ltd · Delhi NCR</div>
+            <ul class="bullets">
+              <li>Built most of an agile sprint video-streaming web application in a team of four: an Angular and TypeScript front end with cached loading, backed by C#/.NET services, SQL (users), MongoDB (video metadata) and blob storage.</li>
+              <li>Wrote the C# API layer, Ocelot API gateway and standalone login REST service issuing JWTs sent with each video-chunk request so streaming could scale independently; added input validation, CSP headers against XSS and IP allow-listing.</li>
+              <li>Completed full-stack development and Sitecore CMS training.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
     </div>
 
-    <!-- Education -->
+    <!-- Education & Credentials -->
     <div class="resume-column">
-      <h3 class="column-title">Education</h3>
-      
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4 class="job-title">Chartered Financial Analyst (CFA) Program</h4>
-            <div class="company-info">CFA Institute <span>•</span> Level I passed, {{ profile.cfaLevelIPassed }}</div>
-            <p class="description">Quantitative methods, economics, financial reporting, corporate finance, and equity investments.</p>
-          </div>
-        </div>
-        
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-content">
-            <h4 class="job-title">Master of Data Science</h4>
-            <div class="company-info">Monash University, Melbourne, AU <span>•</span> 2024</div>
-            <p class="description">Advanced coursework in machine learning, statistical modeling, data wrangling, and research methodologies.</p>
-          </div>
-        </div>
+      <h3 class="column-title">Education &amp; Credentials</h3>
 
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
+      <ol class="timeline">
+        <li class="timeline-item">
+          <span class="timeline-dot done" aria-hidden="true"></span>
           <div class="timeline-content">
-            <h4 class="job-title">Bachelor of Computer Science</h4>
-            <div class="company-info">Manipal University Jaipur, India <span>•</span> 2019</div>
-            <p class="description">Core computer science principles, software engineering, algorithms, and data structures.</p>
+            <span class="entry-date">Passed {{ profile.cfaLevelIPassed }}</span>
+            <h4 class="job-title">Chartered Financial Analyst (CFA) Program — Level I</h4>
+            <div class="company-info">CFA Institute</div>
+            <p class="description">
+              Quantitative Methods, Financial Statement Analysis, Equity Investments, Fixed Income and Derivatives.
+            </p>
           </div>
-        </div>
-      </div>
+        </li>
+
+        <li class="timeline-item">
+          <span class="timeline-dot done" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <span class="entry-date">Feb 2022 – Feb 2024</span>
+            <h4 class="job-title">Master of Data Science</h4>
+            <div class="company-info">Monash University · Melbourne</div>
+            <p class="description">
+              Coursework in machine learning, statistical modelling, data wrangling, time-series analysis and big data processing (Spark, PySpark, Hadoop).
+            </p>
+          </div>
+        </li>
+
+        <li class="timeline-item">
+          <span class="timeline-dot done" aria-hidden="true"></span>
+          <div class="timeline-content">
+            <span class="entry-date">2015 – 2019</span>
+            <h4 class="job-title">Bachelor of Technology in Computer Science &amp; Engineering</h4>
+            <div class="company-info">Manipal University Jaipur · India</div>
+            <p class="description">
+              Algorithms, data structures, relational databases and operating systems.
+            </p>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 </div>
