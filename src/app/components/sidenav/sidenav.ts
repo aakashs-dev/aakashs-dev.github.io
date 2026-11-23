@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { PROFILE } from '../../profile';
 import {
   SEASONAL_THEMES_ENABLED,
   SEASON_OPTIONS,
@@ -17,6 +18,7 @@ import {
 } from '../../services/theme.service';
 
 interface NavItem {
+  readonly index: string;
   readonly id: string;
   readonly label: string;
 }
@@ -35,16 +37,17 @@ export class Sidenav implements AfterViewInit, OnDestroy {
 
   readonly mobileDrawer = viewChild<ElementRef<HTMLDialogElement>>('mobileDrawer');
 
+  readonly profile = PROFILE;
   readonly activeSection = signal('home');
   readonly drawerOpen = signal(false);
 
   readonly navItems: readonly NavItem[] = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'resume', label: 'Resume' },
-    { id: 'portfolio', label: 'Portfolio' },
-    { id: 'certifications', label: 'Certifications' },
-    { id: 'contact', label: 'Contact' },
+    { index: '01', id: 'home', label: 'Home' },
+    { index: '02', id: 'about', label: 'About' },
+    { index: '03', id: 'resume', label: 'Resume' },
+    { index: '04', id: 'portfolio', label: 'Portfolio' },
+    { index: '05', id: 'certifications', label: 'Certifications' },
+    { index: '06', id: 'contact', label: 'Contact' },
   ];
 
   readonly seasonalThemesEnabled = SEASONAL_THEMES_ENABLED;
@@ -53,6 +56,14 @@ export class Sidenav implements AfterViewInit, OnDestroy {
 
   private observer: IntersectionObserver | null = null;
   private initTimer: ReturnType<typeof setTimeout> | null = null;
+  private scrollLockTimer: ReturnType<typeof setTimeout> | null = null;
+  private scrollLocked = false;
+  private readonly releaseScrollLock = () => this.unlockScrollObserver();
+  private readonly extendScrollLock = () => {
+    if (!this.scrollLocked) return;
+    if (this.scrollLockTimer !== null) clearTimeout(this.scrollLockTimer);
+    this.scrollLockTimer = setTimeout(this.releaseScrollLock, 180);
+  };
 
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
@@ -66,6 +77,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       clearTimeout(this.initTimer);
       this.initTimer = null;
     }
+    this.unlockScrollObserver();
     this.observer?.disconnect();
   }
 
@@ -126,7 +138,36 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       typeof view?.matchMedia === 'function'
         ? view.matchMedia('(prefers-reduced-motion: reduce)').matches
         : false;
+
+    if (!reduceMotion) {
+      this.lockScrollObserver();
+    }
     element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  }
+
+  private lockScrollObserver(): void {
+    this.unlockScrollObserver();
+    this.scrollLocked = true;
+    const view = this.document.defaultView;
+    view?.addEventListener('scroll', this.extendScrollLock, { passive: true });
+    view?.addEventListener('scrollend', this.releaseScrollLock, { once: true });
+    view?.addEventListener('wheel', this.releaseScrollLock, { once: true, passive: true });
+    view?.addEventListener('touchstart', this.releaseScrollLock, { once: true, passive: true });
+    // Release cleanly if the target is already in view and emits no scroll events
+    this.scrollLockTimer = setTimeout(this.releaseScrollLock, 400);
+  }
+
+  private unlockScrollObserver(): void {
+    this.scrollLocked = false;
+    if (this.scrollLockTimer !== null) {
+      clearTimeout(this.scrollLockTimer);
+      this.scrollLockTimer = null;
+    }
+    const view = this.document.defaultView;
+    view?.removeEventListener('scroll', this.extendScrollLock);
+    view?.removeEventListener('scrollend', this.releaseScrollLock);
+    view?.removeEventListener('wheel', this.releaseScrollLock);
+    view?.removeEventListener('touchstart', this.releaseScrollLock);
   }
 
   private setupIntersectionObserver(): void {
@@ -139,6 +180,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
     };
 
     this.observer = new IntersectionObserver((entries) => {
+      if (this.scrollLocked) return;
       for (const entry of entries) {
         if (entry.isIntersecting) {
           this.activeSection.set(entry.target.id);

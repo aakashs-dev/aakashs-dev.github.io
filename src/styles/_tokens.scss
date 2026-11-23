@@ -75,7 +75,7 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   // Layout dimensions
-  --sidenav-width: 17.5rem; // 280 px
+  --sidenav-width: 15rem; // 240 px
   --mobile-header-height: 0px;
 
   // ---------------------------------------------------------------------------
@@ -100,13 +100,15 @@
   --primary-text:     light-dark(var(--brand-600), var(--brand-300));
   --focus-ring:       var(--primary-text);
 
-  // Sidenav & drawer chrome (consistently deep tone in both light and dark modes)
+  // Sidenav & drawer chrome (dark espresso book-spine rail in both light and dark modes)
   --sidenav-bg:           var(--neutral-900);
   --sidenav-surface:      var(--neutral-800);
   --sidenav-border:       oklch(1 0 0 / 0.12);
   --sidenav-text:         var(--neutral-50);
   --sidenav-text-muted:   var(--neutral-300);
   --sidenav-primary:      var(--brand-300);
+  --sidenav-primary-bg:   color-mix(in oklch, var(--brand-300) 15%, transparent);
+  --sidenav-primary-edge: color-mix(in oklch, var(--brand-300) 45%, transparent);
   --sidenav-active-bg:    color-mix(in oklch, var(--brand-300) 16%, transparent);
 
   // Shadows (light-dark accepts <color> only)
