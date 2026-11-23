@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Projects } from './projects';
 
-describe('Portfolio cards', () => {
+describe('Portfolio section & interactive architecture diagrams', () => {
   let fixture: ComponentFixture<Projects>;
   let root: HTMLElement;
 
@@ -12,119 +12,106 @@ describe('Portfolio cards', () => {
     root = fixture.nativeElement as HTMLElement;
   });
 
-  const toggles = () => Array.from(root.querySelectorAll<HTMLButtonElement>('.plan-toggle'));
-  const plan = (id: string) => root.querySelector<HTMLElement>(`#plan-${id}`)!;
+  const triggers = () => Array.from(root.querySelectorAll<HTMLButtonElement>('.dossier-trigger'));
+  const dialog = () => root.querySelector<HTMLDialogElement>('#blueprint-dossier')!;
 
-  function click(button: HTMLButtonElement): void {
-    button.click();
+  function click(el: HTMLElement): void {
+    el.click();
     fixture.detectChanges();
   }
 
-  it('starts with every plan closed, and each toggle points at its own plan', () => {
-    expect(toggles().length).toBe(fixture.componentInstance.projects.length);
-    for (const project of fixture.componentInstance.projects) {
-      expect(plan(project.id).hidden).toBe(true);
-    }
-    for (const button of toggles()) {
-      expect(button.getAttribute('aria-expanded')).toBe('false');
-      expect(root.querySelector('#' + button.getAttribute('aria-controls'))).not.toBeNull();
-    }
-    const titles = fixture.componentInstance.projects.map((p) => p.title);
-    for (const [i, button] of toggles().entries()) {
-      expect(button.getAttribute('aria-label')).toBe(`View project: ${titles[i]}`);
-    }
+  it('features TheNumbersGame on top and renders all 6 planned blueprints including MailShield', () => {
+    const cmp = fixture.componentInstance;
+    expect(cmp.featuredProject.id).toBe('the-numbers-game');
+    expect(cmp.blueprints.length).toBe(6);
+    expect(cmp.blueprints.map((b) => b.id)).toContain('mailshield');
+    expect(root.querySelectorAll('.featured-card').length).toBe(1);
+    expect(root.querySelectorAll('.blueprint-card').length).toBe(6);
   });
 
-  it('opens a plan on click and closes it on a second click', () => {
-    const [first] = toggles();
-    const id = fixture.componentInstance.projects[0].id;
+  it('renders an interactive master architecture SVG on the featured card and updates inspector on click', () => {
+    const featured = root.querySelector('.featured-card')!;
+    const nodes = Array.from(featured.querySelectorAll<SVGGElement>('.arch-node'));
+    expect(nodes.length).toBe(fixture.componentInstance.featuredProject.architecture.nodes.length);
 
-    click(first);
-    expect(plan(id).hidden).toBe(false);
-    expect(first.getAttribute('aria-expanded')).toBe('true');
-    expect(first.textContent).toContain('Hide project');
+    const inspector = featured.querySelector('.arch-inspector')!;
+    expect(inspector.textContent).toContain('OrderEgressWorker');
 
-    click(first);
-    expect(plan(id).hidden).toBe(true);
-    expect(first.getAttribute('aria-expanded')).toBe('false');
+    // Click the first node (Kite WebSocket) and verify inspector updates
+    nodes[0].dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.detectChanges();
+    expect(inspector.textContent).toContain('Kite WebSocket');
+    expect(nodes[0].getAttribute('aria-pressed')).toBe('true');
   });
 
-  it('keeps one plan open at a time', () => {
-    const [first, second] = toggles();
-    const [a, b] = fixture.componentInstance.projects;
+  it('opens the native dialog blueprint dossier with architecture SVG and full phase plan, then closes', () => {
+    expect(dialog().hasAttribute('open')).toBe(false);
 
-    click(first);
-    click(second);
+    // Open MailShield (last trigger)
+    const allTriggers = triggers();
+    expect(allTriggers.length).toBe(7);
+    click(allTriggers[allTriggers.length - 1]);
 
-    expect(plan(a.id).hidden).toBe(true);
-    expect(plan(b.id).hidden).toBe(false);
+    expect(dialog().hasAttribute('open')).toBe(true);
+    expect(dialog().querySelector('#dossier-title')?.textContent?.trim()).toBe('MailShield');
+    expect(dialog().querySelectorAll('.arch-node').length).toBeGreaterThan(5);
+    expect(dialog().querySelector('#plan-mailshield')).not.toBeNull();
+
+    const closeBtn = dialog().querySelector<HTMLButtonElement>('.dossier-close')!;
+    click(closeBtn);
+    expect(dialog().hasAttribute('open')).toBe(false);
   });
 
-  it('shows each card\'s stages as a track, marked with their state', () => {
-    const cards = Array.from(root.querySelectorAll<HTMLElement>('.project-card'));
-    fixture.componentInstance.projects.forEach((project, i) => {
-      const markers = Array.from(cards[i].querySelectorAll('.track .track-step'));
-      expect(markers.length).toBe(project.stages.length);
-      markers.forEach((m, j) => expect(m.classList).toContain(project.stages[j].state));
-    });
+  it('folds non-active phases inside the opened dossier and unfolds them on click', () => {
+    // Open NEM-Pulse (index 1)
+    click(triggers()[1]);
+    const plan = dialog().querySelector<HTMLElement>('#plan-nem-pulse')!;
+    const stages = Array.from(plan.querySelectorAll<HTMLElement>(':scope > .stages > .stage'));
+    const later = stages[2];
+    const foldBtn = later.querySelector<HTMLButtonElement>('.fold')!;
+    const list = later.querySelector<HTMLElement>('.steps')!;
+
+    expect(list.hidden).toBe(true);
+    expect(foldBtn.getAttribute('aria-expanded')).toBe('false');
+
+    click(foldBtn);
+    expect(list.hidden).toBe(false);
+    expect(foldBtn.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('names the stage under way, or the next one', () => {
-    const lines = Array.from(root.querySelectorAll('.track-now')).map((e) => e.textContent!.replace(/\s+/g, ' ').trim());
+  it('shows each project stage track and names the active or next stage', () => {
+    const lines = Array.from(root.querySelectorAll('.track-now')).map((e) =>
+      e.textContent!.replace(/\s+/g, ' ').trim(),
+    );
     expect(lines[0]).toBe('Now: Horizon 0: Foundations');
     expect(lines[1]).toBe('Next: First release');
   });
 
-  it('draws the flow diagram on each card from its design, box by box', () => {
-    const cards = Array.from(root.querySelectorAll<HTMLElement>('.project-card'));
-    fixture.componentInstance.projects.forEach((project, i) => {
-      const labels = Array.from(cards[i].querySelectorAll('.flow .flow-label')).map((e) => e.textContent);
-      expect(labels).toEqual(project.flow.map((n) => n.label));
-    });
-  });
+  it('has valid, non-overlapping SVG geometry and valid edge references across all 7 master architectures', () => {
+    for (const project of fixture.componentInstance.projects) {
+      const arch = project.architecture;
+      const [, , vw, vh] = arch.viewBox.split(' ').map(Number);
+      const ids = new Set(arch.nodes.map((n) => n.id));
 
-  it('opens to every stage, each with its own phases, states and done-when', () => {
-    const project = fixture.componentInstance.projects[0];
-    click(toggles()[0]);
+      expect(ids.has(arch.defaultNodeId)).toBe(true);
+      for (const edge of arch.edges) {
+        expect(ids.has(edge.from)).toBe(true);
+        expect(ids.has(edge.to)).toBe(true);
+      }
 
-    const stages = Array.from(plan(project.id).querySelectorAll(':scope > .stages > .stage'));
-    expect(stages.length).toBe(project.stages.length);
-    expect(stages.map((s) => s.querySelector('.stage-title')!.textContent)).toEqual(project.stages.map((s) => s.title));
+      for (let i = 0; i < arch.nodes.length; i++) {
+        const a = arch.nodes[i];
+        expect(a.x).toBeGreaterThanOrEqual(0);
+        expect(a.y).toBeGreaterThanOrEqual(0);
+        expect(a.x + a.w).toBeLessThanOrEqual(vw);
+        expect(a.y + a.h).toBeLessThanOrEqual(vh);
 
-    // Horizon 0, the stage under way, starts unfolded; only phase 4, in progress, says when it is done.
-    const phases = Array.from(stages[0].querySelectorAll('.step'));
-    expect(phases.length).toBe(project.stages[0].steps!.length);
-    expect(phases[4].textContent).toContain('In progress');
-    expect(phases.filter((p) => p.querySelector('.step-done-when')).length).toBe(1);
-    expect(phases[4].querySelector('.step-done-when')).not.toBeNull();
-    // A horizon without phases still states its exit.
-    expect(stages[2].querySelector('.step-done-when')!.textContent).toContain('Exit:');
-  });
-
-  it('folds the phases of stages not under way, and unfolds them on click', () => {
-    const project = fixture.componentInstance.projects[1];
-    click(toggles()[1]);
-    const stages = Array.from(plan(project.id).querySelectorAll<HTMLElement>(':scope > .stages > .stage'));
-    const later = stages[2];
-    const button = later.querySelector<HTMLButtonElement>('.fold')!;
-
-    const list = (stage: HTMLElement) => stage.querySelector<HTMLElement>('.steps')!;
-    expect(list(stages[1]).hidden).toBe(false);
-    expect(list(later).hidden).toBe(true);
-    // The button names its stage for screen readers and points at the list it folds.
-    expect(button.textContent!.replace(/\s+/g, ' ').trim())
-      .toBe(`Show ${project.stages[2].steps!.length} phases of ${project.stages[2].title}`);
-    expect(button.getAttribute('aria-controls')).toBe(list(later).id);
-    expect(button.getAttribute('aria-expanded')).toBe('false');
-
-    click(button);
-    expect(list(later).hidden).toBe(false);
-    expect(later.querySelectorAll('.step').length).toBe(project.stages[2].steps!.length);
-    expect(button.getAttribute('aria-expanded')).toBe('true');
-  });
-
-  it('shows no GitHub link until a project has a repository', () => {
-    const withRepo = fixture.componentInstance.projects.filter((p) => p.repoLink).length;
-    expect(root.querySelectorAll('a.btn-link:not(.live-link)').length).toBe(withRepo);
+        for (let j = i + 1; j < arch.nodes.length; j++) {
+          const b = arch.nodes[j];
+          const overlaps = a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+          expect(overlaps, `${project.id}: ${a.id} overlaps ${b.id}`).toBe(false);
+        }
+      }
+    }
   });
 });

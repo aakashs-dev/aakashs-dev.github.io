@@ -1,63 +1,53 @@
+:host {
+  display: block;
+}
+
 .app-container {
   display: flex;
-  min-height: 100vh;
-  background-color: #FAF7F2;
-  /* Light sepia alabaster background */
-  color: #2A2421;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  min-height: 100svh;
+  background-color: var(--surface-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
 }
 
 .main-content {
   flex: 1;
-  margin-left: 280px;
-  /* Offset for always-visible sidenav */
+  min-width: 0;
+  margin-inline-start: var(--sidenav-width);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100svh;
   position: relative;
 
-  /* Subtle ambient terracotta glow effect in the background */
+  // Subtle ambient seasonal glow behind page content
   &::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 280px;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 50% 100%, rgba(200, 90, 23, 0.04) 0%, transparent 60%);
+    inset-block: 0;
+    inset-inline-start: var(--sidenav-width);
+    inset-inline-end: 0;
+    background: radial-gradient(circle at 50% 100%, var(--hero-glow) 0%, transparent 60%);
     pointer-events: none;
-    z-index: 0;
+    z-index: var(--z-base);
   }
 }
 
 .content-wrapper {
   flex: 1;
-  padding: 4rem 6rem;
+  width: 100%;
   position: relative;
   z-index: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
+  container-type: inline-size;
+  container-name: main;
 }
 
-/* Base styles / globals */
-:host {
-  display: block;
-}
-
-@media (max-width: 1024px) {
-  .content-wrapper {
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 959px) {
   .main-content {
-    margin-left: 0;
-    
+    margin-inline-start: 0;
+    padding-top: var(--mobile-header-height);
+
     &::before {
-      left: 0;
+      inset-inline-start: 0;
     }
   }
 }

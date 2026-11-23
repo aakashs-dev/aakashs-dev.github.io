@@ -7,7 +7,7 @@
   <div class="cert-grid">
     @for (cert of certifications; track cert.title) {
       <div class="cert-card">
-        <div class="cert-icon">
+        <div class="cert-icon" aria-hidden="true">
           <span class="icon">🎓</span>
         </div>
         <div class="cert-content">
@@ -17,14 +17,14 @@
           <div class="cert-details">
             <span class="cert-date">Passed {{ cert.date }}</span>
             @if (cert.credentialId) {
-              <span class="cert-divider">•</span>
+              <span class="cert-divider" aria-hidden="true">•</span>
               <span class="cert-id">Credential ID: {{ cert.credentialId }}</span>
             }
           </div>
 
           @if (cert.credentialUrl) {
             <a [href]="cert.credentialUrl" class="verify-btn" target="_blank" rel="noopener">
-              Verify Credential <span class="arrow">→</span>
+              Verify Credential <span class="arrow" aria-hidden="true">→</span>
             </a>
           }
         </div>

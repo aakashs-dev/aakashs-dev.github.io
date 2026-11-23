@@ -1,7 +1,9 @@
 <div class="projects-container">
   <div class="projects-header">
     <h2 class="section-title">Portfolio</h2>
-    <p class="section-subtitle">What I am building, and what I plan to build next. Each diagram shows how the finished system will work; open a project for what it is and its step-by-step plan. Status as of {{ statusDate }}.</p>
+    <p class="section-subtitle">
+      One active build in progress and six engineering blueprints ready to build next. Every diagram shows the target master architecture; click any block to inspect its constraints. Status as of {{ statusDate }}.
+    </p>
     <ul class="track-legend" aria-label="Stage markers">
       <li><span class="dot done" aria-hidden="true"></span> Done</li>
       <li><span class="dot current" aria-hidden="true"></span> In progress</li>
@@ -9,29 +11,94 @@
     </ul>
   </div>
 
-  <div class="projects-grid">
-    @for (project of projects; track project.id) {
-      <div class="project-card" [class.open]="openId() === project.id">
-        <div class="project-content">
-          <div class="project-meta">
-            <span class="project-domain">{{ project.domain }}</span>
-            <span class="project-status">{{ project.status }}</span>
-          </div>
+  <!-- Featured active build -->
+  @if (featuredProject; as active) {
+    <article class="project-card featured-card">
+      <div class="card-body">
+        <div class="project-meta">
+          <span class="project-code">{{ active.blueprintCode }} · {{ active.domain }}</span>
+          <span class="project-status active-status">{{ active.status }}</span>
+        </div>
 
-          <!-- How the finished system will work, from the blueprint's design: a plan, not a screenshot. -->
-          <ol class="flow" [attr.aria-label]="'How ' + project.title + ' will work'">
-            @for (node of project.flow; track node.label) {
-              <li class="flow-node">
-                <span class="flow-label">{{ node.label }}</span>
-                <span class="flow-detail">{{ node.detail }}</span>
+        <h3 class="project-title featured-title">{{ active.title }}</h3>
+        <p class="project-tagline">{{ active.tagline }}</p>
+
+        <app-architecture-diagram [spec]="active.architecture" />
+
+        <div class="featured-summary">
+          <ol class="track" [attr.aria-label]="active.title + ': ' + active.stagesHeading">
+            @for (stage of active.stages; track stage.title) {
+              <li class="track-step" [class]="stage.state">
+                <span class="dot" [class]="stage.state" aria-hidden="true"></span>
+                <span class="track-label" aria-hidden="true">{{ stage.short }}</span>
+                <span class="visually-hidden">{{ stage.title }}: {{ stateText[stage.state] }}</span>
               </li>
             }
           </ol>
+          @if (now(active); as n) {
+            <p class="track-now">
+              <strong>{{ n.stage.state === 'current' ? 'Now' : 'Next' }}:</strong> {{ n.stage.title }}
+            </p>
+          }
+        </div>
+      </div>
 
-          <h3 class="project-title">{{ project.title }}</h3>
+      <div class="project-links">
+        <button
+          type="button"
+          class="btn-link dossier-trigger"
+          [attr.aria-label]="'Inspect architecture and plan: ' + active.title"
+          aria-haspopup="dialog"
+          (click)="openDossier(active.id)"
+        >
+          <span class="icon" aria-hidden="true">⊞</span>
+          View full flight plan
+        </button>
+        @if (active.repoLink) {
+          <a [href]="active.repoLink" class="btn-link" target="_blank" rel="noopener">
+            <span class="icon" aria-hidden="true">⎇</span> GitHub
+          </a>
+        }
+        @if (active.requestLink) {
+          <a [href]="active.requestLink" class="btn-link live-link">
+            <span class="icon" aria-hidden="true">✉</span> Request a walkthrough
+          </a>
+        }
+      </div>
+    </article>
+  }
+
+  <!-- Planned blueprints shelf -->
+  <div class="shelf-head">
+    <h3 class="shelf-title">Planned Blueprints</h3>
+    <p class="shelf-note">Designed with primary sources, verification rules and phased plans; none started yet.</p>
+  </div>
+
+  <div class="blueprints-grid">
+    @for (project of blueprints; track project.id) {
+      <article class="project-card blueprint-card">
+        <div class="card-body">
+          <div class="project-meta">
+            <span class="project-code">{{ project.blueprintCode }} · {{ project.domain }}</span>
+            <span class="project-status">{{ project.status }}</span>
+          </div>
+
+          <h4 class="project-title">{{ project.title }}</h4>
           <p class="project-tagline">{{ project.tagline }}</p>
 
-          <!-- The track: the project's stages, in order. -->
+          <blockquote class="problem-quote">{{ project.problemSummary }}</blockquote>
+
+          <dl class="spec-strip">
+            <div>
+              <dt>Sources &amp; rules</dt>
+              <dd>{{ project.primarySource }}</dd>
+            </div>
+            <div>
+              <dt>Planned stack</dt>
+              <dd>{{ project.technologies.join(' · ') }}</dd>
+            </div>
+          </dl>
+
           <ol class="track" [attr.aria-label]="project.title + ': ' + project.stagesHeading">
             @for (stage of project.stages; track stage.title) {
               <li class="track-step" [class]="stage.state">
@@ -46,31 +113,28 @@
               <strong>{{ n.stage.state === 'current' ? 'Now' : 'Next' }}:</strong> {{ n.stage.title }}
             </p>
           }
-
-          <app-project-plan [project]="project" [attr.id]="'plan-' + project.id" [hidden]="openId() !== project.id" />
         </div>
 
         <div class="project-links">
-          <button type="button" class="btn-link plan-toggle"
-            [attr.aria-expanded]="openId() === project.id"
-            [attr.aria-controls]="'plan-' + project.id"
-            [attr.aria-label]="(openId() === project.id ? 'Hide' : 'View') + ' project: ' + project.title"
-            (click)="toggle(project.id)">
-            <span class="icon" aria-hidden="true">{{ openId() === project.id ? '−' : '+' }}</span>
-            {{ openId() === project.id ? 'Hide project' : 'View project' }}
+          <button
+            type="button"
+            class="btn-link dossier-trigger"
+            [attr.aria-label]="'Inspect architecture and plan: ' + project.title"
+            aria-haspopup="dialog"
+            (click)="openDossier(project.id)"
+          >
+            Inspect architecture &amp; plan <span class="icon" aria-hidden="true">→</span>
           </button>
           @if (project.repoLink) {
             <a [href]="project.repoLink" class="btn-link" target="_blank" rel="noopener">
-              <span class="icon">⎇</span> GitHub
-            </a>
-          }
-          @if (project.requestLink) {
-            <a [href]="project.requestLink" class="btn-link live-link">
-              <span class="icon">✉</span> Request a walkthrough
+              <span class="icon" aria-hidden="true">⎇</span> GitHub
             </a>
           }
         </div>
-      </div>
+      </article>
     }
   </div>
 </div>
+
+<!-- Native modal blueprint dossier -->
+<app-blueprint-dossier [project]="activeProject()" (closed)="closeDossier()" />

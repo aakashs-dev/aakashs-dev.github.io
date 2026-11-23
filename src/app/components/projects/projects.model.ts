@@ -1,4 +1,4 @@
-// The shape of a portfolio card's plan, shared by the card and its opened plan.
+// The shape of a portfolio project, its roadmap plan, and its interactive master architecture.
 
 export type StepState = 'done' | 'current' | 'planned';
 
@@ -9,7 +9,6 @@ export interface Step {
   state: StepState;
 }
 
-// A stage of the big picture (a horizon, or a blueprint stage), holding its phases.
 export interface Stage {
   short: string;
   title: string;
@@ -19,24 +18,70 @@ export interface Stage {
   steps?: Step[];
 }
 
-// One box of the card's flow diagram: how the finished system works, from the blueprint's design.
-export interface FlowNode {
+export type ArchNodeKind = 'source' | 'process' | 'store' | 'guard' | 'output';
+
+export interface ArchZone {
+  id: string;
   label: string;
-  detail: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  dashed?: boolean;
+}
+
+export interface ArchNode {
+  id: string;
+  label: string;
+  sublabel: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  kind: ArchNodeKind;
+  planned?: boolean;
+  role: string;
+  constraint: string;
+  scopeNote: string;
+}
+
+export interface ArchEdge {
+  id: string;
+  from: string;
+  to: string;
+  path: string;
+  label?: string;
+  labelX?: number;
+  labelY?: number;
+  dashed?: boolean;
+}
+
+export interface ArchitectureSpec {
+  figureCode: string;
+  caption: string;
+  viewBox: string;
+  minWidthPx: number;
+  defaultNodeId: string;
+  zones: ArchZone[];
+  nodes: ArchNode[];
+  edges: ArchEdge[];
 }
 
 export interface RoadmapProject {
   id: string;
+  blueprintCode: string;
+  featured?: boolean;
   title: string;
   domain: string;
   tagline: string;
-  flow: FlowNode[];
+  problemSummary: string;
+  primarySource: string;
+  architecture: ArchitectureSpec;
   description: string;
   firstRelease?: string;
   note?: string;
   status: string;
   technologies: string[];
-  // Shown when the card is opened. Taken from each project's blueprint or roadmap.
   problem: string;
   stagesHeading: string;
   stages: Stage[];
@@ -44,16 +89,22 @@ export interface RoadmapProject {
   requestLink?: string;
 }
 
-export const STATE_TEXT: Record<StepState, string> = { done: 'Done', current: 'In progress', planned: 'Planned' };
+export const STATE_TEXT: Record<StepState, string> = {
+  done: 'Done',
+  current: 'In progress',
+  planned: 'Planned',
+};
 
 export const stepName = (s: Step): string => `Phase ${s.label}: ${s.title}`;
 
-// The first stage not yet done, and the phase inside it that is in progress or comes next.
 export function nowOf(project: RoadmapProject): { stage: Stage; step?: Step } | undefined {
   const stage = project.stages.find((s) => s.state !== 'done');
   if (!stage) {
     return undefined;
   }
   const steps = stage.steps ?? [];
-  return { stage, step: steps.find((s) => s.state === 'current') ?? steps.find((s) => s.state === 'planned') };
+  return {
+    stage,
+    step: steps.find((s) => s.state === 'current') ?? steps.find((s) => s.state === 'planned'),
+  };
 }
