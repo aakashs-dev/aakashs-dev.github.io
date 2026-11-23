@@ -51,22 +51,25 @@
         </div>
 
         <div class="project-links">
-          <button type="button" class="btn-link plan-toggle"
+          <button
+            type="button"
+            class="btn-link plan-toggle"
             [attr.aria-expanded]="openId() === project.id"
             [attr.aria-controls]="'plan-' + project.id"
             [attr.aria-label]="(openId() === project.id ? 'Hide' : 'View') + ' project: ' + project.title"
-            (click)="toggle(project.id)">
+            (click)="toggle(project.id)"
+          >
             <span class="icon" aria-hidden="true">{{ openId() === project.id ? '−' : '+' }}</span>
             {{ openId() === project.id ? 'Hide project' : 'View project' }}
           </button>
           @if (project.repoLink) {
             <a [href]="project.repoLink" class="btn-link" target="_blank" rel="noopener">
-              <span class="icon">⎇</span> GitHub
+              <span class="icon" aria-hidden="true">⎇</span> GitHub
             </a>
           }
           @if (project.requestLink) {
             <a [href]="project.requestLink" class="btn-link live-link">
-              <span class="icon">✉</span> Request a walkthrough
+              <span class="icon" aria-hidden="true">✉</span> Request a walkthrough
             </a>
           }
         </div>
