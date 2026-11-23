@@ -1,0 +1,245 @@
+:host {
+  display: block;
+}
+
+.arch-sheet {
+  margin: 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.arch-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-default);
+}
+
+.arch-code {
+  font-family: ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.arch-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  border: 1.5px solid var(--border-strong);
+
+  &.dashed {
+    border-style: dashed;
+  }
+
+  &.guard {
+    border-color: var(--primary-text);
+    background: var(--primary-subtle);
+  }
+}
+
+.arch-viewport {
+  overflow-x: auto;
+  padding: var(--space-3);
+  background-image: radial-gradient(color-mix(in oklch, var(--text-secondary) 22%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.arch-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.arrow-head {
+  fill: var(--border-strong);
+
+  &.active {
+    fill: var(--primary-text);
+  }
+}
+
+.arch-zone {
+  rect {
+    fill: color-mix(in oklch, var(--surface-default) 72%, transparent);
+    stroke: var(--border-subtle);
+    stroke-width: 1.25;
+  }
+
+  &.dashed rect {
+    stroke-dasharray: 5 4;
+  }
+}
+
+.zone-label {
+  fill: var(--text-secondary);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.arch-edge {
+  path {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+    opacity: 0.45;
+    transition: stroke var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+  }
+
+  &.dashed path {
+    stroke-dasharray: 4 3;
+  }
+
+  &.connected path {
+    stroke: var(--primary-text);
+    stroke-width: 2;
+    opacity: 1;
+  }
+}
+
+.edge-label {
+  fill: var(--text-secondary);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 9.5px;
+  text-anchor: middle;
+}
+
+.arch-node {
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out);
+
+  rect {
+    fill: var(--surface-default);
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+    transition: stroke var(--duration-fast) var(--ease-out), fill var(--duration-fast) var(--ease-out);
+  }
+
+  &.kind-guard rect {
+    fill: var(--primary-subtle);
+    stroke: var(--primary-text);
+    stroke-width: 1.75;
+  }
+
+  &.kind-store rect {
+    fill: var(--surface-raised);
+  }
+
+  &.planned rect {
+    stroke-dasharray: 5 4;
+  }
+
+  &.muted {
+    opacity: 0.58;
+  }
+
+  &.selected rect {
+    stroke: var(--primary-text);
+    stroke-width: 2.5;
+    fill: var(--primary-subtle);
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    rect {
+      stroke: var(--focus-ring);
+      stroke-width: 3;
+    }
+  }
+}
+
+.store-bar {
+  stroke: var(--border-subtle);
+  stroke-width: 1.2;
+}
+
+.node-label {
+  fill: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.node-sublabel {
+  fill: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 9.75px;
+  text-anchor: middle;
+}
+
+.arch-inspector {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--border-subtle);
+  background: var(--surface-default);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.inspector-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.inspector-title {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.925rem;
+}
+
+.inspector-scope {
+  padding: 0.1rem 0.55rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--primary-border);
+  background: var(--primary-subtle);
+  color: var(--primary-text);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.inspector-hint {
+  margin-inline-start: auto;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.inspector-role,
+.inspector-constraint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  max-inline-size: 72ch;
+
+  strong {
+    color: var(--text-primary);
+  }
+}

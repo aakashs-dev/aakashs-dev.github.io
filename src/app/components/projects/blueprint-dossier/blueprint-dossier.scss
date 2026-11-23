@@ -1,0 +1,134 @@
+.dossier-dialog {
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--surface-default);
+  color: var(--text-primary);
+  width: min(68rem, calc(100dvw - 1.5rem));
+  max-height: calc(100svh - 2rem);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+
+  &::backdrop {
+    background: oklch(0 0 0 / 0.6);
+  }
+}
+
+.dossier-sheet {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100svh - 2rem);
+}
+
+.dossier-head,
+.dossier-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dossier-head {
+  justify-content: space-between;
+  padding: var(--space-4) clamp(1.25rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dossier-code {
+  color: var(--text-secondary);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dossier-title {
+  font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+  margin: 0.15rem 0 0;
+}
+
+.dossier-head-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dossier-status {
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.dossier-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+
+  svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: var(--surface-sunken);
+    }
+  }
+}
+
+.dossier-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.dossier-foot {
+  padding: var(--space-3) clamp(1.25rem, 3vw, 2rem);
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.dossier-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 2.5rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font: 600 0.925rem var(--font-sans);
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  &.accent {
+    color: var(--primary-text);
+  }
+
+  &.done {
+    margin-inline-start: auto;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--text-primary);
+    }
+
+    &.accent:hover {
+      color: var(--primary-bg-hover);
+    }
+  }
+}

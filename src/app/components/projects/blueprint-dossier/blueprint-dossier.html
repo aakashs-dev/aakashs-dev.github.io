@@ -1,0 +1,53 @@
+<dialog
+  #dossierDialog
+  id="blueprint-dossier"
+  class="dossier-dialog"
+  aria-labelledby="dossier-title"
+  (click)="onBackdropClick($event)"
+  (close)="onNativeClose()"
+>
+  @if (project(); as p) {
+    <div class="dossier-sheet">
+      <div class="dossier-head">
+        <div>
+          <span class="dossier-code">{{ p.blueprintCode }} · {{ p.domain }}</span>
+          <h2 id="dossier-title" class="dossier-title">{{ p.title }}</h2>
+        </div>
+        <div class="dossier-head-right">
+          <span class="dossier-status">{{ p.status }}</span>
+          <button
+            type="button"
+            class="dossier-close"
+            aria-label="Close blueprint dossier"
+            autofocus
+            (click)="close()"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="dossier-body">
+        <app-architecture-diagram [spec]="p.architecture" />
+        <app-project-plan [project]="p" [attr.id]="'plan-' + p.id" />
+      </div>
+
+      <div class="dossier-foot">
+        @if (p.requestLink) {
+          <a [href]="p.requestLink" class="dossier-link accent">
+            <span aria-hidden="true">✉</span> Request a walkthrough
+          </a>
+        }
+        @if (p.repoLink) {
+          <a [href]="p.repoLink" class="dossier-link" target="_blank" rel="noopener">
+            <span aria-hidden="true">⎇</span> GitHub
+          </a>
+        }
+        <button type="button" class="dossier-link done" (click)="close()">Close</button>
+      </div>
+    </div>
+  }
+</dialog>

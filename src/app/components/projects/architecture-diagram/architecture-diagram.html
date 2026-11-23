@@ -1,0 +1,136 @@
+<figure class="arch-sheet">
+  <figcaption class="arch-head">
+    <span class="arch-code">{{ spec().figureCode }}</span>
+    <span class="arch-legend" aria-hidden="true">
+      <span><i class="swatch solid"></i> First release</span>
+      <span><i class="swatch dashed"></i> Later phase</span>
+      <span><i class="swatch guard"></i> Critical guard</span>
+    </span>
+  </figcaption>
+
+  <div class="arch-viewport">
+    <svg
+      class="arch-svg"
+      [attr.viewBox]="spec().viewBox"
+      [style.min-width.px]="spec().minWidthPx"
+      role="img"
+      [attr.aria-label]="spec().caption"
+    >
+      <defs>
+        <marker
+          [id]="markerDefaultId"
+          viewBox="0 0 10 10"
+          refX="8.5"
+          refY="5"
+          markerWidth="6.5"
+          markerHeight="6.5"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 1.5 L 9 5 L 0 8.5 z" class="arrow-head" />
+        </marker>
+        <marker
+          [id]="markerActiveId"
+          viewBox="0 0 10 10"
+          refX="8.5"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M 0 1.5 L 9 5 L 0 8.5 z" class="arrow-head active" />
+        </marker>
+      </defs>
+
+      <!-- Swimlane zones -->
+      @for (zone of spec().zones; track zone.id) {
+        <g class="arch-zone" [class.dashed]="zone.dashed">
+          <rect
+            [attr.x]="zone.x"
+            [attr.y]="zone.y"
+            [attr.width]="zone.w"
+            [attr.height]="zone.h"
+            rx="10"
+          />
+          <text [attr.x]="zone.x + 10" [attr.y]="zone.y + 15" class="zone-label">
+            {{ zone.label }}
+          </text>
+        </g>
+      }
+
+      <!-- Connectors -->
+      @for (edge of spec().edges; track edge.id) {
+        <g class="arch-edge" [class.connected]="isEdgeConnected(edge)" [class.dashed]="edge.dashed">
+          <path
+            [attr.d]="edge.path"
+            [attr.marker-end]="'url(#' + (isEdgeConnected(edge) ? markerActiveId : markerDefaultId) + ')'"
+          />
+          @if (edge.label) {
+            <text [attr.x]="edge.labelX" [attr.y]="edge.labelY" class="edge-label">
+              {{ edge.label }}
+            </text>
+          }
+        </g>
+      }
+
+      <!-- Interactive architectural blocks -->
+      @for (node of spec().nodes; track node.id) {
+        <g
+          class="arch-node"
+          [class]="'arch-node kind-' + node.kind"
+          [class.planned]="node.planned"
+          [class.selected]="selectedId() === node.id"
+          [class.muted]="!isNodeRelated(node.id)"
+          role="button"
+          tabindex="0"
+          [attr.aria-pressed]="selectedId() === node.id"
+          [attr.aria-label]="node.label + ' — ' + node.sublabel"
+          (click)="select(node.id)"
+          (keydown)="onKeyDown($event, node.id)"
+        >
+          <rect
+            [attr.x]="node.x"
+            [attr.y]="node.y"
+            [attr.width]="node.w"
+            [attr.height]="node.h"
+            [attr.rx]="node.kind === 'source' ? 14 : 7"
+          />
+          @if (node.kind === 'store') {
+            <line
+              class="store-bar"
+              [attr.x1]="node.x + 6"
+              [attr.y1]="node.y + 7"
+              [attr.x2]="node.x + node.w - 6"
+              [attr.y2]="node.y + 7"
+            />
+          }
+          <text
+            class="node-label"
+            [attr.x]="node.x + node.w / 2"
+            [attr.y]="node.y + (node.kind === 'store' ? node.h / 2 - 2 : node.h / 2 - 5)"
+          >
+            {{ node.label }}
+          </text>
+          <text
+            class="node-sublabel"
+            [attr.x]="node.x + node.w / 2"
+            [attr.y]="node.y + (node.kind === 'store' ? node.h / 2 + 13 : node.h / 2 + 11)"
+          >
+            {{ node.sublabel }}
+          </text>
+        </g>
+      }
+    </svg>
+  </div>
+
+  @if (selectedNode(); as node) {
+    <div class="arch-inspector" aria-live="polite">
+      <div class="inspector-top">
+        <span class="inspector-title">{{ node.label }}</span>
+        <span class="inspector-scope">{{ node.scopeNote }}</span>
+        <span class="inspector-hint">Click any node to inspect</span>
+      </div>
+      <p class="inspector-role">{{ node.role }}</p>
+      <p class="inspector-constraint"><strong>Constraint:</strong> {{ node.constraint }}</p>
+    </div>
+  }
+</figure>
