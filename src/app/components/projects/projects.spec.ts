@@ -62,6 +62,22 @@ describe('Portfolio section & interactive architecture diagrams', () => {
     expect(dialog().hasAttribute('open')).toBe(false);
   });
 
+  it('reflects TheNumbersGame Phase 4 (UI blocked) and Phase 5 (in progress) with post-4.8 node names', () => {
+    const tng = fixture.componentInstance.featuredProject;
+    const sublabels = tng.architecture.nodes.map((n) => n.sublabel);
+    expect(sublabels).toContain('KiteFrameDecoder');
+    expect(sublabels).toContain('TickPersistenceWorker');
+
+    click(triggers()[0]);
+    const plan = dialog().querySelector<HTMLElement>('#plan-the-numbers-game')!;
+    const currentSteps = Array.from(plan.querySelectorAll<HTMLElement>('.step.current'));
+    expect(currentSteps.length).toBe(2);
+    expect(currentSteps[0].textContent).toContain('Phase 4: Code re-layout');
+    expect(currentSteps[0].textContent).toContain('4.9');
+    expect(currentSteps[1].textContent).toContain('Phase 5: Bug fixes');
+    expect(currentSteps[1].textContent).toContain('pykiteconnect');
+  });
+
   it('folds non-active phases inside the opened dossier and unfolds them on click', () => {
     // Open NEM-Pulse (index 1)
     click(triggers()[1]);

@@ -41,8 +41,8 @@
                     <span class="step-title">{{ stepName(s) }}</span>
                     <span class="step-state">{{ stateText[s.state] }}</span>
                   </div>
-                  <!-- Only the phase in progress, or the next to start, says when it is done. -->
-                  @if (s === active()?.step && s.doneWhen) {
+                  <!-- Show status detail for phases in progress, or the next phase to start. -->
+                  @if ((s.state === 'current' || s === active()?.step) && s.doneWhen) {
                     <p class="step-done-when"><em>Done when:</em> {{ s.doneWhen }}</p>
                   }
                 </div>
