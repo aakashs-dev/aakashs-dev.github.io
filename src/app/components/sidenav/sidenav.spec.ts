@@ -59,6 +59,7 @@ describe('Sidenav', () => {
 
     const menuBtn = el.querySelector('button[aria-controls="mobile-nav-drawer"]') as HTMLButtonElement;
     const dialog = el.querySelector('#mobile-nav-drawer') as HTMLDialogElement;
+    expect(el.querySelector('.mobile-header')?.firstElementChild).toBe(menuBtn);
     expect(menuBtn.getAttribute('aria-expanded')).toBe('false');
 
     menuBtn.click();

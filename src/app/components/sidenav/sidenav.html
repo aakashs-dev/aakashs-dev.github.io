@@ -1,42 +1,40 @@
 <!-- Mobile & tablet sticky top header (< 960px) -->
 <header class="mobile-header">
+  <button
+    type="button"
+    class="icon-btn"
+    aria-label="Open menu"
+    [attr.aria-expanded]="drawerOpen()"
+    aria-controls="mobile-nav-drawer"
+    (click)="openDrawer()"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+  </button>
   <a href="#home" class="mobile-brand" (click)="scrollTo('home', $event)">
     <span class="monogram" aria-hidden="true">AS</span>
     <span>Aakash Sharma</span>
   </a>
-  <div class="mobile-actions">
-    <button
-      type="button"
-      class="icon-btn"
-      [attr.aria-label]="theme.resolvedColorScheme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
-      (click)="theme.toggleColorScheme()"
-    >
-      @if (theme.resolvedColorScheme() === 'dark') {
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-        </svg>
-      } @else {
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      }
-    </button>
-    <button
-      type="button"
-      class="icon-btn"
-      aria-label="Open menu"
-      [attr.aria-expanded]="drawerOpen()"
-      aria-controls="mobile-nav-drawer"
-      (click)="openDrawer()"
-    >
+  <button
+    type="button"
+    class="icon-btn"
+    [attr.aria-label]="theme.resolvedColorScheme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+    (click)="theme.toggleColorScheme()"
+  >
+    @if (theme.resolvedColorScheme() === 'dark') {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
       </svg>
-    </button>
-  </div>
+    } @else {
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    }
+  </button>
 </header>
 
 <!-- Native modal dialog drawer for mobile & tablet (< 960px) -->
