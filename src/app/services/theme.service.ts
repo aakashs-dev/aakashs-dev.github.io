@@ -44,7 +44,7 @@ export const SEASONAL_THEMES_ENABLED = false;
  * Main Diwali day (Lakshmi Puja / Amavasya, Melbourne local calendar) per year.
  * The holiday theme activates on [day - 1, day + 1].
  */
-const DIWALI_DATES: Readonly<Record<number, readonly [month: number, day: number]>> = {
+export const DIWALI_DATES: Readonly<Record<number, readonly [month: number, day: number]>> = {
   2025: [10, 20],
   2026: [11, 8],
   2027: [10, 29],

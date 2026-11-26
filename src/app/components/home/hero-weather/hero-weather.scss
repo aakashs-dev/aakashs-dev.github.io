@@ -1,0 +1,81 @@
+:host {
+  position: absolute;
+  inset: 0 0 26%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 58%, transparent 100%);
+}
+
+.hero-weather {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sprite {
+  position: absolute;
+  top: 0;
+}
+
+.sun-spark {
+  fill: light-dark(oklch(0.72 0.155 64 / 0.65), oklch(0.86 0.140 78 / 0.42));
+  animation: sun-mote-drift 7.2s ease-in-out infinite;
+}
+
+.leaf {
+  animation: leaf-fall 6.8s linear infinite;
+}
+.leaf-a { fill: light-dark(oklch(0.62 0.145 55 / 0.72), oklch(0.72 0.145 58 / 0.68)); }
+.leaf-b { fill: light-dark(oklch(0.50 0.145 28 / 0.68), oklch(0.64 0.155 28 / 0.65)); }
+.leaf-c { fill: light-dark(oklch(0.72 0.140 80 / 0.72), oklch(0.82 0.140 84 / 0.68)); }
+
+.flake {
+  fill: light-dark(oklch(0.58 0.090 245 / 0.68), oklch(0.94 0.025 245 / 0.72));
+  animation: snow-fall 7.2s linear infinite;
+}
+
+.drop {
+  animation: rain-fall 1.7s linear infinite;
+}
+.drop-tail { fill: light-dark(oklch(0.62 0.085 225 / 0.34), oklch(0.74 0.085 225 / 0.32)); }
+.drop-body { fill: light-dark(oklch(0.52 0.115 228 / 0.56), oklch(0.76 0.110 228 / 0.54)); }
+.drop-hi { fill: light-dark(oklch(0.84 0.055 215 / 0.70), oklch(0.92 0.050 218 / 0.65)); }
+
+@keyframes sun-mote-drift {
+  0% { opacity: 0; transform: translate3d(0, 12px, 0); }
+  18% { opacity: 0.9; }
+  82% { opacity: 0.85; }
+  100% { opacity: 0; transform: translate3d(-14px, 220px, 0); }
+}
+
+@keyframes leaf-fall {
+  0% { opacity: 0; transform: translate3d(-8px, -16px, 0); }
+  12% { opacity: 1; }
+  50% { transform: translate3d(16px, 165px, 0); }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(-6px, 340px, 0); }
+}
+
+@keyframes snow-fall {
+  0% { opacity: 0; transform: translate3d(0, -16px, 0); }
+  12% { opacity: 1; }
+  50% { transform: translate3d(10px, 165px, 0); }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(-4px, 340px, 0); }
+}
+
+@keyframes rain-fall {
+  0% { opacity: 0; transform: translate3d(0, -20px, 0); }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(0, 350px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite {
+    animation: none !important;
+    opacity: 0.45;
+    transform: translate3d(0, 56px, 0);
+  }
+}

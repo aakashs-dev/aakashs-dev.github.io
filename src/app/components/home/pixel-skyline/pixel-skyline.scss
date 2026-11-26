@@ -1,0 +1,57 @@
+:host {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: clip;
+}
+
+.pixel-skyline-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas-fill, .sky-1 { fill: var(--surface-canvas); }
+.sky-2 { fill: light-dark(color-mix(in oklab, var(--neutral-100) 78%, var(--neutral-50)), color-mix(in oklab, var(--neutral-900) 70%, var(--neutral-950))); }
+.sky-3 { fill: light-dark(color-mix(in oklab, var(--brand-50) 72%, var(--neutral-100)), color-mix(in oklab, var(--brand-900) 48%, var(--neutral-900))); }
+.sky-4 { fill: light-dark(color-mix(in oklab, var(--brand-200) 36%, var(--brand-50)), color-mix(in oklab, var(--brand-900) 82%, var(--neutral-900))); }
+
+.sun-core { fill: light-dark(oklch(0.83 0.148 70), transparent); }
+.sun-halo { fill: light-dark(oklch(0.91 0.105 72 / 0.68), transparent); }
+.cloud { fill: light-dark(oklch(0.935 0.012 var(--neutral-h)), transparent); }
+.cloud-faint { fill: light-dark(oklch(0.958 0.008 var(--neutral-h)), transparent); }
+.moon { fill: light-dark(transparent, oklch(0.90 0.065 86)); }
+.star-bright { fill: light-dark(transparent, oklch(0.92 0.055 86)); }
+.star-dim { fill: light-dark(transparent, color-mix(in oklab, var(--neutral-300) 45%, transparent)); }
+
+.skyline-far { fill: light-dark(color-mix(in oklab, var(--neutral-300) 56%, var(--neutral-100)), color-mix(in oklab, var(--neutral-800) 72%, var(--neutral-900))); }
+.skyline-near { fill: light-dark(color-mix(in oklab, var(--neutral-500) 46%, var(--neutral-200)), color-mix(in oklab, var(--neutral-900) 68%, var(--neutral-950))); }
+.skyline-accent { fill: light-dark(color-mix(in oklab, var(--fx-gold) 46%, var(--neutral-300)), color-mix(in oklab, var(--fx-gold) 58%, var(--neutral-800))); }
+.bird { fill: light-dark(color-mix(in oklab, var(--neutral-600) 68%, transparent), transparent); }
+
+.lamp-bulb, .tram-light { fill: light-dark(oklch(0.76 0.145 80), oklch(0.90 0.130 85)); }
+.lamp-halo, .tram-beam { fill: color-mix(in oklab, var(--fx-gold) 26%, transparent); }
+.tram-body { fill: light-dark(oklch(0.46 0.115 152), oklch(0.56 0.125 152)); }
+.tram-trim, .fx-gold { fill: var(--fx-gold); }
+.tram-windows { fill: light-dark(oklch(0.96 0.045 88), oklch(0.94 0.090 85)); }
+
+.plaza-wing, .plaza-deck { fill: light-dark(color-mix(in oklab, var(--neutral-400) 54%, var(--brand-50)), color-mix(in oklab, var(--neutral-800) 84%, var(--neutral-950))); }
+.plaza-steps { fill: light-dark(color-mix(in oklab, var(--neutral-300) 70%, var(--neutral-100)), color-mix(in oklab, var(--neutral-700) 65%, var(--neutral-900))); }
+.windows { fill: light-dark(color-mix(in oklab, var(--neutral-0) 68%, var(--brand-50)), color-mix(in oklab, var(--brand-400) 82%, transparent)); }
+.bridge, .tram-pantograph { fill: light-dark(color-mix(in oklab, var(--neutral-600) 48%, var(--neutral-300)), var(--neutral-950)); }
+.screen-bg { fill: var(--neutral-900); }
+
+.water-base { fill: light-dark(color-mix(in oklab, var(--neutral-200) 72%, var(--brand-50)), color-mix(in oklab, var(--neutral-900) 78%, var(--brand-900))); }
+.water-ripple { fill: light-dark(color-mix(in oklab, var(--neutral-0) 54%, transparent), color-mix(in oklab, var(--neutral-700) 55%, transparent)); }
+.water-accent { fill: light-dark(color-mix(in oklab, var(--brand-600) 24%, transparent), color-mix(in oklab, var(--brand-300) 36%, transparent)); }
+
+.fx-pine { fill: var(--fx-pine); }
+.fx-pine-hi { fill: light-dark(oklch(0.54 0.095 150), oklch(0.47 0.085 150)); }
+.fx-crimson { fill: var(--fx-crimson); }
+.fx-amber { fill: var(--fx-amber); }
+.fx-bright { fill: var(--neutral-0); }
+.fx-beam { fill: color-mix(in oklab, var(--fx-gold) 18%, transparent); }
+.fx-water-crimson { fill: color-mix(in oklab, var(--fx-crimson) 45%, transparent); }
+.fx-water-gold { fill: color-mix(in oklab, var(--fx-gold) 45%, transparent); }
+.fx-water-amber { fill: color-mix(in oklab, var(--fx-amber) 45%, transparent); }

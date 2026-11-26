@@ -1,0 +1,87 @@
+:host {
+  display: block;
+}
+
+.blimp-banner {
+  --blimp-primary: light-dark(oklch(0.50 0.145 25), oklch(0.64 0.160 25));
+  --blimp-accent: light-dark(oklch(0.68 0.130 82), oklch(0.84 0.140 85));
+  --blimp-hi: light-dark(oklch(0.62 0.085 150), oklch(0.54 0.095 150));
+  --blimp-hull: light-dark(oklch(0.45 0.085 152), oklch(0.40 0.080 152));
+  --blimp-dark: var(--neutral-900);
+  --blimp-win: oklch(0.92 0.110 86);
+
+  margin-bottom: var(--space-4);
+
+  // Christmas & Diwali swap the pixel blimp (Light/day) for Santa's sleigh / Diwali rocket (Dark/night)
+  &[data-holiday='christmas'],
+  &[data-holiday='diwali'] {
+    .blimp-craft {
+      .blimp-fin { fill: light-dark(var(--blimp-primary), transparent); }
+      .blimp-hull { fill: light-dark(var(--blimp-hull), transparent); }
+      .blimp-hi { fill: light-dark(var(--blimp-hi), transparent); }
+      .blimp-stripe { fill: light-dark(var(--blimp-accent), transparent); }
+      .blimp-dark { fill: light-dark(var(--blimp-dark), transparent); }
+      .blimp-win { fill: light-dark(var(--blimp-win), transparent); }
+    }
+  }
+
+  &[data-holiday='new-year'] {
+    --blimp-hull: var(--neutral-700);
+    --blimp-hi: var(--neutral-500);
+  }
+
+  &[data-holiday='diwali'] {
+    --blimp-primary: light-dark(oklch(0.60 0.145 55), oklch(0.74 0.150 62));
+    --blimp-hull: light-dark(oklch(0.49 0.130 35), oklch(0.56 0.140 35));
+    --blimp-hi: light-dark(oklch(0.68 0.130 62), oklch(0.76 0.135 66));
+  }
+
+  &[data-holiday='halloween'] {
+    --blimp-primary: light-dark(oklch(0.62 0.155 52), oklch(0.74 0.160 55));
+    --blimp-hull: var(--neutral-800);
+    --blimp-hi: var(--neutral-600);
+  }
+}
+
+.blimp-svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.banner-border { fill: var(--blimp-primary); }
+.banner-bg { fill: var(--surface-default); }
+.banner-text { fill: var(--text-primary); }
+.blimp-fin { fill: var(--blimp-primary); }
+.blimp-hull { fill: var(--blimp-hull); }
+.blimp-hi { fill: var(--blimp-hi); }
+.blimp-stripe { fill: var(--blimp-accent); }
+.blimp-dark { fill: var(--blimp-dark); }
+.blimp-win { fill: var(--blimp-win); }
+
+.santa-red { fill: light-dark(transparent, oklch(0.64 0.180 25)); }
+.santa-gold { fill: light-dark(transparent, oklch(0.86 0.140 85)); }
+.santa-white { fill: light-dark(transparent, var(--neutral-0)); }
+.santa-skin { fill: light-dark(transparent, oklch(0.84 0.068 65)); }
+.santa-dark { fill: light-dark(transparent, oklch(0.24 0.025 30)); }
+.santa-sack { fill: light-dark(transparent, oklch(0.56 0.085 68)); }
+.santa-green { fill: light-dark(transparent, oklch(0.56 0.125 150)); }
+.santa-deer { fill: light-dark(transparent, oklch(0.66 0.085 58)); }
+.santa-antler { fill: light-dark(transparent, oklch(0.50 0.065 55)); }
+.santa-nose { fill: light-dark(transparent, oklch(0.72 0.220 26)); }
+.santa-nose-glow { fill: light-dark(transparent, oklch(0.72 0.220 26 / 0.32)); }
+.santa-sparkle { fill: light-dark(transparent, oklch(0.92 0.120 88 / 0.72)); }
+
+.witch-dark { fill: light-dark(oklch(0.24 0.030 295), oklch(0.30 0.045 295)); }
+.witch-purple { fill: light-dark(oklch(0.42 0.140 302), oklch(0.54 0.165 302)); }
+.witch-hair { fill: light-dark(oklch(0.54 0.145 48), oklch(0.64 0.160 50)); }
+.witch-skin { fill: light-dark(oklch(0.84 0.055 72), oklch(0.86 0.055 72)); }
+.witch-wood { fill: light-dark(oklch(0.46 0.075 56), oklch(0.54 0.085 58)); }
+.witch-straw { fill: light-dark(oklch(0.74 0.125 84), oklch(0.82 0.130 86)); }
+.witch-gold { fill: light-dark(oklch(0.68 0.140 78), oklch(0.86 0.145 84)); }
+.witch-magic { fill: light-dark(oklch(0.62 0.155 52 / 0.75), oklch(0.88 0.145 86 / 0.85)); }
+
+.rocket-amber { fill: light-dark(transparent, oklch(0.76 0.165 58)); }
+.rocket-crimson { fill: light-dark(transparent, oklch(0.48 0.165 24)); }
+.rocket-magenta { fill: light-dark(transparent, oklch(0.70 0.220 344)); }
+.rocket-glow { fill: light-dark(transparent, oklch(0.82 0.155 68 / 0.22)); }

@@ -34,23 +34,29 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
+  font-size-adjust: from-font;
+  letter-spacing: -0.025em;
+  word-spacing: -0.22em;
+  text-wrap: balance;
 }
 
 p {
   line-height: 1.65;
+  text-wrap: pretty;
 }
 
 // Single source of truth for section titles (max <= 2.5 x min for WCAG 1.4.4 200% zoom).
 .section-title {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.75rem, 1.35rem + 1.8vw, 3rem);
   line-height: 1.15;
   color: var(--text-primary);
   font-weight: 700;
   position: relative;
   margin: 0 0 var(--space-6) 0;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  word-spacing: -0.24em;
 
   &::after {
     content: '';
@@ -59,8 +65,15 @@ p {
     inset-inline-start: 0;
     width: 3.75rem;
     height: 4px;
-    background: var(--primary-bg);
-    border-radius: 2px;
+    background: linear-gradient(
+      to right,
+      var(--primary-bg) 0 40px,
+      transparent 40px 44px,
+      var(--primary-bg) 44px 48px,
+      transparent 48px 52px,
+      var(--primary-border) 52px 56px,
+      transparent 56px
+    );
   }
 }
 
@@ -69,6 +82,29 @@ p {
   font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem);
   max-inline-size: 65ch;
   margin: 0;
+}
+
+.page-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(3rem, 6cqi, 5rem) clamp(1.25rem, 5cqi, 5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: clamp(1.25rem, 5cqi, 5rem);
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--border-subtle) 50%, transparent 0) 0 / 8px 2px;
+    pointer-events: none;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
 }
 
 // Accessible keyboard focus indicator (uses outline, not box-shadow alone, for forced-colors).
@@ -92,13 +128,13 @@ p {
 }
 
 // Shared by the Portfolio legend, phase tracks and step lists.
-// Phase markers: filled when done, half-filled in progress, hollow when planned.
+// Crisp pixel-square phase markers: filled when done, half-filled in progress, hollow when planned.
 .dot {
   display: inline-block;
   flex-shrink: 0;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 0;
   border: 2px solid var(--primary-text);
   background: transparent;
   box-sizing: border-box;
