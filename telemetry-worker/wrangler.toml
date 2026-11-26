@@ -1,0 +1,10 @@
+name = "portfolio-telemetry"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+[vars]
+ALLOWED_ORIGIN = "https://aakashs-dev.github.io"
+
+[[kv_namespaces]]
+binding = "TELEMETRY_KV"
+id = "fca779eb15bb45cfbd35f33d0315ac28"

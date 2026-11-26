@@ -1,4 +1,5 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
+import { TelemetryService } from '../../services/telemetry.service';
 import { ArchitectureDiagram } from './architecture-diagram/architecture-diagram';
 import { BlueprintDossier } from './blueprint-dossier/blueprint-dossier';
 import { PORTFOLIO_PROJECTS } from './projects.data';
@@ -11,6 +12,7 @@ import { nowOf, RoadmapProject, STATE_TEXT } from './projects.model';
   styleUrl: './projects.scss',
 })
 export class Projects {
+  private readonly telemetry = inject(TelemetryService);
   readonly statusDate = 'November 2026';
   readonly stateText = STATE_TEXT;
   readonly now = nowOf;
@@ -28,6 +30,7 @@ export class Projects {
 
   openDossier(id: string): void {
     this.activeId.set(id);
+    this.telemetry.track('dossier_open', id);
   }
 
   closeDossier(): void {

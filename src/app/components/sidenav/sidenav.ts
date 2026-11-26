@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { PROFILE } from '../../profile';
+import { TelemetryService } from '../../services/telemetry.service';
 import {
   SEASONAL_THEMES_ENABLED,
   SEASON_OPTIONS,
@@ -32,6 +33,7 @@ interface NavItem {
 })
 export class Sidenav implements AfterViewInit, OnDestroy {
   readonly theme = inject(ThemeService);
+  private readonly telemetry = inject(TelemetryService);
   private readonly document = inject(DOCUMENT);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
@@ -128,6 +130,7 @@ export class Sidenav implements AfterViewInit, OnDestroy {
       this.closeDrawer();
     }
     this.activeSection.set(sectionId);
+    this.telemetry.track('section_view', sectionId);
 
     if (!this.isBrowser) return;
     const element = this.document.getElementById(sectionId);

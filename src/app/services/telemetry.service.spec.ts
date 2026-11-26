@@ -1,0 +1,99 @@
+import { TestBed } from '@angular/core/testing';
+import {
+  TelemetryService,
+  classifyViewport,
+  extractReferrerHost,
+  isLocalHost,
+} from './telemetry.service';
+
+describe('Telemetry pure helpers', () => {
+  it('classifies coarse viewport buckets without fingerprinting exact widths', () => {
+    expect(classifyViewport(320)).toBe('mobile');
+    expect(classifyViewport(639)).toBe('mobile');
+    expect(classifyViewport(640)).toBe('tablet');
+    expect(classifyViewport(1023)).toBe('tablet');
+    expect(classifyViewport(1024)).toBe('desktop');
+    expect(classifyViewport(1599)).toBe('desktop');
+    expect(classifyViewport(1600)).toBe('ultrawide');
+    expect(classifyViewport(2560)).toBe('ultrawide');
+  });
+
+  it('extracts only external referrer hostnames and strips paths/queries', () => {
+    expect(extractReferrerHost('https://www.linkedin.com/feed/update/123?token=secret', 'aakashs-dev.github.io')).toBe(
+      'www.linkedin.com',
+    );
+    expect(extractReferrerHost('https://aakashs-dev.github.io/#portfolio', 'aakashs-dev.github.io')).toBeNull();
+    expect(extractReferrerHost('', 'aakashs-dev.github.io')).toBeNull();
+    expect(extractReferrerHost('not-a-url', 'aakashs-dev.github.io')).toBeNull();
+  });
+
+  it('detects localhost and loopback addresses', () => {
+    expect(isLocalHost('localhost')).toBe(true);
+    expect(isLocalHost('127.0.0.1')).toBe(true);
+    expect(isLocalHost('aakashs-dev.github.io')).toBe(false);
+  });
+});
+
+describe('TelemetryService', () => {
+  const originalSendBeacon = navigator.sendBeacon;
+
+  afterEach(() => {
+    Object.defineProperty(navigator, 'sendBeacon', {
+      value: originalSendBeacon,
+      configurable: true,
+      writable: true,
+    });
+    Object.defineProperty(navigator, 'globalPrivacyControl', {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    });
+  });
+
+  it('sends initial page_view via sendBeacon and flushes tracked events when hidden', () => {
+    const calls: { url: string; body: Blob }[] = [];
+    Object.defineProperty(navigator, 'sendBeacon', {
+      value: (url: string, data: Blob) => {
+        calls.push({ url, body: data });
+        return true;
+      },
+      configurable: true,
+      writable: true,
+    });
+
+    const service = TestBed.inject(TelemetryService);
+    service.init('https://example.workers.dev/collect', true);
+
+    expect(calls.length).toBe(1);
+    expect(calls[0].url).toBe('https://example.workers.dev/collect');
+
+    service.track('dossier_open', 'the-numbers-game');
+    service.track('section_view', 'portfolio');
+    service.flush();
+    expect(calls.length).toBe(2);
+  });
+
+  it('stays silent when Global Privacy Control is enabled', () => {
+    const calls: unknown[] = [];
+    Object.defineProperty(navigator, 'globalPrivacyControl', {
+      value: true,
+      configurable: true,
+      writable: true,
+    });
+    Object.defineProperty(navigator, 'sendBeacon', {
+      value: (url: string) => {
+        calls.push(url);
+        return true;
+      },
+      configurable: true,
+      writable: true,
+    });
+
+    const service = TestBed.inject(TelemetryService);
+    service.init('https://example.workers.dev/collect', true);
+    service.track('dossier_open', 'mailshield');
+    service.flush();
+
+    expect(calls.length).toBe(0);
+  });
+});
