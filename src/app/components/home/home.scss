@@ -7,83 +7,184 @@
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: max(22rem, calc(100svh - var(--mobile-header-height)));
+  min-height: max(26rem, calc(100svh - var(--mobile-header-height)));
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: clamp(2.5rem, 6cqi, 5rem) clamp(1.25rem, 5cqi, 5rem);
-  background-image: url('/hero-background.webp');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  padding: clamp(3rem, 10svh, 6.5rem) clamp(1.25rem, 5cqi, 5rem) clamp(10rem, 28svh, 17rem);
+  background-color: var(--surface-canvas);
   overflow: clip;
+}
 
-  .hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, var(--hero-overlay-top) 0%, var(--hero-overlay-bottom) 100%);
-    z-index: 1;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      95deg,
+      color-mix(in oklab, var(--surface-canvas) 62%, transparent) 0%,
+      color-mix(in oklab, var(--surface-canvas) 32%, transparent) 48%,
+      transparent 78%
+    ),
+    linear-gradient(180deg, transparent 74%, var(--surface-canvas) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: start;
+  width: min(100%, 56rem);
+}
+
+.hero-greeting {
+  font: 500 clamp(1rem, 0.9rem + 0.55vw, 1.35rem) / 1.35 var(--font-mono);
+  word-spacing: -0.14em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.hero-title {
+  font: 700 clamp(2.25rem, 1.5rem + 3vw, 4rem) / 1.08 var(--font-display);
+  font-size-adjust: cap-height from-font;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.03em;
+  word-spacing: -0.24em;
+}
+
+.hero-subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  font: 600 clamp(1.05rem, 0.9rem + 0.65vw, 1.45rem) / 1.35 var(--font-mono);
+  word-spacing: -0.14em;
+  margin-bottom: var(--space-3);
+}
+
+.role-label {
+  color: var(--primary-text);
+}
+
+.role-sep {
+  color: var(--border-strong);
+  font-weight: 400;
+}
+
+.hero-summary {
+  margin-top: var(--space-2);
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.075rem);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-inline-size: 46ch;
+}
+
+.hero-actions {
+  margin-top: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.65rem 1.2rem;
+  border-radius: var(--radius-sm);
+  font: 600 0.85rem var(--font-mono);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+
+  &.primary {
+    background: var(--primary-bg);
+    color: var(--primary-fg);
+    border: 1px solid var(--primary-bg);
+
+    &:hover {
+      background: var(--primary-bg-hover);
+      border-color: var(--primary-bg-hover);
+    }
   }
 
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: start;
-    width: min(100%, 56rem);
+  &.secondary {
+    background: color-mix(in oklab, var(--surface-default) 86%, transparent);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
 
-    .hero-greeting {
-      font-family: var(--font-serif);
-      font-size: clamp(1.125rem, 0.95rem + 0.85vw, 1.75rem);
-      font-weight: 400;
-      line-height: 1.3;
-      color: var(--text-secondary);
-      margin-bottom: var(--space-2);
-    }
-
-    .hero-title {
-      font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem);
-      font-weight: 700;
-      line-height: 1.1;
-      color: var(--text-primary);
-      margin-bottom: var(--space-4);
-      letter-spacing: -0.025em;
-    }
-
-    .hero-subtitle {
-      font-family: var(--font-serif);
-      font-size: clamp(1.125rem, 0.95rem + 0.85vw, 1.75rem);
-      font-weight: 400;
-      line-height: 1.35;
-      min-height: 2.7em;
-      color: var(--text-secondary);
-
-      .typewriter-text {
-        color: var(--primary-text);
-        font-weight: 600;
-      }
-
-      .cursor {
-        color: var(--primary-text);
-        margin-inline-start: 2px;
-        opacity: 1;
-
-        &.blink {
-          opacity: 0;
-        }
-      }
+    &:hover {
+      border-color: var(--primary-text);
+      color: var(--primary-text);
     }
   }
 }
 
-.page-section {
-  width: 100%;
-  padding: clamp(3rem, 6cqi, 5rem) clamp(1.25rem, 5cqi, 5rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-bottom: 1px solid var(--border-subtle);
+.skyline-control {
+  position: absolute;
+  inset-inline-end: clamp(1rem, 3cqi, 2rem);
+  bottom: clamp(0.85rem, 2.5cqi, 1.5rem);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.25rem 0.35rem 0.25rem 0.65rem;
+  background: color-mix(in oklab, var(--surface-default) 84%, transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(6px);
+}
 
-  &:last-child {
-    border-bottom: none;
+.scene-label {
+  font: 600 0.72rem var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.scene-select,
+.scene-select::picker(select) {
+  appearance: base-select;
+}
+
+.scene-select {
+  font: 500 0.78rem var(--font-mono);
+  color: var(--text-primary);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.55rem;
+  min-inline-size: 9.5rem;
+  min-block-size: 1.9rem;
+  cursor: pointer;
+
+  &::picker(select) {
+    font: 500 0.78rem var(--font-mono);
+    background: var(--surface-default);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.25rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  &::picker-icon,
+  option::checkmark {
+    color: var(--primary-text);
+  }
+
+  option {
+    padding: 0.35rem 0.55rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    background: var(--surface-default);
+    cursor: pointer;
+
+    &:hover,
+    &:checked {
+      background: var(--primary-subtle);
+      color: var(--primary-text);
+    }
   }
 }

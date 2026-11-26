@@ -53,7 +53,7 @@
   top: 0.2rem;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--surface-canvas);
   border: 2px solid var(--primary-text);
   z-index: 1;
@@ -69,8 +69,8 @@
 
 .entry-date {
   display: block;
-  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -120,7 +120,7 @@
   }
 
   code {
-    font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    font-family: var(--font-mono);
     font-size: 0.85em;
     color: var(--text-primary);
   }

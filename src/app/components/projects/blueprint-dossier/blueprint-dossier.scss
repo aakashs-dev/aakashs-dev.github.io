@@ -37,7 +37,7 @@
 
 .dossier-code {
   color: var(--text-secondary);
-  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;

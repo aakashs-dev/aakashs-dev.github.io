@@ -1,0 +1,1890 @@
+<svg
+  class="pixel-skyline-svg"
+  [attr.data-season]="activeSeason()"
+  [attr.data-holiday]="activeHoliday()"
+  viewBox="0 0 240 135"
+  preserveAspectRatio="xMidYMax slice"
+  shape-rendering="crispEdges"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <!-- 2x2 ordered Bayer pixel dithers -->
+    <pattern id="px-dither-sky2-25" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="sky-2" />
+      <rect x="2" y="2" width="1" height="1" class="sky-2" />
+    </pattern>
+    <pattern id="px-dither-sky2-50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="sky-2" />
+      <rect x="1" y="1" width="1" height="1" class="sky-2" />
+    </pattern>
+    <pattern id="px-dither-sky3-25" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="sky-3" />
+      <rect x="2" y="2" width="1" height="1" class="sky-3" />
+    </pattern>
+    <pattern id="px-dither-sky3-50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="sky-3" />
+      <rect x="1" y="1" width="1" height="1" class="sky-3" />
+    </pattern>
+    <pattern id="px-dither-sky4-50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="sky-4" />
+      <rect x="1" y="1" width="1" height="1" class="sky-4" />
+    </pattern>
+    <pattern id="px-dither-fade-25" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="canvas-fill" />
+      <rect x="2" y="2" width="1" height="1" class="canvas-fill" />
+    </pattern>
+    <pattern id="px-dither-fade-50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="0" y="0" width="1" height="1" class="canvas-fill" />
+      <rect x="1" y="1" width="1" height="1" class="canvas-fill" />
+    </pattern>
+    <radialGradient id="px-sun-ray-core" cx="206" cy="18" r="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" class="sun-ray-stop" stop-opacity="0.30" />
+      <stop offset="42%" class="sun-ray-stop" stop-opacity="0.14" />
+      <stop offset="100%" class="sun-ray-stop" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="px-sun-ray-soft" cx="206" cy="18" r="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" class="sun-ray-stop" stop-opacity="0.18" />
+      <stop offset="48%" class="sun-ray-stop" stop-opacity="0.08" />
+      <stop offset="100%" class="sun-ray-stop" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- 1. Stepped Bayer-dithered sky bands -->
+  <rect x="0" y="0" width="240" height="135" class="sky-1" />
+  <rect x="0" y="34" width="240" height="4" fill="url(#px-dither-sky2-25)" />
+  <rect x="0" y="38" width="240" height="4" fill="url(#px-dither-sky2-50)" />
+  <rect x="0" y="42" width="240" height="68" class="sky-2" />
+  <rect x="0" y="64" width="240" height="4" fill="url(#px-dither-sky3-25)" />
+  <rect x="0" y="68" width="240" height="4" fill="url(#px-dither-sky3-50)" />
+  <rect x="0" y="72" width="240" height="38" class="sky-3" />
+  <rect x="0" y="90" width="240" height="4" fill="url(#px-dither-sky4-50)" />
+  <rect x="0" y="94" width="240" height="16" class="sky-4" />
+
+  @if (activeHoliday() === 'default' && activeSeason() === 'summer') {
+    <g class="sun-beams" shape-rendering="auto">
+      <g class="sun-beams-a">
+        <path
+          fill="url(#px-sun-ray-soft)"
+          d="M206 18L0 58v31zM206 18L100 110h31zM206 18L229 110h18z"
+        />
+        <path
+          fill="url(#px-sun-ray-core)"
+          d="M206 18L0 65v16zM206 18L109 110h16zM206 18L233 110h9z"
+        />
+      </g>
+      <g class="sun-beams-b">
+        <path
+          fill="url(#px-sun-ray-soft)"
+          d="M206 18L9 110h61zM206 18L151 110h20z"
+        />
+        <path
+          fill="url(#px-sun-ray-core)"
+          d="M206 18L29 110h27zM206 18L156 110h10z"
+        />
+      </g>
+    </g>
+  }
+
+  <!-- Base Day/Night celestial bodies (flip via CSS light-dark()) -->
+  <g class="day-celestial">
+    @if (activeHoliday() !== 'halloween') {
+      <path
+        class="sun-halo"
+        d="M203 11h6v1h2v1h1v2h1v6h-1v2h-1v1h-2v1h-6v-1h-2v-1h-1v-2h-1v-6h1v-2h1v-1h2z"
+      />
+      <path
+        class="sun-core"
+        d="M204 13h4v1h2v2h1v4h-1v2h-2v1h-4v-1h-2v-2h-1v-4h1v-2h2z"
+      />
+    }
+    <path class="cloud" d="M134 22h10v1h4v1h3v2h-22v-2h2v-1h3z" />
+    <path class="cloud" d="M180 35h12v1h5v1h3v2h-25v-2h2v-1h3z" />
+    <path class="cloud-faint" d="M34 16h8v1h3v1h2v2h-17v-2h2v-1h2z" />
+  </g>
+
+  <g class="night-celestial">
+    @if (activeHoliday() !== 'halloween') {
+      <path
+        class="moon"
+        d="M206 16h4v1h-2v1h-1v2h-1v4h1v2h1v1h2v1h-4v-1h-2v-2h-1v-6h1v-2h2z"
+      />
+    }
+    <path
+      class="star-bright"
+      d="M148 15h1v1h-1zM147 16h3v1h-3zM148 17h1v1h-1z
+         M224 27h1v1h-1zM223 28h3v1h-3zM224 29h1v1h-1z
+         M178 12h1v1h-1zM177 13h3v1h-3zM178 14h1v1h-1z"
+    />
+    <path
+      class="star-dim"
+      d="M124 20h1v1h-1zM136 28h1v1h-1zM164 22h1v1h-1zM188 26h1v1h-1z
+         M216 14h1v1h-1zM232 19h1v1h-1zM112 13h1v1h-1zM96 18h1v1h-1z
+         M168 35h1v1h-1zM212 38h1v1h-1zM68 12h1v1h-1zM44 17h1v1h-1z"
+    />
+  </g>
+
+  <!-- 2. SLOT A: Upper-Right Sky Stage (holiday sky sprites; x >= 140 stays clear of hero text) -->
+  @if (activeHoliday() === 'default' || activeHoliday() === 'christmas') {
+    <!-- Crisp pixel sky birds (morph into bats at the same positions during Halloween) -->
+    <g class="sky-birds">
+      <path
+        class="bird"
+        d="M153 20h2v1h1v1h2v-1h1v-1h2v1h-2v1h-1v1h-2v-1h-1v-1h-2z
+           M174 15h2v1h1v1h1v-1h1v-1h2v1h-2v1h-1v1h-1v-1h-1v-1h-2z
+           M187 26h1v1h2v1h1v-1h2v-1h1v1h-2v1h-1v1h-1v-1h-1v-1h-2z"
+      />
+    </g>
+  }
+  @switch (activeHoliday()) {
+    @case ('default') {
+      <g [class]="'overlay-sky overlay-season-' + activeSeason()">
+        @switch (activeSeason()) {
+          @case ('summer') {
+            <!-- Blazing Melbourne summer sun corona ticks & extra bay gulls -->
+            <path
+              class="sun-halo"
+              d="M205 7h2v3h-2zM205 26h2v3h-2zM195 17h3v2h-3zM214 17h3v2h-3z
+                 M198 10h2v2h-2zM212 10h2v2h-2zM198 24h2v2h-2zM212 24h2v2h-2z"
+            />
+            <path class="bird" d="M146 28h2v1h1v1h1v-1h2v-1h1v1h-2v1h-3v-1h-2zM196 38h2v1h1v1h1v-1h2v-1h-2v1h-2v-1z" />
+          }
+          @case ('autumn') {
+            <!-- Windblown amber & crimson autumn leaves drifting across the sky -->
+            <path class="fx-amber" d="M122 44h2v1h-2zM148 52h2v1h-2zM176 46h2v1h-2zM214 54h2v1h-2z" />
+            <path class="fx-crimson" d="M135 58h2v1h-2zM163 40h2v1h-2zM196 49h2v1h-2z" />
+          }
+          @case ('winter') {
+            <!-- Overcast Melbourne winter pixel cloud banks & subtle alpine frost flurries -->
+            <path
+              class="cloud-main"
+              d="M20 11h8v1h4v2h6v2h-24v-2h3v-2h3v-1z
+                 M65 15h9v1h5v2h7v3h-30v-2h4v-2h5v-2z
+                 M122 18h10v2h7v2h7v3h-34v-2h4v-2h6v-3z
+                 M204 22h10v2h7v2h7v2h-32v-2h4v-2h4v-2z"
+            />
+            <path
+              class="cloud-shade"
+              d="M14 16h24v1h-24zM56 21h30v1h-30zM112 25h34v1h-34zM196 28h32v1h-32z"
+            />
+            <path fill="var(--tree-frost)" d="M128 36h1v1h-1zM146 44h1v1h-1zM168 34h1v1h-1zM182 48h1v1h-1zM215 42h1v1h-1z" />
+          }
+          @case ('spring') {
+            <!-- Spring shower pixel clouds, drifting cherry-blossom petals & 2 pixel butterflies -->
+            <path
+              class="cloud-main"
+              d="M30 12h8v2h5v2h5v2h-26v-2h4v-2h4v-2z
+                 M83 9h9v2h6v2h6v2h-30v-2h4v-2h5v-2z
+                 M125 15h10v2h7v2h6v3h-32v-3h4v-2h5v-2z
+                 M204 22h10v2h6v2h6v2h-30v-2h4v-2h4v-2z"
+            />
+            <path
+              class="cloud-shade"
+              d="M22 18h26v1h-26zM74 15h30v1h-30zM116 22h32v1h-32zM196 28h30v1h-30z"
+            />
+            <path fill="var(--tree-blossom)" d="M126 42h2v1h-2zM154 48h1v1h-1zM178 39h2v1h-2zM214 46h1v1h-1z" />
+            <path class="fx-gold" d="M140 36h1v2h-1zM142 36h1v2h-1zM141 37h1v1h-1z" />
+            <path class="fx-magenta" d="M168 44h1v2h-1zM170 44h1v2h-1zM169 45h1v1h-1z" />
+          }
+        }
+      </g>
+    }
+    @case ('christmas') {
+      <!-- Clean starry night sky (Santa's sleigh pulls the MERRY CHRISTMAS banner overhead at night) -->
+      <g class="overlay-sky overlay-christmas">
+        <path class="night-gold" d="M160 18h1v3h-1zM159 19h3v1h-3zM186 22h1v1h-1z" />
+      </g>
+    }
+    @case ('new-year') {
+      <g class="overlay-sky overlay-new-year">
+        <!-- 2 iconic Melbourne pixel hot air balloons drifting past the fireworks -->
+        <g class="ny-balloons">
+          <!-- Hero striped balloon (x=168..174, y=26..36) -->
+          <path class="fx-crimson" d="M169 26h5v1h1v4h-1v1h-5v-1h-1v-4h1z" />
+          <path class="fx-gold" d="M170 26h1v6h-1zM172 26h1v6h-1zM168 28h7v1h-7z" />
+          <rect x="171" y="33" width="1" height="1" class="fx-bright" />
+          <path class="bridge" d="M170 34h1v1h-1zM172 34h1v1h-1zM170 35h3v2h-3z" />
+          <!-- Second distant striped balloon (x=139..143, y=17..24) -->
+          <path class="fx-gold" d="M140 17h3v1h1v3h-1v1h-3v-1h-1v-3h1z" />
+          <path class="fx-crimson" d="M141 17h1v5h-1zM139 19h5v1h-5z" />
+          <rect x="141" y="22" width="1" height="1" class="fx-bright" />
+          <rect x="140" y="23" width="3" height="2" class="bridge" />
+        </g>
+
+        <!-- Firework 1 (gold burst at 158, 21) -->
+        <path
+          class="fx-gold"
+          d="M158 15h1v2h-1zM158 25h1v2h-1zM152 20h2v1h-2zM163 20h2v1h-2z
+             M154 16h1v1h-1zM162 16h1v1h-1zM154 24h1v1h-1zM162 24h1v1h-1z
+             M156 18h1v1h-1zM160 18h1v1h-1zM156 22h1v1h-1zM160 22h1v1h-1z"
+        />
+        <rect x="158" y="20" width="1" height="1" class="fx-bright" />
+
+        <!-- Firework 2 (crimson + gold burst at 184, 15) -->
+        <path
+          class="fx-crimson"
+          d="M184 9h1v2h-1zM184 19h1v2h-1zM178 14h2v1h-2zM189 14h2v1h-2z
+             M180 10h1v1h-1zM188 10h1v1h-1zM180 18h1v1h-1zM188 18h1v1h-1z"
+        />
+        <path
+          class="fx-gold"
+          d="M182 12h1v1h-1zM186 12h1v1h-1zM182 16h1v1h-1zM186 16h1v1h-1zM184 14h1v1h-1z"
+        />
+
+        <!-- Firework 3 (champagne + crimson burst at 222, 23) -->
+        <path
+          class="fx-gold"
+          d="M222 18h1v2h-1zM222 26h1v2h-1zM217 22h2v1h-2zM226 22h2v1h-2z
+             M219 19h1v1h-1zM225 19h1v1h-1zM219 25h1v1h-1zM225 25h1v1h-1z"
+        />
+        <rect x="222" y="22" width="1" height="1" class="fx-crimson" />
+      </g>
+    }
+    @case ('diwali') {
+      <g class="overlay-sky overlay-diwali">
+        <!-- Night-only Indian Diwali fireworks: rising rockets & marigold/magenta/emerald willow sky shots -->
+        <g class="diwali-night-fireworks">
+          <!-- Soft night bloom halos behind bursts -->
+          <path
+            class="night-glow"
+            d="M159 14h9v9h-9zM182 11h9v9h-9zM203 21h9v9h-9zM133 21h7v7h-7z"
+          />
+
+          <!-- Sky Shot 1: Grand Marigold-Gold & Rani-Magenta Chrysanthemum with rising rocket tail (163, 18) -->
+          <path
+            class="night-amber"
+            d="M157 35h1v1h-1zM158 32h1v2h-1zM160 28h1v2h-1zM161 25h1v2h-1z"
+          />
+          <path
+            class="night-magenta"
+            d="M163 11h1v2h-1zM163 24h1v2h-1zM156 18h2v1h-2zM169 18h2v1h-2z
+               M158 13h1v1h-1zM168 13h1v1h-1zM157 22h1v2h-1zM169 22h1v2h-1z
+               M155 20h1v2h-1zM171 20h1v2h-1zM160 25h1v2h-1zM166 25h1v2h-1z"
+          />
+          <path
+            class="night-gold"
+            d="M163 14h1v2h-1zM163 21h1v2h-1zM159 18h2v1h-2zM166 18h2v1h-2z
+               M160 15h1v1h-1zM166 15h1v1h-1zM160 21h1v1h-1zM166 21h1v1h-1z"
+          />
+          <path class="night-bright" d="M163 18h1v1h-1zM162 17h1v1h-1zM164 19h1v1h-1z" />
+
+          <!-- Sky Shot 2: Emerald-Green & Saffron-Amber Rocket Burst (186, 15) -->
+          <path class="night-gold" d="M182 29h1v2h-1zM184 24h1v2h-1zM185 21h1v1h-1z" />
+          <path
+            class="night-amber"
+            d="M186 9h1v2h-1zM186 20h1v2h-1zM180 15h2v1h-2zM191 15h2v1h-2z
+               M181 11h1v1h-1zM191 11h1v1h-1zM181 19h1v2h-1zM191 19h1v2h-1z"
+          />
+          <path
+            class="night-emerald"
+            d="M186 12h1v2h-1zM186 17h1v2h-1zM183 15h2v1h-2zM188 15h2v1h-2z
+               M183 12h1v1h-1zM189 12h1v1h-1zM183 18h1v1h-1zM189 18h1v1h-1z"
+          />
+          <rect x="186" y="15" width="1" height="1" class="night-bright" />
+
+          <!-- Sky Shot 3: Rani-Pink & Gold Crackle Burst over Southbank (207, 25) -->
+          <path
+            class="night-gold"
+            d="M207 19h1v2h-1zM207 30h1v2h-1zM201 25h2v1h-2zM212 25h2v1h-2z
+               M203 21h1v1h-1zM211 21h1v1h-1zM203 29h1v2h-1zM211 29h1v2h-1z"
+          />
+          <path
+            class="night-magenta"
+            d="M207 22h1v2h-1zM207 27h1v2h-1zM204 25h2v1h-2zM209 25h2v1h-2z
+               M205 23h1v1h-1zM209 23h1v1h-1zM205 27h1v1h-1zM209 27h1v1h-1z"
+          />
+          <rect x="207" y="25" width="1" height="1" class="night-bright" />
+
+          <!-- Sky Shot 4: Golden Rocket Crackle over Arts Centre (136, 24) -->
+          <path class="night-amber" d="M133 35h1v2h-1zM135 30h1v2h-1z" />
+          <path
+            class="night-gold"
+            d="M136 20h1v2h-1zM136 27h1v2h-1zM132 24h2v1h-2zM139 24h2v1h-2z
+               M133 21h1v1h-1zM139 21h1v1h-1zM133 27h1v1h-1zM139 27h1v1h-1z"
+          />
+          <rect x="136" y="24" width="1" height="1" class="night-bright" />
+        </g>
+
+        <!-- 4 floating pixel sky lanterns drifting in the upper-right sky -->
+        <path
+          class="fx-amber"
+          d="M151 22h3v4h-3zM173 14h3v4h-3zM193 26h3v4h-3zM219 18h3v4h-3z"
+        />
+        <path
+          class="fx-crimson"
+          d="M151 22h3v1h-3zM173 14h3v1h-3zM193 26h3v1h-3zM219 18h3v1h-3z"
+        />
+        <path
+          class="fx-bright"
+          d="M152 24h1v2h-1zM174 16h1v2h-1zM194 28h1v2h-1zM220 20h1v2h-1z"
+        />
+      </g>
+    }
+    @case ('halloween') {
+      <g class="overlay-sky overlay-halloween">
+        <!-- Large luminous harvest moon -->
+        <path
+          class="fx-amber"
+          d="M202 12h8v1h2v1h1v2h1v6h-1v2h-1v1h-2v1h-8v-1h-2v-1h-1v-2h-1v-6h1v-2h1v-1h2z"
+        />
+        <path
+          class="fx-gold"
+          d="M203 14h6v1h2v2h1v4h-1v2h-2v1h-6v-1h-2v-2h-1v-4h1v-2h2z"
+        />
+        <!-- 3 crisp winged pixel bats -->
+        <path
+          class="skyline-near"
+          d="M153 20h2v1h1v1h2v-1h1v-1h2v2h-2v1h-4v-1h-2z
+             M174 15h2v1h1v1h1v-1h1v-1h2v1h-1v2h-5v-2h-1z
+             M187 26h1v1h2v1h1v-1h2v-1h1v2h-2v1h-3v-1h-2z"
+        />
+      </g>
+    }
+  }
+
+  <!-- 3. Far silhouette layer (kept deliberately low across x=94..132 behind Fed Square) -->
+  <path
+    class="skyline-far"
+    d="M0 108V99h7v-3h5v3h3v-11h1v11h4v-11h1v11h6v-3h9v2h9v-5h12v4h14v-7h12v6h11v6h38v-8h10v-12h12v6h10v-16h11v10h12v-18h11v12h12v-10h11v14h10v8h9v6V108z"
+  />
+
+  <!-- 4. Foreground Melbourne landmarks (balanced with Fed Square Civic Plaza at x=94..132) -->
+  <g class="skyline-near">
+    <!-- Left crop-safe Docklands promenade & trees (x=0..52) -->
+    <path d="M0 108V101h8v-2h9v2h11v-3h12v3h12v7z" />
+
+    <!-- Flinders Street Station (x=54..91): facade, turrets, clocktower -->
+    <path d="M54 108V91h3v-3h4v3h5v-3h12v3h4v-3h3v-10h2v-2h2v2h2v30z" />
+
+    <!-- Arts Centre Melbourne (x=135..152): plinth, flared skirt, slender spire -->
+    <path
+      d="M135 108V96h2v-3h1v-3h1v-4h1v-5h1v-6h1v-12h1v-24h1v24h1v12h1v6h1v5h1v4h1v3h1v3h2v12z"
+    />
+
+    <!-- 101 Collins Street (x=154..166) -->
+    <path d="M154 108V65h2v-4h2v-3h2v-8h1v8h2v3h1v4h2v43z" />
+
+    <!-- Rialto Twin Towers (x=169..182) -->
+    <path d="M169 108V61h2v-3h4v3h2v6h3v3h2v38z" />
+
+    <!-- Eureka Tower (x=185..196): full stone frame to stepped parapet + slender mast -->
+    <path d="M185 108V40h2v-1h7v1h2v68zM190 34h1v5h-1z" />
+
+    <!-- Australia 108 (x=200..212): tallest tower with sleek stepped crown -->
+    <path d="M200 108V35h2v-2h8v2h2v73zM205 32h2v1h-2z" />
+
+    <!-- Right crop-safe Royal Botanic Gardens stepped treeline (x=215..240) -->
+    <path d="M215 108V99h4v-3h6v3h4v-2h5v2h6v9z" />
+  </g>
+
+  <!-- Signature Melbourne terracotta-gold landmark accents -->
+  <g class="skyline-accent">
+    <!-- Flinders Street copper dome + finial -->
+    <path d="M71 79h1v2h-1zM69 81h5v2h-5zM67 83h9v3h-9zM65 86h13v4h-13z" />
+    <!-- Arts Centre spire beacon tip -->
+    <rect x="143" y="37" width="1" height="2" />
+    <!-- Eureka Tower inset gold-glass upper floors (horizontal louver bands, no solid hat) -->
+    <path d="M186 41h8v1h-8zM186 43h8v1h-8zM186 45h8v1h-8zM186 47h8v1h-8z" />
+    <!-- Australia 108 sleek faceted golden Starburst sky-lobby (1px overhang + glass band) -->
+    <path d="M200 55h12v1h1v3h-1v1h-12v-1h-1v-3h1z" />
+  </g>
+
+  <!-- Eureka Tower signature slender vertical crimson accent line -->
+  <rect x="194" y="41" width="1" height="10" class="tree-light-red" />
+
+  <!-- Arts Centre lattice cutouts -->
+  <path class="sky-3" d="M141 88h1v2h-1zM144 88h1v2h-1zM142 83h2v2h-2z" />
+
+  <!-- Subtle glowing tower windows, Eureka/108 glass floor bands & Flinders arches -->
+  <path
+    class="windows"
+    d="M58 95h2v3h-2zM63 95h2v3h-2zM68 95h2v3h-2zM73 95h2v3h-2zM78 95h2v3h-2z
+       M87 82h2v2h-2z
+       M157 69h1v1h-1zM161 69h2v1h-2zM158 74h2v1h-2zM162 77h1v1h-1zM157 82h2v1h-2zM161 86h2v1h-2z
+       M171 64h2v1h-2zM174 69h1v1h-1zM171 74h2v1h-2zM178 73h2v1h-2zM173 80h2v1h-2zM178 84h1v1h-1zM172 89h2v1h-2z
+       M187 43h2v1h-2zM191 45h2v1h-2zM187 52h2v1h-2zM191 55h2v1h-2zM187 60h2v1h-2zM191 65h2v1h-2zM187 71h3v1h-3zM191 77h2v1h-2zM187 84h2v1h-2z
+       M202 39h2v1h-2zM207 43h3v1h-3zM202 47h2v1h-2zM207 51h2v1h-2z
+       M200 57h3v1h-3zM205 57h2v1h-2zM209 57h3v1h-3z
+       M202 64h3v1h-3zM207 69h2v1h-2zM202 75h2v1h-2zM207 81h2v1h-2zM203 87h2v1h-2z"
+  />
+
+  <!-- 4b. SLOT E: Festival Landmark Building Decorations (Flinders St, Arts Centre, 101 Collins, Rialto, Eureka, Australia 108) -->
+  @switch (activeHoliday()) {
+    @case ('christmas') {
+      <g class="overlay-buildings overlay-buildings-christmas">
+        <!-- Night glow behind spire tip, dome star & Australia 108 Starburst -->
+        <path class="bulb-night-halo" d="M142 36h3v3h-3zM70 78h3v3h-3zM205 31h2v2h-2z" />
+        <!-- Flinders St Station pine cornice garland, central dome wreath & Arts Centre green spire accents -->
+        <path
+          class="fx-pine"
+          d="M55 91h30v1h-30zM58 92h4v1h-4zM66 92h4v1h-4zM74 92h4v1h-4zM81 92h4v1h-4z
+             M70 88h3v1h-3zM69 89h1v2h-1zM73 89h1v2h-1zM70 91h3v1h-3z
+             M143 44h1v6h-1zM142 66h3v2h-3zM140 78h7v2h-7zM138 90h11v2h-11z"
+        />
+        <!-- Crimson Christmas lights on Flinders St, Arts Centre spire, 101 Collins, Rialto, Eureka & Australia 108 -->
+        <path
+          class="tree-light-red"
+          d="M56 91h1v1h-1zM62 91h1v1h-1zM68 91h1v1h-1zM75 91h1v1h-1zM82 91h1v1h-1zM71 88h1v1h-1zM71 84h1v1h-1z
+             M143 40h1v4h-1zM143 52h1v6h-1zM141 72h5v1h-5zM139 84h9v1h-9z
+             M160 51h1v4h-1zM171 58h4v1h-4zM186 40h8v1h-8zM200 56h12v1h-12z"
+        />
+        <!-- Golden Christmas fairy lights & star toppers on landmarks -->
+        <path
+          class="tree-light-gold"
+          d="M59 92h1v1h-1zM65 91h1v1h-1zM71 79h1v1h-1zM78 92h1v1h-1zM87 82h2v2h-2zM87 76h2v1h-2z
+             M143 37h1v2h-1zM143 58h1v4h-1zM142 75h3v1h-3z
+             M160 50h1v1h-1zM172 60h2v1h-2zM190 34h1v2h-1zM186 44h8v1h-8z
+             M205 32h2v1h-2zM200 58h12v1h-12z"
+        />
+      </g>
+    }
+    @case ('new-year') {
+      <g class="overlay-buildings overlay-buildings-new-year">
+        <!-- Celebration spotlight beams rising from Flinders St clocktower & Eureka -->
+        <path class="fx-beam" d="M87 78l-4 -14h2l3 14zM190 34l-3 -12h2l2 12z" />
+        <!-- Champagne-gold uplighting across Flinders St, Arts Centre spire, 101 Collins, Rialto, Eureka & 108 -->
+        <path
+          class="tree-light-gold"
+          d="M55 91h30v1h-30zM67 86h9v1h-9zM87 82h2v2h-2z
+             M143 37h1v24h-1zM141 70h5v1h-5zM139 82h9v1h-9zM137 92h13v1h-13z
+             M160 50h1v8h-1zM156 64h8v1h-8zM171 58h4v1h-4zM170 61h7v1h-7z
+             M186 40h8v1h-8zM186 46h8v1h-8zM190 34h1v4h-1z
+             M202 33h8v1h-8zM200 56h12v3h-12z"
+        />
+        <!-- Crimson & bright-white rooftop celebration beacons -->
+        <path
+          class="tree-light-red"
+          d="M58 91h1v1h-1zM66 91h1v1h-1zM74 91h1v1h-1zM82 91h1v1h-1z
+             M143 45h1v3h-1zM143 54h1v3h-1zM187 42h6v1h-6zM201 57h10v1h-10z"
+        />
+        <path
+          class="night-bright"
+          d="M71 79h1v1h-1zM88 76h1v1h-1zM143 37h1v1h-1zM160 50h1v1h-1zM190 34h1v1h-1zM206 32h1v1h-1z"
+        />
+      </g>
+    }
+    @case ('diwali') {
+      <g class="overlay-buildings overlay-buildings-diwali">
+        <!-- Night glow halos behind spire tip & Flinders St dome -->
+        <path class="night-glow" d="M67 81h9v7h-9zM142 36h3v4h-3zM200 54h12v7h-12z" />
+        <!-- Iconic Indian vertical fairy-light curtains (ladi/jhalaar) draped down Flinders St, 101 Collins, Rialto & towers -->
+        <path
+          class="tree-light-gold"
+          d="M55 91h30v1h-30z
+             M56 92h1v3h-1zM60 92h1v2h-1zM64 92h1v3h-1zM68 92h1v2h-1zM72 92h1v3h-1zM76 92h1v2h-1zM80 92h1v3h-1zM84 92h1v2h-1z
+             M69 83h5v1h-5zM67 87h9v1h-9zM87 82h2v2h-2z
+             M143 37h1v10h-1zM141 72h5v1h-5zM138 86h11v1h-11z
+             M156 65h1v5h-1zM160 65h1v4h-1zM164 65h1v5h-1zM160 50h1v6h-1z
+             M171 61h1v5h-1zM175 61h1v4h-1zM179 67h1v4h-1z
+             M186 41h8v1h-8zM186 45h8v1h-8zM187 48h1v4h-1zM193 48h1v4h-1z
+             M200 56h12v3h-12zM202 35h1v5h-1zM206 35h1v4h-1zM210 35h1v5h-1z"
+        />
+        <!-- Vibrant saffron-amber & rani-magenta Diwali architectural uplighting -->
+        <path
+          class="fx-amber"
+          d="M58 92h1v2h-1zM62 92h1v3h-1zM66 92h1v2h-1zM70 92h1v3h-1zM74 92h1v2h-1zM78 92h1v3h-1zM82 92h1v2h-1z
+             M143 47h1v8h-1zM140 79h7v1h-7zM186 43h8v1h-8zM201 57h10v1h-10z"
+        />
+        <path
+          class="fx-magenta"
+          d="M68 85h7v1h-7zM87 77h2v1h-2z
+             M143 55h1v6h-1zM142 66h3v1h-3zM139 91h9v1h-9z
+             M156 64h8v1h-8zM171 58h4v1h-4zM186 47h8v1h-8zM202 33h8v1h-8z"
+        />
+      </g>
+    }
+    @case ('halloween') {
+      <g class="overlay-buildings overlay-buildings-halloween">
+        <!-- Giant pixel cobweb spun between Flinders St dome & clocktower + dangling spider -->
+        <path
+          class="fx-web"
+          d="M76 83h9v1h-9zM77 84h1v1h-1zM80 84h1v1h-1zM83 84h1v1h-1z
+             M78 85h6v1h-6zM80 86h1v3h-1zM82 86h2v1h-2zM78 87h2v1h-2z"
+        />
+        <rect x="80" y="89" width="1" height="1" class="screen-bg" />
+        <!-- Spooky purple architectural uplighting across landmarks -->
+        <path
+          class="fx-purple"
+          d="M55 91h30v1h-30zM67 86h9v2h-9z
+             M143 42h1v16h-1zM141 72h5v2h-5zM138 88h11v2h-11z
+             M156 64h8v2h-8zM171 58h4v2h-4zM186 41h8v2h-8zM200 55h12v1h-12zM200 59h12v1h-12zM202 33h8v2h-8z"
+        />
+        <!-- Eerie haunted pumpkin-amber windows, clock face & tower crowns -->
+        <path
+          class="fx-amber"
+          d="M58 95h2v3h-2zM63 95h2v3h-2zM68 95h2v3h-2zM73 95h2v3h-2zM78 95h2v3h-2zM87 82h2v2h-2z
+             M143 37h1v3h-1zM160 50h1v4h-1zM173 64h2v1h-2zM186 45h8v1h-8zM200 57h12v1h-12z"
+        />
+      </g>
+    }
+  }
+
+  <!-- Night-only glowing crimson aviation/spire tip beacons on Melbourne's tallest landmarks (2x sub-grid) -->
+  <g class="skyline-beacons" transform="scale(0.5)">
+    <path
+      class="beacon-night-outer"
+      d="M284 73h6v4h-6zM285 72h4v6h-4z
+         M318 99h6v4h-6zM319 98h4v6h-4z
+         M378 67h6v4h-6zM379 66h4v6h-4z
+         M409 63h6v4h-6zM410 62h4v6h-4z"
+    />
+    <path
+      class="beacon-night-halo"
+      d="M285 74h4v2h-4zM286 73h2v4h-2z
+         M319 100h4v2h-4zM320 99h2v4h-2z
+         M379 68h4v2h-4zM380 67h2v4h-2z
+         M410 64h4v2h-4zM411 63h2v4h-2z"
+    />
+    <path
+      class="beacon-night-core"
+      d="M286 74h2v2h-2zM320 100h2v2h-2zM380 68h2v2h-2zM411 64h2v2h-2z"
+    />
+  </g>
+
+  <!-- 5. SLOT B: Federation Square Civic Plaza (x=94..132, Big Screen + open stage for holidays & humans) -->
+  <g class="civic-plaza">
+    <!-- Stepped sandstone terrace -->
+    <rect x="94" y="104" width="38" height="3" class="plaza-deck" />
+    <rect x="108" y="105" width="22" height="2" class="plaza-steps" />
+
+    <!-- Fed Square Iconic Outdoor Big Screen (x=94..106, y=93..104; 11x7 LED matrix + nighttime glow halo) -->
+    <g class="fed-screen">
+      <!-- Stepped pixel LED light-spill aura around & beneath the Big Screen (Dark mode only) -->
+      <path class="screen-night-glow" d="M93 92h15v11h-15zM95 103h11v2h-11z" />
+      <rect x="95" y="101" width="10" height="3" class="plaza-wing" />
+      <rect x="94" y="93" width="13" height="9" class="bridge" />
+      <rect x="95" y="94" width="11" height="7" class="screen-bg" />
+      @switch (activeHoliday()) {
+        @case ('default') {
+          @switch (activeSeason()) {
+            @case ('summer') {
+              <path class="fx-gold" d="M99 95h3v3h-3zM100 94h1v5h-1zM98 96h5v1h-5z" />
+              <path fill="var(--tram-surf)" d="M96 99h3v1h-3zM100 99h4v1h-4z" />
+            }
+            @case ('autumn') {
+              <path class="fx-amber" d="M100 95h1v1h-1zM99 96h3v1h-3zM98 97h5v1h-5zM99 98h3v1h-3z" />
+              <rect x="100" y="99" width="1" height="1" class="fx-crimson" />
+            }
+            @case ('winter') {
+              <path
+                class="fx-bright"
+                d="M100 95h1v5h-1zM98 97h5v1h-5zM99 96h1v1h-1zM101 96h1v1h-1zM99 98h1v1h-1zM101 98h1v1h-1z"
+              />
+            }
+            @case ('spring') {
+              <path fill="var(--tram-blossom)" d="M100 95h1v1h-1zM99 96h1v1h-1zM101 96h1v1h-1zM100 97h1v1h-1z" />
+              <rect x="100" y="96" width="1" height="1" class="fx-gold" />
+              <rect x="100" y="98" width="1" height="2" class="fx-pine" />
+            }
+          }
+        }
+        @case ('christmas') {
+          <!-- Glowing pixel Christmas star on the Big Screen -->
+          <path class="fx-gold" d="M100 95h1v5h-1zM98 97h5v1h-5zM99 96h3v3h-3z" />
+          <rect x="100" y="97" width="1" height="1" class="fx-crimson" />
+        }
+        @case ('new-year') {
+          <!-- Crisp 3x5 LED "HNY" greeting on the Fed Square Big Screen -->
+          <path
+            class="fx-gold"
+            d="M95 95h1v5h-1zM96 97h1v1h-1zM97 95h1v5h-1z
+               M99 95h1v5h-1zM100 96h1v2h-1zM101 95h1v5h-1z
+               M103 95h1v2h-1zM105 95h1v2h-1zM104 97h1v3h-1z"
+          />
+        }
+        @case ('diwali') {
+          <!-- Glowing pixel diya lamp icon on the Big Screen -->
+          <path class="fx-amber" d="M98 98h5v1h-5zM99 99h3v1h-3z" />
+          <path class="fx-gold" d="M100 95h1v3h-1zM99 96h3v1h-3z" />
+          <rect x="100" y="96" width="1" height="1" class="fx-bright" />
+        }
+        @case ('halloween') {
+          <!-- Glowing pixel jack-o'-lantern eyes & grin on the Big Screen -->
+          <path class="fx-amber" d="M97 96h2v1h-2zM102 96h2v1h-2zM97 98h1v1h-1zM99 99h3v1h-3zM103 98h1v1h-1z" />
+        }
+      }
+    </g>
+
+    @switch (activeHoliday()) {
+      @case ('default') {
+        <!-- Year-round civic lantern + seasonal Fed Square Civic Plaza scene -->
+        <g [class]="'overlay-plaza overlay-default overlay-season-' + activeSeason()">
+          <rect x="117" y="91" width="5" height="4" class="lamp-halo" />
+          <rect x="119" y="95" width="1" height="9" class="bridge" />
+          <rect x="118" y="94" width="3" height="1" class="bridge" />
+          <rect x="118" y="92" width="3" height="2" class="lamp-bulb" />
+          <rect x="119" y="92" width="1" height="2" class="night-bright" />
+          <rect x="119" y="91" width="1" height="1" class="bridge" />
+
+          @switch (activeSeason()) {
+            @case ('summer') {
+              <!-- Fed Square Summer Live Site: striped sun umbrellas & deck loungers -->
+              <g transform="scale(0.5)">
+                <path fill="var(--neutral-900)" d="M225 198h1v10h-1zM251 198h1v10h-1z" />
+                <path fill="var(--tram-surf)" d="M220 197h11v1h-11zM222 196h7v1h-7zM246 197h11v1h-11zM248 196h7v1h-7z" />
+                <path fill="var(--neutral-0)" d="M223 197h2v1h-2zM227 197h2v1h-2zM249 197h2v1h-2zM253 197h2v1h-2z" />
+                <path fill="var(--fx-gold)" d="M221 206h7v1h-7zM222 207h1v1h-1zM226 207h1v1h-1zM248 206h7v1h-7zM249 207h1v1h-1zM253 207h1v1h-1z" />
+              </g>
+            }
+            @case ('autumn') {
+              <!-- Melbourne Espresso Cart with steam wisp + bench & drifted autumn leaves -->
+              <g transform="scale(0.5)">
+                <path fill="var(--fx-crimson)" d="M220 198h10v2h-10zM232 207h2v1h-2zM255 207h2v1h-2z" />
+                <path fill="var(--tram-cream)" d="M222 198h2v2h-2zM226 198h2v2h-2z" />
+                <path fill="var(--neutral-900)" d="M221 200h1v4h-1zM228 200h1v4h-1zM224 202h3v2h-3z" />
+                <path fill="var(--tree-trunk)" d="M220 204h10v4h-10zM246 205h8v2h-8zM247 207h1v1h-1zM252 207h1v1h-1z" />
+                <path fill="var(--tram-web)" d="M225 196h1v1h-1zM226 194h1v1h-1z" />
+                <path fill="var(--fx-amber)" d="M218 207h2v1h-2zM243 207h3v1h-3z" />
+              </g>
+            }
+            @case ('winter') {
+              <!-- Fed Square Winter Village: twin crackling fire-pit braziers & frost ledge -->
+              <path fill="var(--tree-frost)" d="M108 104h10v1h-10zM121 104h9v1h-9z" />
+              <g transform="scale(0.5)">
+                <path class="bulb-night-halo" d="M220 196h10v10h-10zM246 196h10v10h-10z" />
+                <path fill="var(--neutral-900)" d="M222 204h6v2h-6zM223 206h1v2h-1zM226 206h1v2h-1zM248 204h6v2h-6zM249 206h1v2h-1zM252 206h1v2h-1z" />
+                <path fill="var(--fx-amber)" d="M223 200h4v4h-4zM224 198h2v2h-2zM249 200h4v4h-4zM250 198h2v2h-2z" />
+                <path fill="var(--fx-gold)" d="M224 201h2v3h-2zM250 201h2v3h-2z" />
+                <path fill="var(--p-spark)" d="M224 202h1v2h-1zM251 202h1v2h-1z" />
+              </g>
+            }
+            @case ('spring') {
+              <!-- Blooming Spring Tulip & Blossom Planter Boxes -->
+              <g transform="scale(0.5)">
+                <path fill="var(--tree-trunk)" d="M220 205h11v3h-11zM245 205h11v3h-11z" />
+                <path fill="var(--fx-pine)" d="M221 203h9v2h-9zM246 203h9v2h-9z" />
+                <path fill="var(--tree-blossom)" d="M221 201h2v2h-2zM227 201h2v2h-2zM246 201h2v2h-2zM252 201h2v2h-2z" />
+                <path fill="var(--fx-gold)" d="M224 202h2v2h-2zM249 202h2v2h-2z" />
+                <path fill="var(--fx-magenta)" d="M229 202h2v1h-2zM254 202h2v1h-2z" />
+              </g>
+            }
+          }
+        </g>
+      }
+      @case ('christmas') {
+        <!-- Fed Square giant pixel Christmas tree (centered at x=119) + illuminated night glow & lit bulbs -->
+        <g class="overlay-plaza overlay-christmas">
+          <!-- Night-only stepped warm pixel glow around the tree & star topper -->
+          <path
+            class="tree-night-glow"
+            d="M117 72h5v5h-5zM118 71h3v7h-3z
+               M115 77h9v4h-9zM113 81h13v5h-13zM111 86h17v6h-17zM109 92h21v10h-21z"
+          />
+          <!-- Star topper (bright white-gold center at night) -->
+          <path class="fx-gold" d="M119 73h1v1h-1zM118 74h3v1h-3zM119 75h1v1h-1z" />
+          <rect x="119" y="74" width="1" height="1" class="night-bright" />
+          <rect x="118" y="101" width="3" height="3" class="bridge" />
+          <path
+            class="fx-pine"
+            d="M119 76h1v1h-1zM118 77h3v2h-3zM117 79h5v2h-5z
+               M116 81h7v3h-7zM115 84h9v3h-9zM114 87h11v3h-11z
+               M113 90h13v3h-13zM112 93h15v4h-15zM111 97h17v4h-17z"
+          />
+          <path
+            class="fx-pine-hi"
+            d="M118 80h1v1h-1zM116 85h2v1h-2zM115 91h2v1h-2zM113 98h2v1h-2z"
+          />
+          <!-- Night-only soft pixel halos behind tree fairy lights -->
+          <path
+            class="bulb-night-halo"
+            d="M119 81h3v3h-3zM115 88h3v3h-3zM121 91h3v3h-3zM112 97h3v3h-3zM123 97h3v3h-3z"
+          />
+          <!-- Lit crimson & warm golden tree lights (brighter at night via --tree-red / --tree-gold) -->
+          <path
+            class="tree-light-red"
+            d="M119 80h1v1h-1zM117 83h1v1h-1zM122 86h1v1h-1zM116 89h1v1h-1z
+               M121 92h1v1h-1zM114 95h1v1h-1zM119 96h1v1h-1zM124 98h1v1h-1zM116 99h1v1h-1z"
+          />
+          <path
+            class="tree-light-gold"
+            d="M120 82h1v1h-1zM118 86h1v1h-1zM121 89h1v1h-1zM117 93h1v1h-1z
+               M123 95h1v1h-1zM113 98h1v1h-1zM120 99h1v1h-1z"
+          />
+          <!-- Brightest twinkle core pixels (Dark mode only) -->
+          <path class="night-bright" d="M120 82h1v1h-1zM116 89h1v1h-1zM122 92h1v1h-1zM113 98h1v1h-1z" />
+          <rect x="112" y="102" width="3" height="2" class="fx-crimson" />
+          <rect x="113" y="102" width="1" height="2" class="fx-gold" />
+          <rect x="123" y="102" width="3" height="2" class="fx-gold" />
+          <rect x="124" y="102" width="1" height="2" class="fx-crimson" />
+          <rect x="116" y="103" width="2" height="1" class="fx-amber" />
+        </g>
+      }
+      @case ('new-year') {
+        <!-- Fed Square NYE live concert stage, searchlights, PA speakers & 4-piece 2x pixel band -->
+        <g class="overlay-plaza overlay-new-year">
+          <!-- Upward searchlights & downward stage spotlight cones -->
+          <path class="fx-beam" d="M111 86l-6 -20h3l5 20zM127 86l6 -20h-3l-5 20zM112 89h3l3 12h-9zM124 89h3l3 12h-9z" />
+          <!-- Stage truss gantry & elevated concert deck -->
+          <path class="bridge" d="M108 104v-18h2v18zM129 104v-18h2v18zM108 85h23v4h-23z" />
+          <rect x="110" y="86" width="19" height="2" class="fx-gold" />
+          <path class="fx-crimson" d="M112 86h1v2h-1zM116 86h1v2h-1zM122 86h1v2h-1zM126 86h1v2h-1z" />
+          <path class="fx-bright" d="M111 89h1v1h-1zM115 89h1v1h-1zM119 89h1v1h-1zM123 89h1v1h-1zM127 89h1v1h-1z" />
+          <rect x="108" y="102" width="23" height="2" class="screen-bg" />
+          <rect x="108" y="101" width="23" height="1" class="fx-gold" />
+          <!-- Twin PA speaker stacks -->
+          <rect x="109" y="96" width="2" height="5" class="screen-bg" />
+          <rect x="128" y="96" width="2" height="5" class="screen-bg" />
+          <path class="plaza-steps" d="M109 97h1v1h-1zM109 99h1v1h-1zM129 97h1v1h-1zM129 99h1v1h-1z" />
+
+          <!-- 4-piece 2x-density live band on stage deck (Y=202 -> y=101) -->
+          <g transform="scale(0.5)">
+            <!-- Floating pixel music notes in the stage lights -->
+            <path fill="var(--fx-gold)" d="M227 187h2v1h-2zM228 184h1v3h-1zM229 184h1v1h-1z" />
+            <path fill="var(--p-spark)" d="M246 186h2v1h-2zM247 183h1v3h-1zM248 183h1v1h-1z" />
+
+            <!-- 1. Lead Guitarist (X=222..229) -->
+            <path fill="var(--neutral-900)" d="M224 190h3v1h-3zM223 189h1v1h-1zM226 189h1v1h-1zM224 201h1v1h-1zM226 201h1v1h-1z" />
+            <path fill="var(--p-skin)" d="M224 191h3v2h-3zM225 193h1v1h-1zM223 196h1v1h-1zM227 195h1v1h-1z" />
+            <path fill="var(--p-pants)" d="M223 194h5v3h-5zM224 197h3v1h-3zM224 198h1v3h-1zM226 198h1v3h-1z" />
+            <path fill="var(--fx-crimson)" d="M223 196h3v2h-3z" />
+            <path fill="var(--neutral-0)" d="M224 196h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M226 195h1v1h-1zM227 194h1v1h-1zM228 193h1v1h-1z" />
+
+            <!-- 2. Lead Vocalist at Mic Stand (X=231..238) -->
+            <path fill="var(--neutral-900)" d="M233 190h3v1h-3zM232 191h1v2h-1zM233 198h1v4h-1zM235 198h1v4h-1zM237 193h1v9h-1zM236 201h3v1h-3z" />
+            <path fill="var(--p-skin)" d="M233 191h3v2h-3zM234 193h1v1h-1zM232 193h1v1h-1zM236 196h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M233 194h4v4h-4zM232 194h1v2h-1z" />
+            <path fill="var(--neutral-0)" d="M236 192h2v1h-2z" />
+
+            <!-- 3. Drummer behind Kick Drum & Twin Cymbals (X=239..248) -->
+            <path fill="var(--neutral-900)" d="M242 191h3v1h-3zM240 196h1v6h-1zM246 196h1v6h-1z" />
+            <path fill="var(--p-skin)" d="M242 192h3v2h-3zM241 194h1v1h-1zM245 194h1v1h-1z" />
+            <path fill="var(--fx-crimson)" d="M242 194h3v3h-3zM241 197h5v5h-5z" />
+            <path fill="var(--p-straw)" d="M241 192h1v2h-1zM245 192h1v2h-1z" />
+            <path fill="var(--neutral-0)" d="M242 198h3v3h-3z" />
+            <path fill="var(--fx-gold)" d="M239 195h3v1h-3zM245 195h3v1h-3zM243 199h1v1h-1z" />
+
+            <!-- 4. Keyboardist on Synthesizer (X=249..256) -->
+            <path fill="var(--neutral-900)" d="M251 190h3v1h-3zM254 191h1v2h-1zM249 196h7v2h-7zM250 198h1v4h-1zM254 198h1v4h-1zM251 199h3v1h-3z" />
+            <path fill="var(--p-skin)" d="M251 191h3v2h-3zM252 193h1v1h-1zM250 196h1v1h-1zM254 196h1v1h-1z" />
+            <path fill="var(--ped-c)" d="M250 194h5v2h-5z" />
+            <path fill="var(--neutral-0)" d="M250 196h5v1h-5z" />
+          </g>
+        </g>
+      }
+      @case ('diwali') {
+        <!-- Sculptural Fed Square pixel Diya (terracotta oil lamp + layered teardrop flame + rangoli plinth) -->
+        <g class="overlay-plaza overlay-diwali">
+          <!-- Soft warm glow behind the flame -->
+          <path class="fx-beam" d="M117 84h5v2h2v3h1v5h-1v2h-9v-2h-1v-5h1v-3h2v-2z" />
+          <!-- Layered teardrop flame (saffron outer -> gold mid -> bright hot core) -->
+          <path
+            class="fx-amber"
+            d="M119 83h1v2h-1zM118 85h3v2h-3zM117 87h5v3h-5zM116 90h7v4h-7zM117 94h5v2h-5z"
+          />
+          <path
+            class="fx-gold"
+            d="M119 86h1v2h-1zM118 88h3v3h-3zM117 91h5v4h-5z"
+          />
+          <path class="fx-bright" d="M119 90h1v4h-1zM118 92h3v2h-3z" />
+          <!-- Curved terracotta clay Diya bowl with golden decorative rim -->
+          <path
+            class="fx-crimson"
+            d="M111 96h17v1h-17zM112 97h15v1h-15zM113 98h13v1h-13z
+               M114 99h11v1h-11zM115 100h9v1h-9zM116 101h7v1h-7z"
+          />
+          <path
+            class="fx-gold"
+            d="M113 96h13v1h-13zM114 98h1v1h-1zM117 98h1v1h-1zM120 98h1v1h-1zM123 98h1v1h-1z
+               M116 102h7v1h-7z"
+          />
+          <!-- Rangoli-accented plinth & flanking mini diyas / night-only Anar flowerpot fountains -->
+          <rect x="113" y="103" width="13" height="1" class="fx-amber" />
+          <path class="fx-crimson" d="M108 103h3v1h-3zM128 103h3v1h-3z" />
+          <path class="fx-gold" d="M109 101h1v2h-1zM129 101h1v2h-1z" />
+          <!-- Night-only Indian Anar (flowerpot fountain) spark showers flanking the central Diya -->
+          <g transform="scale(0.5)">
+            <path class="night-glow" d="M214 185h10v16h-10zM254 185h10v16h-10z" />
+            <!-- White-hot vertical jets shooting up from each cone -->
+            <path class="night-bright" d="M218 194h2v7h-2zM218 190h1v3h-1zM258 194h2v7h-2zM259 190h1v3h-1z" />
+            <!-- Cascading golden & saffron parabolic fountain sparks -->
+            <path
+              class="night-gold"
+              d="M217 192h1v3h-1zM220 192h1v3h-1zM216 189h1v2h-1zM221 189h1v2h-1zM218 186h2v2h-2z
+                 M215 193h1v2h-1zM222 193h1v2h-1z
+                 M257 192h1v3h-1zM260 192h1v3h-1zM256 189h1v2h-1zM261 189h1v2h-1zM258 186h2v2h-2z
+                 M255 193h1v2h-1zM262 193h1v2h-1z"
+            />
+            <path
+              class="night-amber"
+              d="M214 191h1v2h-1zM223 191h1v2h-1zM213 195h1v2h-1zM224 195h1v2h-1zM216 185h1v1h-1zM221 185h1v1h-1z
+                 M254 191h1v2h-1zM263 191h1v2h-1zM253 195h1v2h-1zM264 195h1v2h-1zM256 185h1v1h-1zM261 185h1v1h-1z"
+            />
+          </g>
+        </g>
+      }
+      @case ('halloween') {
+        <!-- Crooked wrought-iron lamp + glowing jack-o'-lantern cluster (centered at x=119) -->
+        <g class="overlay-plaza overlay-halloween">
+          <path class="bridge" d="M110 104v-14h1v-3h3v1h1v2h-1v-1h-2v15z" />
+          <rect x="114" y="90" width="2" height="3" class="fx-amber" />
+          <rect x="114" y="91" width="1" height="1" class="fx-bright" />
+          <rect x="120" y="96" width="2" height="1" class="fx-pine" />
+          <path class="fx-amber" d="M118 97h6v1h1v5h-1v1h-6v-1h-1v-5h1z" />
+          <path class="fx-bright" d="M119 99h1v1h-1zM122 99h1v1h-1zM119 101h4v1h-4z" />
+          <rect x="128" y="100" width="1" height="1" class="fx-pine" />
+          <rect x="126" y="101" width="5" height="3" class="fx-amber" />
+          <path class="fx-bright" d="M127 102h1v1h-1zM129 102h1v1h-1z" />
+        </g>
+      }
+    }
+  </g>
+
+  <!-- 6. Princes Bridge, Riverside Plane Trees, Street Lamps & High-Res Heritage Tram -->
+  <rect x="0" y="107" width="240" height="3" class="bridge" />
+  <path class="water-base" d="M62 109h14v1h-14zM103 109h20v1h-20zM148 109h14v1h-14z" />
+
+  <!-- 2x Melbourne riverside promenade trees (Docklands, Birrarung Marr, Southbank & Botanic edge) -->
+  <!-- Grounded flush on Y=214 (107*2), clear of tram, Fed Square & street lamps -->
+  <g class="river-trees" transform="scale(0.5)">
+    <!-- 1. Docklands West: Slender Columnar Lombardy Poplar (X=50..61, height=31) -->
+    <g class="tree-v2" transform="translate(50, 214)">
+      <path fill="var(--tree-trunk)" d="M4 -1h4v1h-4zM5 -10h2v9h-2z" />
+      <path fill="var(--tl-dk)" d="M2 -11h8v3h-8zM1 -16h10v5h-10zM2 -22h8v4h-8z" />
+      <path fill="var(--tl)" d="M2 -19h8v8h-8zM3 -25h6v7h-6zM4 -29h4v5h-4zM5 -31h2v2h-2z" />
+      <path fill="var(--tl-hi)" d="M5 -30h1v3h-1zM4 -26h2v4h-2zM3 -20h2v5h-2z" />
+    </g>
+
+    <!-- 2. Flinders Walk: Compact Rounded Ornamental Elm (X=83..98, height=24) -->
+    <g class="tree-v1" transform="translate(83, 214)">
+      <path fill="var(--tree-trunk)" d="M7 -1h4v1h-4zM8 -12h2v11h-2zM6 -13h2v2h-2zM10 -13h2v2h-2z" />
+      <path fill="var(--tl-dk)" d="M2 -13h12v2h-12zM1 -15h14v2h-14z" />
+      <path fill="var(--tl)" d="M1 -19h8v5h-8zM7 -21h8v7h-8zM3 -23h9v6h-9zM5 -24h5v1h-5z" />
+      <path fill="var(--tl-hi)" d="M5 -23h4v2h-4zM2 -19h4v2h-4zM9 -20h3v2h-3z" />
+    </g>
+
+    <!-- 3. Birrarung Marr: Australian River Red Gum / Ghost Eucalyptus (X=282..303, height=30) -->
+    <g class="tree-v3" transform="translate(282, 214)">
+      <path
+        fill="var(--gum-trunk)"
+        d="M9 -1h5v1h-5zM10 -10h3v9h-3zM8 -13h2v4h-2zM6 -16h2v3h-2zM4 -18h2v2h-2z
+           M11 -22h2v12h-2zM10 -25h2v3h-2zM13 -14h2v4h-2zM15 -17h2v3h-2z"
+      />
+      <path fill="var(--tl-dk)" d="M0 -18h8v2h-8zM13 -17h8v2h-8zM5 -26h11v2h-11z" />
+      <path
+        fill="var(--tl)"
+        d="M0 -21h8v3h-8zM1 -22h6v1h-6zM13 -20h8v3h-8zM14 -21h6v1h-6zM5 -29h11v4h-11zM7 -30h7v1h-7z"
+      />
+      <path fill="var(--tl-hi)" d="M7 -29h5v2h-5zM1 -21h4v1h-4zM14 -20h4v1h-4z" />
+    </g>
+
+    <!-- 4. Southbank Promenade: Broad Spreading London Plane Tree (X=328..347, height=28) -->
+    <g class="tree-v1" transform="translate(328, 214)">
+      <path fill="var(--tree-trunk)" d="M7 -1h6v1h-6zM8 -2h4v1h-4zM9 -13h2v11h-2zM7 -15h2v2h-2zM11 -15h2v2h-2z" />
+      <path fill="var(--tl-dk)" d="M1 -15h17v3h-17zM3 -19h13v3h-13z" />
+      <path
+        fill="var(--tl)"
+        d="M0 -20h8v5h-8zM2 -22h6v2h-6zM11 -21h8v6h-8zM12 -23h5v2h-5zM4 -27h11v9h-11zM6 -28h7v1h-7z"
+      />
+      <path fill="var(--tl-hi)" d="M6 -27h5v2h-5zM2 -21h4v2h-4zM12 -22h4v2h-4zM7 -22h4v2h-4z" />
+    </g>
+
+    <!-- 5. Southbank East: Tall Tiered Pin Oak (X=374..391, height=33) -->
+    <g class="tree-v2" transform="translate(374, 214)">
+      <path fill="var(--tree-trunk)" d="M6 -1h5v1h-5zM8 -14h2v13h-2zM6 -15h2v1h-2zM10 -15h2v1h-2z" />
+      <path fill="var(--tl-dk)" d="M1 -15h15v2h-15zM2 -21h13v2h-13zM4 -27h9v2h-9z" />
+      <path
+        fill="var(--tl)"
+        d="M0 -18h17v3h-17zM2 -19h13v1h-13zM2 -24h13v3h-13zM3 -25h11v1h-11z
+           M4 -30h9v3h-9zM6 -32h5v2h-5zM7 -33h3v1h-3z"
+      />
+      <path fill="var(--tl-hi)" d="M7 -32h2v2h-2zM5 -29h4v2h-4zM3 -24h5v2h-5zM2 -18h5v2h-5zM10 -23h3v1h-3z" />
+    </g>
+
+    <!-- 6. Royal Botanic Gardens Edge: Cascading Weeping Willow (X=418..439, height=26) -->
+    <g class="tree-v3" transform="translate(418, 214)">
+      <path fill="var(--tree-trunk)" d="M8 -1h6v1h-6zM9 -2h4v1h-4zM10 -12h2v10h-2zM9 -16h2v4h-2zM11 -15h2v3h-2z" />
+      <path fill="var(--tl-dk)" d="M3 -18h15v3h-15zM4 -15h2v5h-2zM8 -15h1v5h-1zM13 -15h1v5h-1zM16 -15h2v5h-2z" />
+      <path
+        fill="var(--tl)"
+        d="M6 -26h9v1h-9zM4 -25h13v2h-13zM2 -23h17v5h-17z
+           M1 -20h2v11h-2zM5 -18h2v10h-2zM8 -18h1v8h-1zM12 -18h2v9h-2zM15 -18h2v10h-2zM19 -20h2v11h-2z"
+      />
+      <path fill="var(--tl-hi)" d="M6 -25h6v2h-6zM3 -22h5v2h-5zM1 -19h1v6h-1zM6 -17h1v5h-1zM12 -17h1v5h-1zM19 -19h1v5h-1z" />
+    </g>
+
+    <!-- Tailored Festival & Seasonal Decorations across all 6 varied trees -->
+    @switch (activeHoliday()) {
+      @case ('christmas') {
+        <path
+          fill="var(--tree-canopy-glow)"
+          d="M52 185h8v18h-8zM85 191h12v10h-12zM287 185h11v5h-11zM282 193h8v4h-8zM295 194h8v4h-8z
+             M332 188h11v9h-11zM329 194h17v6h-17zM378 184h9v8h-9zM376 190h13v10h-13zM421 190h15v12h-15z"
+        />
+        <path
+          fill="var(--tree-bulb-gold)"
+          d="M55 211h1v1h-1zM56 208h1v1h-1zM55 186h1v1h-1zM53 194h1v1h-1zM58 200h1v1h-1z
+             M91 211h1v1h-1zM92 207h1v1h-1zM88 192h1v1h-1zM94 196h1v1h-1zM86 199h1v1h-1z
+             M292 211h1v1h-1zM294 207h1v1h-1zM290 186h1v1h-1zM284 194h1v1h-1zM298 195h1v1h-1z
+             M337 211h1v1h-1zM338 207h1v1h-1zM337 203h1v1h-1zM334 189h1v1h-1zM330 195h1v1h-1zM342 194h1v1h-1z
+             M382 211h1v1h-1zM383 207h1v1h-1zM382 203h1v1h-1zM381 183h1v1h-1zM378 191h1v1h-1zM386 192h1v1h-1zM376 197h1v1h-1zM388 198h1v1h-1z
+             M428 211h1v1h-1zM429 207h1v1h-1zM426 191h1v1h-1zM420 196h1v1h-1zM424 202h1v1h-1zM431 197h1v1h-1zM437 201h1v1h-1z"
+        />
+        <path
+          fill="var(--tree-bulb-red)"
+          d="M57 190h1v1h-1zM54 198h1v1h-1z
+             M92 193h1v1h-1zM85 196h1v1h-1zM91 199h1v1h-1z
+             M295 187h1v1h-1zM287 195h1v1h-1zM300 196h1v1h-1z
+             M339 190h1v1h-1zM336 196h1v1h-1zM345 198h1v1h-1z
+             M379 187h1v1h-1zM384 188h1v1h-1zM382 194h1v1h-1zM380 198h1v1h-1zM385 197h1v1h-1z
+             M432 191h1v1h-1zM420 201h1v1h-1zM424 198h1v1h-1zM434 202h1v1h-1zM437 196h1v1h-1z"
+        />
+      }
+      @case ('new-year') {
+        <path
+          fill="var(--tree-canopy-glow)"
+          d="M52 185h8v18h-8zM85 191h12v10h-12zM287 185h11v5h-11zM282 193h8v4h-8zM295 194h8v4h-8z
+             M332 188h11v9h-11zM329 194h17v6h-17zM378 184h9v8h-9zM376 190h13v10h-13zM421 190h15v12h-15z"
+        />
+        <path
+          fill="var(--tree-bulb-gold)"
+          d="M55 211h1v1h-1zM56 208h1v1h-1zM55 186h1v1h-1zM53 194h1v1h-1zM58 200h1v1h-1z
+             M91 211h1v1h-1zM92 207h1v1h-1zM88 192h1v1h-1zM94 196h1v1h-1zM86 199h1v1h-1z
+             M292 211h1v1h-1zM294 207h1v1h-1zM290 186h1v1h-1zM284 194h1v1h-1zM298 195h1v1h-1z
+             M337 211h1v1h-1zM338 207h1v1h-1zM337 203h1v1h-1zM334 189h1v1h-1zM330 195h1v1h-1zM342 194h1v1h-1z
+             M382 211h1v1h-1zM383 207h1v1h-1zM382 203h1v1h-1zM381 183h1v1h-1zM378 191h1v1h-1zM386 192h1v1h-1zM376 197h1v1h-1zM388 198h1v1h-1z
+             M428 211h1v1h-1zM429 207h1v1h-1zM426 191h1v1h-1zM420 196h1v1h-1zM424 202h1v1h-1zM431 197h1v1h-1zM437 201h1v1h-1z"
+        />
+        <path
+          fill="var(--tree-bulb-white)"
+          d="M57 190h1v1h-1zM54 198h1v1h-1zM92 193h1v1h-1zM85 196h1v1h-1z
+             M295 187h1v1h-1zM287 195h1v1h-1zM300 196h1v1h-1z
+             M339 190h1v1h-1zM336 196h1v1h-1zM345 198h1v1h-1z
+             M379 187h1v1h-1zM384 188h1v1h-1zM382 194h1v1h-1zM380 198h1v1h-1z
+             M432 191h1v1h-1zM420 201h1v1h-1zM424 198h1v1h-1zM434 202h1v1h-1zM437 196h1v1h-1z"
+        />
+      }
+      @case ('diwali') {
+        <path
+          fill="var(--tree-canopy-glow)"
+          d="M52 185h8v18h-8zM85 191h12v10h-12zM287 185h11v5h-11zM282 193h8v4h-8zM295 194h8v4h-8z
+             M332 188h11v9h-11zM329 194h17v6h-17zM378 184h9v8h-9zM376 190h13v10h-13zM421 190h15v12h-15z"
+        />
+        <path
+          fill="var(--tree-bulb-gold)"
+          d="M55 211h1v1h-1zM56 208h1v1h-1zM55 187h1v1h-1zM91 211h1v1h-1zM92 207h1v1h-1zM89 193h1v1h-1z
+             M292 211h1v1h-1zM294 207h1v1h-1zM291 186h1v1h-1z
+             M337 211h1v1h-1zM338 207h1v1h-1zM335 189h1v1h-1z
+             M382 211h1v1h-1zM383 207h1v1h-1zM381 184h1v1h-1zM382 192h1v1h-1z
+             M428 211h1v1h-1zM429 207h1v1h-1zM427 191h1v1h-1z"
+        />
+        <path
+          fill="var(--tree-bulb-amber)"
+          d="M52 202h1v2h-1zM85 200h1v2h-1zM95 199h1v2h-1z
+             M283 196h1v2h-1zM297 197h1v2h-1z
+             M330 199h1v2h-1zM344 199h1v2h-1z
+             M376 199h1v2h-1zM388 199h1v2h-1zM378 192h1v2h-1z
+             M420 202h1v2h-1zM431 201h1v2h-1zM437 202h1v2h-1z"
+        />
+        <path
+          fill="var(--tree-bulb-magenta)"
+          d="M58 202h1v2h-1zM54 193h1v1h-1zM90 199h1v2h-1z
+             M287 196h1v2h-1zM301 197h1v2h-1zM295 188h1v1h-1z
+             M335 198h1v2h-1zM341 193h1v1h-1z
+             M385 192h1v2h-1zM380 199h1v2h-1z
+             M424 202h1v2h-1zM434 202h1v2h-1z"
+        />
+      }
+      @case ('halloween') {
+        <path
+          fill="var(--tree-spooky-glow)"
+          d="M52 187h8v15h-8zM85 192h12v9h-12zM287 185h11v5h-11zM332 189h11v9h-11zM376 190h13v10h-13zM421 190h15v12h-15z"
+        />
+        <path
+          fill="var(--tram-web)"
+          d="M89 201h3v1h-3zM90 202h2v1h-2zM289 199h4v1h-4zM290 200h3v1h-3zM335 199h3v1h-3zM380 199h3v1h-3zM426 198h4v1h-4z"
+        />
+        <path
+          fill="var(--tree-bulb-amber)"
+          d="M54 191h1v1h-1zM57 199h1v1h-1zM87 195h1v1h-1zM94 197h1v1h-1z
+             M285 194h1v1h-1zM293 187h1v1h-1zM298 195h1v1h-1z
+             M332 194h1v1h-1zM341 192h1v1h-1zM379 188h1v1h-1zM386 196h1v1h-1z
+             M420 200h1v1h-1zM431 196h1v1h-1zM437 200h1v1h-1z"
+        />
+        <path
+          fill="var(--p-purple)"
+          d="M56 195h1v1h-1zM91 193h1v1h-1zM289 187h1v1h-1zM296 196h1v1h-1z
+             M337 190h1v1h-1zM344 197h1v1h-1zM384 191h1v1h-1zM377 197h1v1h-1z
+             M424 199h1v1h-1zM434 201h1v1h-1z"
+        />
+      }
+      @default {
+        @switch (activeSeason()) {
+          @case ('spring') {
+            <!-- Natural dusky-safe pink blossoms on Elm, Plane, Oak & Willow + fallen petals -->
+            <path
+              fill="var(--tree-blossom)"
+              d="M87 193h2v1h-2zM93 195h2v1h-2zM85 198h2v1h-2zM88 213h1v1h-1z
+                 M333 189h2v1h-2zM340 193h2v1h-2zM330 196h2v1h-2zM343 197h2v1h-2zM332 213h1v1h-1z
+                 M379 186h2v1h-2zM377 192h2v1h-2zM385 193h2v1h-2zM381 197h2v1h-2z
+                 M424 191h2v1h-2zM432 192h2v1h-2zM420 198h1v2h-1zM434 199h1v2h-1zM423 213h1v1h-1z"
+            />
+            <path
+              fill="var(--tree-blossom-hi)"
+              d="M88 193h1v1h-1zM94 195h1v1h-1zM334 189h1v1h-1zM341 193h1v1h-1z
+                 M380 186h1v1h-1zM378 192h1v1h-1zM425 191h1v1h-1zM433 192h1v1h-1z"
+            />
+          }
+          @case ('winter') {
+            <!-- Subtle winter morning frost along upper crowns across all 6 trees -->
+            <path
+              fill="var(--tree-frost)"
+              d="M55 183h2v1h-2zM53 189h2v1h-2zM88 190h5v1h-5zM289 184h7v1h-7zM283 192h4v1h-4z
+                 M334 186h7v1h-7zM381 181h3v1h-3zM377 189h4v1h-4zM424 188h9v1h-9z"
+            />
+          }
+          @case ('autumn') {
+            <!-- Scattered golden & crimson fallen leaves beneath the riverside trees -->
+            <path
+              fill="var(--fx-amber)"
+              d="M52 213h2v1h-2zM87 213h2v1h-2zM288 213h2v1h-2zM332 213h2v1h-2zM342 213h2v1h-2zM377 213h2v1h-2zM423 213h2v1h-2z"
+            />
+            <path
+              fill="var(--fx-crimson)"
+              d="M58 213h1v1h-1zM95 213h1v1h-1zM298 213h1v1h-1zM335 213h1v1h-1zM386 213h2v1h-2zM433 213h1v1h-1z"
+            />
+          }
+        }
+      }
+    }
+  </g>
+
+  <!-- Base riverside & bridge street lamps (tall Princes Bridge lamps, clear of tram & Fed Square centerpiece) -->
+  <g class="street-lamps">
+    <path
+      class="bridge"
+      d="M18 98h1v9h-1zM38 98h1v9h-1zM52 98h1v9h-1zM92 98h1v9h-1z
+         M132 98h1v9h-1zM156 98h1v9h-1zM180 98h1v9h-1zM204 98h1v9h-1zM224 98h1v9h-1z
+         M18 96h1v1h-1zM38 96h1v1h-1zM52 96h1v1h-1zM92 96h1v1h-1z
+         M132 96h1v1h-1zM156 96h1v1h-1zM180 96h1v1h-1zM204 96h1v1h-1zM224 96h1v1h-1z"
+    />
+    <path
+      class="lamp-halo"
+      d="M17 96h3v3h-3zM37 96h3v3h-3zM51 96h3v3h-3zM91 96h3v3h-3z
+         M131 96h3v3h-3zM155 96h3v3h-3zM179 96h3v3h-3zM203 96h3v3h-3zM223 96h3v3h-3z"
+    />
+    <path
+      class="lamp-bulb"
+      d="M18 97h1v1h-1zM38 97h1v1h-1zM52 97h1v1h-1zM92 97h1v1h-1z
+         M132 97h1v1h-1zM156 97h1v1h-1zM180 97h1v1h-1zM204 97h1v1h-1zM224 97h1v1h-1z"
+    />
+  </g>
+
+  <!-- High-Res 2x Melbourne W-Class Heritage Tram (480x270 sub-grid; seasonal & festival liveries) -->
+  <!-- Grounded flush on track Y=214 (107*2), X=114..156 (clear of lamp at 104 & boarding crowd at 160) -->
+  <g class="tram" transform="scale(0.5)">
+    <!-- Articulated diamond pantograph -->
+    <path
+      fill="var(--neutral-900)"
+      d="M130 193h10v1h-10zM132 194h1v1h-1zM137 194h1v1h-1zM131 195h1v1h-1zM138 195h1v1h-1z
+         M132 196h1v1h-1zM137 196h1v1h-1zM133 197h4v1h-4z"
+    />
+    <!-- Curved clerestory roof & route box -->
+    <path fill="var(--p-pants)" d="M118 198h34v1h-34zM115 199h40v1h-40z" />
+    <rect x="152" y="198" width="3" height="2" fill="var(--neutral-900)" />
+    <rect x="153" y="199" width="1" height="1" class="tram-light" />
+    <!-- Heritage roof trim band -->
+    <rect x="115" y="200" width="40" height="1" class="tram-trim" />
+
+    <!-- Main W-Class heritage green body + cream upper window band -->
+    <rect x="114" y="201" width="42" height="10" class="tram-body" />
+    <rect x="116" y="202" width="38" height="5" fill="var(--tram-cream)" />
+    <!-- Recessed center W-Class double sliding doors -->
+    <rect x="132" y="202" width="7" height="10" class="tram-body" />
+    <path fill="var(--neutral-900)" d="M135 202h1v10h-1z" />
+
+    <!-- 6 warm lit passenger windows + twin door panes + driver silhouette -->
+    <path
+      class="tram-windows"
+      d="M117 203h4v4h-4zM122 203h4v4h-4zM127 203h4v4h-4z
+         M133 203h2v4h-2zM136 203h2v4h-2z
+         M140 203h4v4h-4zM145 203h4v4h-4zM150 203h4v4h-4z"
+    />
+    <!-- Subtle seated passenger & driver silhouettes inside glowing windows -->
+    <path fill="var(--p-pants)" d="M119 205h1v2h-1zM128 205h1v2h-1zM142 205h1v2h-1zM152 204h1v3h-1z" />
+
+    <!-- Iconic gold waist pinstripe & side heritage emblems -->
+    <rect x="114" y="208" width="42" height="1" class="tram-trim" />
+    <path class="tram-trim" d="M123 210h2v1h-2zM145 210h2v1h-2z" />
+
+    <!-- Steel undercarriage, bumpers, twin bogies & 4 wheels flush on Y=214 -->
+    <path
+      fill="var(--neutral-900)"
+      d="M113 211h44v1h-44zM115 212h40v1h-40z
+         M118 212h3v2h-3zM124 212h3v2h-3zM143 212h3v2h-3zM149 212h3v2h-3z"
+    />
+    <path fill="var(--tram-cream)" d="M119 213h1v1h-1zM125 213h1v1h-1zM144 213h1v1h-1zM150 213h1v1h-1z" />
+
+    <!-- Rear crimson tail light & front warm glowing headlight + stepped beam -->
+    <rect x="113" y="209" width="1" height="2" fill="var(--fx-crimson)" />
+    <rect x="155" y="209" width="2" height="2" class="tram-light" />
+    <path class="tram-beam" d="M157 208h3v4h-3zM160 207h3v6h-3z" />
+
+    <!-- Festival & Seasonal Tram Decorations -->
+    @switch (activeHoliday()) {
+      @case ('christmas') {
+        <!-- Pine garland swags along roofline + glowing crimson/gold fairy lights + front Christmas wreath -->
+        <path
+          fill="var(--fx-pine)"
+          d="M115 200h40v1h-40zM117 201h5v1h-5zM125 201h5v1h-5zM133 201h5v1h-5zM141 201h5v1h-5zM149 201h5v1h-5z
+             M155 204h3v1h-3zM154 205h1v2h-1zM157 205h1v2h-1zM155 207h3v1h-3z"
+        />
+        <path
+          class="tree-light-red"
+          d="M117 200h1v1h-1zM123 201h1v1h-1zM129 200h1v1h-1zM135 201h1v1h-1zM141 200h1v1h-1zM147 201h1v1h-1zM153 200h1v1h-1z
+             M155 204h2v1h-2zM156 205h1v1h-1z"
+        />
+        <path
+          class="tree-light-gold"
+          d="M120 201h1v1h-1zM126 200h1v1h-1zM132 201h1v1h-1zM138 200h1v1h-1zM144 201h1v1h-1zM150 200h1v1h-1z"
+        />
+        <!-- Candy-cane bumper stripe accents -->
+        <path fill="var(--neutral-0)" d="M116 209h1v1h-1zM120 209h1v1h-1zM149 209h1v1h-1zM153 209h1v1h-1z" />
+        <path fill="var(--fx-crimson)" d="M118 209h1v1h-1zM151 209h1v1h-1z" />
+      }
+      @case ('new-year') {
+        <!-- Glowing gold & white rooftop marquee lights + festive bunting + celebration confetti -->
+        <path
+          fill="var(--p-spark)"
+          d="M116 199h1v1h-1zM120 199h1v1h-1zM124 199h1v1h-1zM128 199h1v1h-1zM132 199h1v1h-1z
+             M136 199h1v1h-1zM140 199h1v1h-1zM144 199h1v1h-1zM148 199h1v1h-1zM152 199h1v1h-1z"
+        />
+        <path fill="var(--fx-gold)" d="M117 201h2v1h-2zM125 201h2v1h-2zM133 201h2v1h-2zM141 201h2v1h-2zM149 201h2v1h-2z" />
+        <path fill="var(--fx-crimson)" d="M121 201h2v1h-2zM129 201h2v1h-2zM137 201h2v1h-2zM145 201h2v1h-2z" />
+        <path fill="var(--neutral-0)" d="M118 209h1v1h-1zM126 210h1v1h-1zM143 209h1v1h-1zM151 210h1v1h-1z" />
+      }
+      @case ('diwali') {
+        <!-- Marigold & mango-leaf toran along roof + row of glowing rooftop diyas + rangoli accents -->
+        <path
+          fill="var(--fx-amber)"
+          d="M116 200h38v1h-38zM118 201h3v1h-3zM124 201h3v1h-3zM130 201h3v1h-3zM136 201h3v1h-3zM142 201h3v1h-3zM148 201h3v1h-3z"
+        />
+        <path
+          fill="var(--fx-gold)"
+          d="M121 201h2v1h-2zM127 201h2v1h-2zM133 201h2v1h-2zM139 201h2v1h-2zM145 201h2v1h-2zM151 201h2v1h-2z
+             M121 209h4v1h-4zM144 209h4v1h-4z"
+        />
+        <!-- Rooftop clay diyas & bright flames -->
+        <path fill="var(--fx-crimson)" d="M119 197h3v1h-3zM126 197h3v1h-3zM141 197h3v1h-3zM148 197h3v1h-3z" />
+        <path fill="var(--p-spark)" d="M120 196h1v1h-1zM127 196h1v1h-1zM142 196h1v1h-1zM149 196h1v1h-1z" />
+      }
+      @case ('halloween') {
+        <!-- Rooftop glowing jack-o'-lantern + corner cobwebs + spooky amber/purple lights -->
+        <path fill="var(--tram-web)" d="M115 201h4v1h-4zM115 202h2v1h-2zM115 203h1v1h-1zM151 201h4v1h-4zM153 202h2v1h-2zM154 203h1v1h-1z" />
+        <path fill="var(--fx-amber)" d="M120 200h2v1h-2zM128 200h2v1h-2zM136 200h2v1h-2zM144 200h2v1h-2zM144 195h5v3h-5z" />
+        <path fill="var(--p-purple)" d="M124 200h2v1h-2zM132 200h2v1h-2zM140 200h2v1h-2zM148 200h2v1h-2z" />
+        <!-- Rooftop pumpkin stem & glowing eyes -->
+        <rect x="146" y="194" width="1" height="1" fill="var(--fx-pine)" />
+        <path fill="var(--p-spark)" d="M145 196h1v1h-1zM147 196h1v1h-1z" />
+      }
+      @default {
+        @switch (activeSeason()) {
+          @case ('summer') {
+            <!-- Rooftop surfboard + coastal blue-and-gold summer pennant bunting -->
+            <path fill="var(--tram-surf)" d="M119 196h8v2h-8zM127 197h2v1h-2zM117 201h2v1h-2zM125 201h2v1h-2zM141 201h2v1h-2zM149 201h2v1h-2z" />
+            <path fill="var(--fx-gold)" d="M121 197h5v1h-5zM121 201h2v1h-2zM129 201h2v1h-2zM145 201h2v1h-2z" />
+          }
+          @case ('winter') {
+            <!-- Subtle crisp winter frost dusting on roof & cozy crimson trim -->
+            <path fill="var(--neutral-0)" d="M118 198h14v1h-14zM138 198h12v1h-12z" />
+            <path fill="var(--fx-crimson)" d="M116 209h38v1h-38z" />
+          }
+          @case ('spring') {
+            <!-- Cherry-blossom pink & fresh leaf spring garland along roofline & nose -->
+            <path fill="var(--fx-pine)" d="M116 200h38v1h-38z" />
+            <path
+              fill="var(--tram-blossom)"
+              d="M117 199h2v2h-2zM123 200h2v2h-2zM129 199h2v2h-2zM139 200h2v2h-2zM145 199h2v2h-2zM151 200h2v2h-2z"
+            />
+            <path fill="var(--neutral-0)" d="M118 200h1v1h-1zM130 200h1v1h-1zM146 200h1v1h-1z" />
+          }
+          @default {
+            <!-- Autumn: fallen amber & crimson Melbourne plane-tree leaves on roof & trailing behind -->
+            <path fill="var(--fx-amber)" d="M119 197h2v1h-2zM125 197h2v1h-2zM143 197h2v1h-2zM111 210h2v1h-2zM110 213h2v1h-2z" />
+            <path fill="var(--fx-crimson)" d="M122 197h2v1h-2zM147 197h2v1h-2zM112 207h1v1h-1zM112 212h1v1h-1z" />
+          }
+        }
+      }
+    }
+  </g>
+
+  <!-- Lively 2x-density Melbourne Fed Square crowd & promenade pedestrians (480x270 sub-grid) -->
+  <!-- All figures grounded flush on sidewalk Y=214 (107*2), clear of tram & street lamps -->
+  <g class="pixel-humans" transform="scale(0.5)">
+    @switch (activeHoliday()) {
+      @case ('christmas') {
+        <defs>
+          <!-- Santa hat + festive patterned jumper -->
+          <g id="ped-xmas-santa">
+            <path fill="var(--neutral-0)" d="M1 -12h5v1h-5zM6 -14h1v2h-1z" />
+            <path fill="var(--fx-crimson)" d="M2 -14h4v2h-4zM3 -15h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+            <path fill="var(--neutral-0)" d="M2 -7h1v1h-1zM4 -7h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M3 -7h1v1h-1z" />
+            <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+          <!-- Santa hat + carrying wrapped Christmas gift -->
+          <g id="ped-xmas-gift">
+            <path fill="var(--neutral-0)" d="M2 -12h3v1h-3zM5 -13h1v1h-1z" />
+            <path fill="var(--fx-crimson)" d="M2 -14h3v2h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+            <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+            <path fill="var(--fx-crimson)" d="M5 -7h3v3h-3z" />
+            <path fill="var(--fx-gold)" d="M6 -8h1v4h-1zM5 -6h3v1h-3z" />
+          </g>
+          <!-- Melbourne December reindeer antlers + festive tee & shorts -->
+          <g id="ped-xmas-antler">
+            <path fill="var(--fx-amber)" d="M1 -14h1v2h-1zM0 -15h1v1h-1zM5 -14h1v2h-1zM6 -15h1v1h-1z" />
+            <path fill="var(--fx-crimson)" d="M2 -12h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -6h1v2h-1zM5 -6h1v2h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M2 -8h3v4h-3zM1 -8h1v2h-1zM5 -8h1v2h-1z" />
+            <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v1h-1zM4 -3h1v1h-1z" />
+            <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+        </defs>
+        <use href="#ped-xmas-santa" x="84" y="214" class="v-a s-1 h-1" />
+        <use href="#ped-xmas-gift" x="160" y="214" class="v-b s-2 h-2" />
+        <use href="#ped-xmas-antler" x="171" y="214" class="v-c s-1 h-3" />
+        <use href="#ped-xmas-santa" x="189" y="214" class="v-a s-3 h-1" />
+        <use href="#ped-xmas-antler" x="199" y="214" class="v-b s-2 h-2" />
+        <use href="#ped-xmas-santa" x="211" y="214" class="v-c s-1 h-1" />
+        <use href="#ped-xmas-gift" x="223" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-xmas-santa" x="235" y="214" class="v-b s-1 h-3" />
+        <use href="#ped-xmas-antler" x="246" y="214" class="v-c s-3 h-1" />
+        <use href="#ped-xmas-gift" x="255" y="214" class="v-a s-2 h-2" />
+        <use href="#ped-xmas-santa" x="272" y="214" class="v-b s-1 h-1" />
+        <use href="#ped-xmas-santa" x="318" y="214" class="v-c s-2 h-2" />
+        <use href="#ped-xmas-gift" x="329" y="214" class="v-a s-1 h-3" />
+        <use href="#ped-xmas-antler" x="348" y="214" class="v-b s-3 h-1" />
+      }
+      @case ('diwali') {
+        <defs>
+          <!-- Festive embroidered kurta-pajama + glowing sparkler -->
+          <g id="ped-diwali-kurta">
+            <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM2 -11h1v1h-1z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -6h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v2h-3z" />
+            <path fill="var(--fx-gold)" d="M3 -8h1v3h-1zM2 -3h3v1h-3z" />
+            <path fill="var(--neutral-0)" d="M2 -2h1v1h-1zM4 -2h1v1h-1z" />
+            <path fill="var(--fx-amber)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+            <path fill="var(--neutral-900)" d="M6 -8h1v2h-1z" />
+            <path fill="var(--p-spark)" d="M7 -11h1v3h-1zM6 -10h3v1h-3z" />
+            <path fill="var(--neutral-0)" d="M7 -10h1v1h-1z" />
+          </g>
+          <!-- Draped saree with gold pallu & zari border + handheld diya -->
+          <g id="ped-diwali-saree">
+            <path fill="var(--hr, var(--neutral-900))" d="M1 -12h4v1h-4zM1 -11h1v3h-1zM5 -11h1v3h-1zM2 -9h1v1h-1zM4 -9h1v1h-1z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -6h1v2h-1zM5 -6h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M2 -8h3v3h-3zM1 -5h5v4h-5z" />
+            <path fill="var(--fx-gold)" d="M2 -8h1v1h-1zM3 -7h1v1h-1zM4 -6h1v1h-1zM1 -2h5v1h-5z" />
+            <path fill="var(--fx-amber)" d="M6 -6h2v1h-2z" />
+            <path fill="var(--p-spark)" d="M6 -7h1v1h-1z" />
+          </g>
+          <!-- Nehru jacket over festive kurta -->
+          <g id="ped-diwali-nehru">
+            <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h1v3h-1zM5 -8h1v3h-1zM2 -5h3v2h-3z" />
+            <path fill="var(--ga, var(--ped-b))" d="M2 -8h3v3h-3z" />
+            <path fill="var(--fx-gold)" d="M3 -8h1v1h-1zM3 -6h1v1h-1z" />
+            <path fill="var(--neutral-0)" d="M2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+        </defs>
+        <use href="#ped-diwali-nehru" x="84" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-diwali-saree" x="160" y="214" class="v-b s-2 h-1" />
+        <use href="#ped-diwali-kurta" x="171" y="214" class="v-c s-3 h-1" />
+        <use href="#ped-diwali-saree" x="189" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-diwali-nehru" x="199" y="214" class="v-b s-3 h-1" />
+        <use href="#ped-diwali-saree" x="211" y="214" class="v-c s-2 h-1" />
+        <use href="#ped-diwali-kurta" x="223" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-diwali-saree" x="235" y="214" class="v-b s-3 h-1" />
+        <use href="#ped-diwali-nehru" x="246" y="214" class="v-c s-2 h-1" />
+        <use href="#ped-diwali-kurta" x="255" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-diwali-saree" x="272" y="214" class="v-b s-1 h-1" />
+        <use href="#ped-diwali-nehru" x="318" y="214" class="v-c s-3 h-1" />
+        <use href="#ped-diwali-saree" x="329" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-diwali-kurta" x="348" y="214" class="v-b s-2 h-1" />
+      }
+      @case ('halloween') {
+        <defs>
+          <!-- Pointy witch hat, cloak & orange pumpkin bucket -->
+          <g id="ped-hallow-witch">
+            <path fill="var(--neutral-900)" d="M0 -12h7v1h-7zM2 -14h3v1h-3zM3 -16h2v2h-2zM4 -17h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M2 -13h3v1h-3z" />
+            <path fill="var(--hr, var(--neutral-900))" d="M1 -11h1v3h-1zM5 -11h1v3h-1zM2 -9h1v1h-1zM4 -9h1v1h-1z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -6h1v1h-1z" />
+            <path fill="var(--p-purple)" d="M1 -8h5v6h-5z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1zM6 -6h2v1h-2z" />
+            <path fill="var(--fx-amber)" d="M6 -5h2v2h-2z" />
+          </g>
+          <!-- Vampire cape, high crimson collar & bowtie -->
+          <g id="ped-hallow-vamp">
+            <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3z" />
+            <path fill="var(--neutral-900)" d="M0 -8h7v6h-7zM1 -10h1v2h-1zM5 -10h1v2h-1z" />
+            <path fill="var(--fx-crimson)" d="M1 -9h1v1h-1zM5 -9h1v1h-1zM1 -5h1v3h-1zM5 -5h1v3h-1z" />
+            <path fill="var(--neutral-0)" d="M2 -8h3v3h-3z" />
+            <path fill="var(--fx-crimson)" d="M3 -8h1v1h-1z" />
+            <path fill="var(--p-pants)" d="M2 -4h1v3h-1zM4 -4h1v3h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+          <!-- Wavy 16-bit white sheet ghost costume -->
+          <g id="ped-hallow-ghost">
+            <path fill="var(--neutral-0)" d="M2 -13h3v1h-3zM1 -12h5v10h-5zM1 -2h1v1h-1zM3 -2h1v1h-1zM5 -2h1v1h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -10h1v1h-1zM4 -10h1v1h-1zM3 -8h1v1h-1z" />
+          </g>
+          <!-- Jack-o'-lantern pumpkin-head trick-or-treater -->
+          <g id="ped-hallow-pumpkin">
+            <path fill="var(--fx-pine)" d="M3 -13h1v1h-1z" />
+            <path fill="var(--fx-amber)" d="M1 -12h5v3h-5z" />
+            <path fill="var(--neutral-900)" d="M2 -11h1v1h-1zM4 -11h1v1h-1zM2 -10h3v1h-3z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+            <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+        </defs>
+        <use href="#ped-hallow-witch" x="84" y="214" class="v-a s-1 h-1" />
+        <use href="#ped-hallow-vamp" x="160" y="214" class="v-b s-1 h-1" />
+        <use href="#ped-hallow-pumpkin" x="171" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-hallow-witch" x="189" y="214" class="v-b s-2 h-2" />
+        <use href="#ped-hallow-ghost" x="199" y="214" />
+        <use href="#ped-hallow-ghost" x="211" y="214" />
+        <use href="#ped-hallow-vamp" x="223" y="214" class="v-c s-1 h-1" />
+        <use href="#ped-hallow-witch" x="235" y="214" class="v-a s-3 h-1" />
+        <use href="#ped-hallow-pumpkin" x="246" y="214" class="v-b s-2 h-2" />
+        <use href="#ped-hallow-ghost" x="255" y="214" />
+        <use href="#ped-hallow-witch" x="272" y="214" class="v-c s-1 h-3" />
+        <use href="#ped-hallow-vamp" x="318" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-hallow-pumpkin" x="329" y="214" class="v-b s-1 h-2" />
+        <use href="#ped-hallow-witch" x="348" y="214" class="v-c s-3 h-1" />
+      }
+      @case ('new-year') {
+        <defs>
+          <!-- Striped party hat + raised NYE sparkler -->
+          <g id="ped-nye-party">
+            <path fill="var(--neutral-0)" d="M3 -16h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M3 -15h1v1h-1zM2 -13h3v1h-3z" />
+            <path fill="var(--fx-crimson)" d="M2 -14h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -6h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+            <path fill="var(--neutral-0)" d="M3 -8h1v2h-1z" />
+            <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1zM6 -9h1v3h-1z" />
+            <path fill="var(--p-spark)" d="M6 -12h1v3h-1zM5 -11h3v1h-3z" />
+            <path fill="var(--neutral-0)" d="M6 -11h1v1h-1z" />
+          </g>
+          <!-- Evening shimmer dress + updo -->
+          <g id="ped-nye-dress">
+            <path fill="var(--hr, var(--neutral-900))" d="M3 -13h1v1h-1zM2 -12h3v1h-3zM1 -11h1v2h-1zM5 -11h1v2h-1z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -7h1v2h-1zM5 -7h1v2h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+            <path fill="var(--g, var(--ped-a))" d="M2 -8h3v3h-3zM1 -5h5v3h-5z" />
+            <path fill="var(--fx-gold)" d="M2 -7h1v1h-1zM4 -5h1v1h-1zM2 -3h1v1h-1zM4 -3h1v1h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+          <!-- Evening suit + gold tie -->
+          <g id="ped-nye-suit">
+            <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3z" />
+            <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+            <path fill="var(--p-pants)" d="M1 -8h5v3h-5zM2 -5h3v2h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+            <path fill="var(--neutral-0)" d="M3 -8h1v3h-1z" />
+            <path fill="var(--fx-gold)" d="M3 -8h1v2h-1z" />
+            <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+          </g>
+        </defs>
+        <use href="#ped-nye-suit" x="84" y="214" class="v-a s-1 h-1" />
+        <use href="#ped-nye-dress" x="160" y="214" class="v-b s-2 h-2" />
+        <use href="#ped-nye-party" x="171" y="214" class="v-c s-1 h-3" />
+        <use href="#ped-nye-party" x="189" y="214" class="v-a s-3 h-1" />
+        <use href="#ped-nye-dress" x="199" y="214" class="v-b s-2 h-1" />
+        <use href="#ped-nye-party" x="211" y="214" class="v-c s-1 h-2" />
+        <use href="#ped-nye-suit" x="223" y="214" class="v-a s-2 h-1" />
+        <use href="#ped-nye-dress" x="235" y="214" class="v-b s-1 h-3" />
+        <use href="#ped-nye-party" x="246" y="214" class="v-c s-3 h-1" />
+        <use href="#ped-nye-suit" x="255" y="214" class="v-a s-2 h-2" />
+        <use href="#ped-nye-dress" x="272" y="214" class="v-b s-1 h-1" />
+        <use href="#ped-nye-party" x="318" y="214" class="v-c s-2 h-2" />
+        <use href="#ped-nye-dress" x="329" y="214" class="v-a s-1 h-3" />
+        <use href="#ped-nye-suit" x="348" y="214" class="v-b s-3 h-1" />
+      }
+      @default {
+        @switch (activeSeason()) {
+          @case ('summer') {
+            <defs>
+              <!-- Summer tee, shorts & sunglasses -->
+              <g id="ped-summer-tee">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM2 -11h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -6h1v2h-1zM5 -6h1v2h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -11h3v1h-3z" />
+                <path fill="var(--g, var(--ped-a))" d="M2 -8h3v4h-3zM1 -8h1v2h-1zM5 -8h1v2h-1z" />
+                <path fill="var(--p-denim)" d="M2 -4h3v1h-3zM2 -3h1v1h-1zM4 -3h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Wide-brim straw sunhat & flared sundress -->
+              <g id="ped-summer-hat">
+                <path fill="var(--p-straw)" d="M2 -14h3v1h-3zM0 -12h7v1h-7z" />
+                <path fill="var(--ga, var(--ped-b))" d="M2 -13h3v1h-3z" />
+                <path fill="var(--hr, var(--neutral-900))" d="M1 -11h1v3h-1zM5 -11h1v3h-1zM2 -9h1v1h-1zM4 -9h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -7h1v2h-1zM5 -7h1v2h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M2 -8h3v3h-3zM1 -5h5v2h-5z" />
+                <path fill="var(--ga, var(--ped-b))" d="M2 -6h3v1h-3z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Cap, summer tee, shorts & iced coffee -->
+              <g id="ped-summer-coffee">
+                <path fill="var(--ga, var(--ped-b))" d="M2 -13h3v1h-3zM2 -12h4v1h-4z" />
+                <path fill="var(--hr, var(--neutral-900))" d="M1 -11h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -6h1v2h-1zM5 -6h1v1h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M2 -8h3v4h-3zM1 -8h1v2h-1zM5 -8h1v2h-1z" />
+                <path fill="var(--p-denim)" d="M2 -4h3v1h-3zM2 -3h1v1h-1zM4 -3h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1zM6 -7h1v2h-1z" />
+                <path fill="var(--fx-amber)" d="M6 -6h1v1h-1z" />
+                <path fill="var(--ga, var(--ped-b))" d="M6 -8h1v1h-1z" />
+              </g>
+            </defs>
+            <use href="#ped-summer-tee" x="84" y="214" class="v-a s-1 h-1" />
+            <use href="#ped-summer-hat" x="160" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-summer-coffee" x="171" y="214" class="v-c s-1 h-3" />
+            <use href="#ped-summer-tee" x="189" y="214" class="v-a s-3 h-1" />
+            <use href="#ped-summer-hat" x="199" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-summer-coffee" x="211" y="214" class="v-c s-1 h-1" />
+            <use href="#ped-summer-tee" x="223" y="214" class="v-b s-2 h-1" />
+            <use href="#ped-summer-hat" x="235" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-summer-coffee" x="246" y="214" class="v-c s-3 h-1" />
+            <use href="#ped-summer-tee" x="255" y="214" class="v-a s-2 h-2" />
+            <use href="#ped-summer-hat" x="272" y="214" class="v-b s-1 h-1" />
+            <use href="#ped-summer-coffee" x="318" y="214" class="v-c s-2 h-2" />
+            <use href="#ped-summer-tee" x="329" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-summer-hat" x="348" y="214" class="v-b s-3 h-1" />
+          }
+          @case ('winter') {
+            <defs>
+              <!-- Melbourne puffer jacket, pom-pom beanie & scarf -->
+              <g id="ped-winter-puffer">
+                <path fill="var(--neutral-0)" d="M3 -14h1v1h-1z" />
+                <path fill="var(--ga, var(--ped-b))" d="M2 -13h3v2h-3z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+                <path fill="var(--p-pants)" d="M3 -8h1v4h-1zM2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--fx-crimson)" d="M2 -9h3v1h-3zM2 -8h1v2h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Long winter coat, scarf & Melbourne pixel umbrella -->
+              <g id="ped-winter-umbrella">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -6h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v2h-3z" />
+                <path fill="var(--fx-crimson)" d="M2 -9h3v1h-3zM4 -8h1v2h-1z" />
+                <path fill="var(--p-pants)" d="M2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1zM5 -17h1v12h-1z" />
+                <path fill="var(--ga, var(--ped-b))" d="M3 -16h5v1h-5zM1 -15h9v1h-9zM0 -14h11v1h-11z" />
+              </g>
+              <!-- Long wool overcoat & cozy knit scarf -->
+              <g id="ped-winter-coat">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM1 -11h1v2h-1zM5 -11h1v2h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v3h-3z" />
+                <path fill="var(--neutral-0)" d="M2 -9h3v1h-3zM3 -8h1v3h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -2h1v2h-1zM4 -2h1v2h-1z" />
+              </g>
+            </defs>
+            <use href="#ped-winter-umbrella" x="84" y="214" class="v-a s-1 h-1" />
+            <use href="#ped-winter-puffer" x="160" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-winter-coat" x="171" y="214" class="v-c s-1 h-3" />
+            <use href="#ped-winter-coat" x="189" y="214" class="v-a s-3 h-1" />
+            <use href="#ped-winter-puffer" x="199" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-winter-coat" x="211" y="214" class="v-c s-1 h-1" />
+            <use href="#ped-winter-puffer" x="223" y="214" class="v-a s-2 h-1" />
+            <use href="#ped-winter-coat" x="235" y="214" class="v-b s-1 h-3" />
+            <use href="#ped-winter-puffer" x="246" y="214" class="v-c s-3 h-1" />
+            <use href="#ped-winter-coat" x="255" y="214" class="v-a s-2 h-2" />
+            <use href="#ped-winter-umbrella" x="272" y="214" class="v-b s-1 h-1" />
+            <use href="#ped-winter-puffer" x="318" y="214" class="v-c s-2 h-2" />
+            <use href="#ped-winter-coat" x="329" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-winter-umbrella" x="348" y="214" class="v-b s-3 h-1" />
+          }
+          @case ('spring') {
+            <defs>
+              <!-- Open utility/denim jacket over white tee -->
+              <g id="ped-spring-jacket">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM2 -11h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M3 -8h1v4h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h2v3h-2zM2 -5h1v1h-1zM4 -8h2v3h-2zM4 -5h1v1h-1z" />
+                <path fill="var(--p-denim)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Baseball cap + pullover hoodie -->
+              <g id="ped-spring-hoodie">
+                <path fill="var(--ga, var(--ped-b))" d="M2 -13h3v1h-3zM2 -12h4v1h-4z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M2 -9h1v1h-1zM4 -9h1v1h-1zM1 -8h5v3h-5zM2 -5h3v1h-3z" />
+                <path fill="var(--neutral-0)" d="M2 -8h1v2h-1zM4 -8h1v2h-1z" />
+                <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Light top + flared midi skirt -->
+              <g id="ped-spring-skirt">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM1 -11h1v3h-1zM5 -11h1v3h-1zM2 -9h1v1h-1zM4 -9h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -6h1v2h-1zM5 -6h1v2h-1zM2 -2h1v1h-1zM4 -2h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M2 -8h3v3h-3zM1 -8h1v2h-1zM5 -8h1v2h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M2 -5h3v1h-3zM1 -4h5v2h-5z" />
+                <path fill="var(--neutral-0)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+            </defs>
+            <use href="#ped-spring-jacket" x="84" y="214" class="v-a s-1 h-1" />
+            <use href="#ped-spring-skirt" x="160" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-spring-hoodie" x="171" y="214" class="v-c s-1 h-3" />
+            <use href="#ped-spring-jacket" x="189" y="214" class="v-a s-3 h-1" />
+            <use href="#ped-spring-skirt" x="199" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-spring-hoodie" x="211" y="214" class="v-c s-1 h-1" />
+            <use href="#ped-spring-jacket" x="223" y="214" class="v-b s-2 h-1" />
+            <use href="#ped-spring-skirt" x="235" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-spring-hoodie" x="246" y="214" class="v-c s-3 h-1" />
+            <use href="#ped-spring-jacket" x="255" y="214" class="v-a s-2 h-2" />
+            <use href="#ped-spring-skirt" x="272" y="214" class="v-b s-1 h-1" />
+            <use href="#ped-spring-hoodie" x="318" y="214" class="v-c s-2 h-2" />
+            <use href="#ped-spring-jacket" x="329" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-spring-skirt" x="348" y="214" class="v-b s-3 h-1" />
+          }
+          @default {
+            <!-- Autumn (Melbourne trench coats, draped scarves, knit sweaters & coffee) -->
+            <defs>
+              <!-- Long trench coat + draped scarf with hanging tail -->
+              <g id="ped-autumn-trench">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM1 -11h1v2h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v2h-3z" />
+                <path fill="var(--p-pants)" d="M2 -5h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--fx-crimson)" d="M2 -9h3v1h-3zM4 -8h1v3h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+              <!-- Chunky knit sweater + Melbourne takeaway coffee -->
+              <g id="ped-autumn-sweater">
+                <path fill="var(--hr, var(--neutral-900))" d="M2 -12h3v1h-3zM5 -11h1v1h-1z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h5v3h-5zM2 -5h3v1h-3z" />
+                <path fill="var(--ga, var(--ped-b))" d="M2 -7h3v1h-3z" />
+                <path fill="var(--p-denim)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1zM6 -7h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M6 -6h1v2h-1z" />
+              </g>
+              <!-- Knit beanie + open autumn jacket over white tee -->
+              <g id="ped-autumn-jacket">
+                <path fill="var(--ga, var(--ped-b))" d="M2 -13h3v2h-3z" />
+                <path fill="var(--sk, var(--p-skin))" d="M2 -11h3v2h-3zM3 -9h1v1h-1zM1 -5h1v1h-1zM5 -5h1v1h-1z" />
+                <path fill="var(--neutral-0)" d="M3 -8h1v4h-1z" />
+                <path fill="var(--g, var(--ped-a))" d="M1 -8h2v3h-2zM2 -5h1v1h-1zM4 -8h2v3h-2zM4 -5h1v1h-1z" />
+                <path fill="var(--p-pants)" d="M2 -4h3v1h-3zM2 -3h1v2h-1zM4 -3h1v2h-1z" />
+                <path fill="var(--neutral-900)" d="M2 -1h1v1h-1zM4 -1h1v1h-1z" />
+              </g>
+            </defs>
+            <use href="#ped-autumn-trench" x="84" y="214" class="v-a s-1 h-1" />
+            <use href="#ped-autumn-sweater" x="160" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-autumn-jacket" x="171" y="214" class="v-c s-1 h-3" />
+            <use href="#ped-autumn-trench" x="189" y="214" class="v-a s-3 h-1" />
+            <use href="#ped-autumn-sweater" x="199" y="214" class="v-b s-2 h-2" />
+            <use href="#ped-autumn-jacket" x="211" y="214" class="v-c s-1 h-1" />
+            <use href="#ped-autumn-trench" x="223" y="214" class="v-b s-2 h-1" />
+            <use href="#ped-autumn-sweater" x="235" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-autumn-jacket" x="246" y="214" class="v-c s-3 h-1" />
+            <use href="#ped-autumn-trench" x="255" y="214" class="v-a s-2 h-2" />
+            <use href="#ped-autumn-sweater" x="272" y="214" class="v-b s-1 h-1" />
+            <use href="#ped-autumn-jacket" x="318" y="214" class="v-c s-2 h-2" />
+            <use href="#ped-autumn-trench" x="329" y="214" class="v-a s-1 h-3" />
+            <use href="#ped-autumn-sweater" x="348" y="214" class="v-b s-3 h-1" />
+          }
+        }
+      }
+    }
+  </g>
+
+  <!-- 7. SLOT C: Princes Bridge festive string lights (layered cleanly over bridge rail) -->
+  @switch (activeHoliday()) {
+    @case ('default') {
+      @if (activeSeason() === 'winter') {
+        <path fill="var(--tree-frost)" d="M84 107h8v1h-8zM100 107h8v1h-8zM136 107h10v1h-10z" />
+      } @else if (activeSeason() === 'spring') {
+        <path fill="var(--tree-blossom)" d="M88 107h1v1h-1zM104 107h1v1h-1zM122 107h1v1h-1zM139 107h1v1h-1z" />
+      }
+    }
+    @case ('christmas') {
+      <g class="overlay-bridge">
+        <path
+          class="fx-gold"
+          d="M56 107h1v1h-1zM86 107h1v1h-1zM94 107h1v1h-1zM102 107h1v1h-1zM110 107h1v1h-1z
+             M118 107h1v1h-1zM126 107h1v1h-1zM134 107h1v1h-1zM146 107h1v1h-1zM158 107h1v1h-1zM170 107h1v1h-1z"
+        />
+        <path
+          class="fx-crimson"
+          d="M82 107h1v1h-1zM90 107h1v1h-1zM98 107h1v1h-1zM106 107h1v1h-1zM114 107h1v1h-1z
+             M122 107h1v1h-1zM130 107h1v1h-1zM140 107h1v1h-1zM152 107h1v1h-1zM164 107h1v1h-1z"
+        />
+      </g>
+    }
+    @case ('new-year') {
+      <g class="overlay-bridge">
+        <path
+          class="fx-gold"
+          d="M84 107h1v1h-1zM90 107h1v1h-1zM96 107h1v1h-1zM102 107h1v1h-1zM108 107h1v1h-1z
+             M114 107h1v1h-1zM120 107h1v1h-1zM126 107h1v1h-1zM132 107h1v1h-1zM144 107h1v1h-1zM156 107h1v1h-1zM168 107h1v1h-1z"
+        />
+      </g>
+    }
+    @case ('diwali') {
+      <g class="overlay-bridge">
+        <path
+          class="fx-amber"
+          d="M84 107h1v1h-1zM92 107h1v1h-1zM100 107h1v1h-1zM108 107h1v1h-1zM116 107h1v1h-1z
+             M124 107h1v1h-1zM132 107h1v1h-1zM144 107h1v1h-1zM156 107h1v1h-1zM168 107h1v1h-1z"
+        />
+        <path
+          class="fx-gold"
+          d="M88 107h1v1h-1zM96 107h1v1h-1zM104 107h1v1h-1zM112 107h1v1h-1zM120 107h1v1h-1zM128 107h1v1h-1z"
+        />
+      </g>
+    }
+    @case ('halloween') {
+      <g class="overlay-bridge">
+        <path
+          class="fx-amber"
+          d="M88 107h1v1h-1zM100 107h1v1h-1zM112 107h1v1h-1zM124 107h1v1h-1zM148 107h1v1h-1zM164 107h1v1h-1z"
+        />
+      </g>
+    }
+  }
+
+  <!-- 8. Yarra River water + base skyline reflections -->
+  <rect x="0" y="110" width="240" height="25" class="water-base" />
+  <path
+    class="water-ripple"
+    d="M12 113h14v1h-14zM40 116h18v1h-18zM64 113h20v1h-20zM98 115h28v1h-28z
+       M138 113h22v1h-22zM172 116h26v1h-26zM208 114h18v1h-18z
+       M24 120h16v1h-16zM78 119h18v1h-18zM152 120h24v1h-24zM200 119h16v1h-16z"
+  />
+  <path
+    class="water-accent"
+    d="M18 111h1v1h-1zM38 111h1v1h-1zM52 111h1v1h-1zM92 111h1v1h-1z
+       M132 111h1v1h-1zM156 111h1v1h-1zM180 111h1v1h-1zM204 111h1v1h-1zM224 111h1v1h-1z
+       M64 111h12v1h-12zM68 113h7v1h-7zM69 116h5v1h-5zM70 118h3v1h-3z
+       M142 112h2v1h-2zM141 115h3v1h-3zM142 118h1v1h-1z
+       M188 112h6v1h-6zM189 115h5v1h-5zM190 118h3v1h-3z
+       M203 112h7v1h-7zM204 115h5v1h-5zM205 118h4v1h-4z"
+  />
+
+  <!-- 9. SLOT D: Holiday Yarra Water Reflections (mirrors active plaza & sky glows) -->
+  @switch (activeHoliday()) {
+    @case ('default') {
+      @switch (activeSeason()) {
+        @case ('summer') {
+          <path fill="var(--water-surf)" d="M98 112h8v1h-8zM118 114h10v1h-10zM148 113h8v1h-8z" />
+          <path class="fx-water-gold" d="M201 112h8v1h-8zM203 115h5v1h-5z" />
+        }
+        @case ('autumn') {
+          <path class="fx-water-amber" d="M108 112h6v1h-6zM122 115h6v1h-6z" />
+        }
+        @case ('winter') {
+          <path class="fx-water-amber" d="M110 112h4v1h-4zM123 112h4v1h-4zM111 115h2v1h-2zM124 115h2v1h-2z" />
+        }
+        @case ('spring') {
+          <path fill="var(--water-blossom)" d="M109 112h5v1h-5zM122 114h5v1h-5z" />
+          <path class="water-accent" d="M112 115h3v1h-3z" />
+        }
+      }
+    }
+    @case ('christmas') {
+      <path class="fx-water-crimson" d="M109 112h3v1h-3zM115 115h3v1h-3zM111 118h2v1h-2z" />
+      <path class="fx-water-gold" d="M113 112h4v1h-4zM110 115h3v1h-3zM114 118h2v1h-2z" />
+    }
+    @case ('new-year') {
+      <path
+        class="fx-water-gold"
+        d="M107 112h12v1h-12zM109 115h8v1h-8zM156 113h5v1h-5zM182 114h5v1h-5zM216 113h5v1h-5z"
+      />
+      <path class="fx-water-crimson" d="M183 117h3v1h-3zM112 118h4v1h-4z" />
+    }
+    @case ('diwali') {
+      <path
+        class="fx-water-gold"
+        d="M106 112h14v1h-14zM108 115h10v1h-10zM110 118h6v1h-6z
+           M151 113h3v1h-3zM173 114h3v1h-3zM193 113h3v1h-3zM219 114h3v1h-3z"
+      />
+      <path class="night-water-magenta" d="M161 112h5v1h-5zM205 113h5v1h-5zM162 116h3v1h-3z" />
+      <path class="night-water-emerald" d="M184 112h5v1h-5zM185 116h3v1h-3z" />
+    }
+    @case ('halloween') {
+      <path
+        class="fx-water-amber"
+        d="M112 112h8v1h-8zM114 115h6v1h-6zM115 118h4v1h-4zM202 113h8v1h-8zM204 116h5v1h-5z"
+      />
+    }
+  }
+
+  <!-- 10. High-Res 2x Open-Roof Yarra River Party Boat (480x270 sub-grid; X=276..330, waterline Y=238) -->
+  <g class="party-boat" transform="scale(0.5)">
+    <!-- Trailing water wake, hull waterline foam & bow splash -->
+    <path
+      class="water-ripple"
+      d="M262 238h12v1h-12zM266 240h14v1h-14zM276 238h54v1h-54zM329 237h2v1h-2zM330 238h2v1h-2z"
+    />
+    <!-- Warm party-boat glow reflected in the Yarra below -->
+    <path
+      class="fx-water-gold"
+      d="M282 240h8v1h-8zM294 240h10v1h-10zM308 240h8v1h-8zM288 242h18v1h-18z"
+    />
+
+    <!-- Open-air deck guests & captain (standing waist-up inside the open boat, Y=224..231) -->
+    <!-- Captain at the forward helm (X=313..317) -->
+    <path fill="var(--neutral-0)" d="M314 224h3v1h-3z" />
+    <path fill="var(--neutral-900)" d="M316 225h2v1h-2z" />
+    <path fill="var(--p-skin)" d="M314 225h3v2h-3z" />
+    <path fill="var(--p-pants)" d="M313 227h5v4h-5z" />
+    <path fill="var(--fx-gold)" d="M313 227h1v1h-1zM317 227h1v1h-1z" />
+
+    <!-- 4 Celebrating party guests across the open deck (X=280, 288, 297, 305) -->
+    <!-- Hair -->
+    <path
+      fill="var(--neutral-900)"
+      d="M281 224h3v1h-3zM289 224h3v1h-3zM288 225h1v3h-1zM292 225h1v3h-1z
+         M298 224h3v1h-3zM306 224h3v1h-3zM309 225h1v2h-1z"
+    />
+    <!-- Faces & raised cheering hands -->
+    <path
+      fill="var(--p-skin)"
+      d="M281 225h3v2h-3zM279 225h1v1h-1z
+         M289 225h3v2h-3z
+         M298 225h3v2h-3zM296 225h1v1h-1zM302 225h1v1h-1z
+         M306 225h3v2h-3z"
+    />
+    <!-- Outfits (follow active Melbourne season / festival palette) -->
+    <path fill="var(--ped-a)" d="M280 227h5v4h-5zM279 226h1v2h-1zM305 227h5v4h-5z" />
+    <path fill="var(--ped-b)" d="M288 227h5v4h-5z" />
+    <path fill="var(--ped-c)" d="M297 227h5v4h-5zM296 226h1v2h-1zM302 226h1v2h-1z" />
+    <!-- Raised toast glass in Guest 1's hand -->
+    <rect x="279" y="224" width="1" height="1" fill="var(--fx-gold)" />
+
+    <!-- Open-deck safety railing, forward glass windshield & overhead festoon poles -->
+    <path
+      fill="var(--tram-cream)"
+      d="M277 229h42v1h-42zM277 230h1v2h-1zM285 230h1v2h-1zM293 230h1v2h-1zM301 230h1v2h-1zM309 230h1v2h-1zM318 230h1v2h-1z"
+    />
+    <rect x="319" y="229" width="4" height="3" fill="var(--neutral-900)" />
+    <rect x="320" y="229" width="2" height="2" class="tram-windows" />
+    <!-- Glowing bow spotlight + stepped light beam projecting across the Yarra -->
+    <path class="tram-beam" d="M330 230h3v3h-3zM333 229h4v5h-4zM337 230h3v4h-3z" />
+    <rect x="328" y="231" width="2" height="1" class="tram-light" />
+    <rect x="329" y="231" width="1" height="1" class="night-bright" />
+    <!-- Stern crimson navigation light -->
+    <rect x="275" y="232" width="1" height="1" fill="var(--fx-crimson)" />
+    <!-- Overhead open-air string-light poles, night glow halos & draped cable -->
+    <path
+      class="bulb-night-halo"
+      d="M279 220h3v3h-3zM285 221h3v3h-3zM291 221h3v3h-3zM297 221h3v3h-3zM303 221h3v3h-3zM309 221h3v3h-3zM315 220h3v3h-3z"
+    />
+    <path
+      fill="var(--neutral-900)"
+      d="M277 221h1v8h-1zM318 221h1v8h-1zM278 221h5v1h-5zM283 222h30v1h-30zM313 221h5v1h-5z"
+    />
+
+    <!-- Tapered cruiser hull, navy waterline, golden stripe & glowing portholes -->
+    <path fill="var(--tram-cream)" d="M276 232h54v2h-54zM277 234h51v2h-51zM279 236h47v2h-47z" />
+    <path fill="var(--p-pants)" d="M278 235h49v3h-49z" />
+    <path class="tram-trim" d="M278 235h49v1h-49z" />
+    <!-- Dark-framed glowing hull portholes (pop clearly against hull in both day & night) -->
+    <path fill="var(--neutral-900)" d="M282 233h4v1h-4zM290 233h4v1h-4zM298 233h4v1h-4zM306 233h4v1h-4z" />
+    <path class="tram-windows" d="M283 233h2v1h-2zM291 233h2v1h-2zM299 233h2v1h-2zM307 233h2v1h-2z" />
+
+    <!-- Festival & Seasonal Open-Boat Decorations -->
+    @switch (activeHoliday()) {
+      @case ('christmas') {
+        <!-- Mini lit Christmas tree on the bow + glowing crimson/gold fairy lights + Santa hats on guests -->
+        <rect x="323" y="225" width="3" height="3" class="bulb-night-halo" />
+        <path fill="var(--fx-pine)" d="M324 227h1v1h-1zM323 228h3v1h-3zM322 229h5v3h-5zM278 229h40v1h-40z" />
+        <rect x="324" y="226" width="1" height="1" class="tree-light-gold" />
+        <path
+          class="tree-light-red"
+          d="M280 221h1v1h-1zM286 222h1v1h-1zM292 222h1v1h-1zM298 222h1v1h-1zM304 222h1v1h-1zM310 222h1v1h-1zM316 221h1v1h-1z
+             M281 223h3v1h-3zM298 223h3v1h-3zM323 230h1v1h-1z"
+        />
+        <path
+          class="tree-light-gold"
+          d="M283 222h1v1h-1zM289 222h1v1h-1zM295 222h1v1h-1zM301 222h1v1h-1zM307 222h1v1h-1zM313 221h1v1h-1zM325 230h1v1h-1z"
+        />
+        <path fill="var(--neutral-0)" d="M281 224h3v1h-3zM284 223h1v1h-1zM298 224h3v1h-3zM301 223h1v1h-1z" />
+      }
+      @case ('new-year') {
+        <!-- NYE Party Boat: glowing overhead festoon bulbs, disco ball, party hats & sparkler -->
+        <path
+          fill="var(--p-spark)"
+          d="M280 221h1v1h-1zM284 222h1v1h-1zM288 222h1v1h-1zM292 222h1v1h-1z
+             M304 222h1v1h-1zM308 222h1v1h-1zM312 222h1v1h-1zM316 221h1v1h-1zM302 223h1v1h-1z"
+        />
+        <path fill="var(--neutral-0)" d="M298 222h2v2h-2zM282 221h1v1h-1zM314 221h1v1h-1z" />
+        <path fill="var(--fx-gold)" d="M282 223h1v1h-1zM307 223h1v1h-1zM299 223h1v1h-1z" />
+        <path fill="var(--fx-crimson)" d="M286 222h1v1h-1zM294 222h1v1h-1zM306 222h1v1h-1z" />
+      }
+      @case ('diwali') {
+        <!-- Saffron & gold marigold toran overhead + row of glowing diyas along the rail & bow -->
+        <path
+          fill="var(--fx-amber)"
+          d="M279 221h3v1h-3zM285 222h3v1h-3zM291 222h3v1h-3zM297 222h3v1h-3zM303 222h3v1h-3zM309 222h3v1h-3zM314 221h3v1h-3z"
+        />
+        <path
+          fill="var(--fx-gold)"
+          d="M282 222h3v1h-3zM288 222h3v1h-3zM294 222h3v1h-3zM300 222h3v1h-3zM306 222h3v1h-3zM312 221h2v1h-2z"
+        />
+        <path fill="var(--fx-crimson)" d="M278 229h2v1h-2zM286 229h2v1h-2zM294 229h2v1h-2zM302 229h2v1h-2zM323 231h3v1h-3z" />
+        <path fill="var(--p-spark)" d="M279 228h1v1h-1zM287 228h1v1h-1zM295 228h1v1h-1zM303 228h1v1h-1zM324 230h1v1h-1z" />
+      }
+      @case ('halloween') {
+        <!-- Spooky Ghost-Ship Boat: purple hull stripe, amber & purple lanterns, bow pumpkin, witch hat & stern flag -->
+        <path fill="var(--p-purple)" d="M272 221h5v2h-5zM284 222h2v1h-2zM292 222h2v1h-2zM300 222h2v1h-2zM308 222h2v1h-2zM278 235h49v1h-49z" />
+        <rect x="274" y="221" width="1" height="1" fill="var(--neutral-0)" />
+        <rect x="322" y="228" width="5" height="4" class="bulb-night-halo" />
+        <path fill="var(--fx-amber)" d="M280 221h2v1h-2zM288 222h2v1h-2zM296 222h2v1h-2zM304 222h2v1h-2zM312 221h2v1h-2zM322 229h4v3h-4z" />
+        <rect x="323" y="228" width="1" height="1" fill="var(--fx-pine)" />
+        <path fill="var(--p-spark)" d="M323 230h1v1h-1zM325 230h1v1h-1z" />
+        <!-- Pointy witch hat on Guest 2 -->
+        <path fill="var(--neutral-900)" d="M288 224h5v1h-5zM289 223h3v1h-3zM290 222h1v1h-1z" />
+      }
+      @default {
+        @switch (activeSeason()) {
+          @case ('summer') {
+            <!-- Sunset-cruise coastal blue-and-gold pennant bunting & sunglasses on guests -->
+            <path fill="var(--tram-surf)" d="M280 221h2v1h-2zM288 222h2v1h-2zM296 222h2v1h-2zM304 222h2v1h-2zM312 221h2v1h-2z" />
+            <path fill="var(--fx-gold)" d="M284 222h2v1h-2zM292 222h2v1h-2zM300 222h2v1h-2zM308 222h2v1h-2z" />
+            <path fill="var(--neutral-900)" d="M281 225h3v1h-3zM298 225h3v1h-3z" />
+          }
+          @case ('winter') {
+            <!-- Cozy twilight winter boat: warm amber festoon bulbs, scarves on guests & crimson hull trim -->
+            <path fill="var(--fx-crimson)" d="M278 235h49v1h-49zM281 227h3v1h-3zM298 227h3v1h-3zM306 227h3v1h-3z" />
+            <path fill="var(--p-spark)" d="M281 221h1v1h-1zM287 222h1v1h-1zM293 222h1v1h-1zM299 222h1v1h-1zM305 222h1v1h-1zM311 222h1v1h-1z" />
+          }
+          @case ('spring') {
+            <!-- Cherry-blossom pink & fresh spring-green floral overhead bunting -->
+            <path fill="var(--fx-pine)" d="M279 221h4v1h-4zM283 222h30v1h-30zM313 221h4v1h-4z" />
+            <path
+              fill="var(--tram-blossom)"
+              d="M281 221h2v2h-2zM288 222h2v2h-2zM295 222h2v2h-2zM302 222h2v2h-2zM309 222h2v2h-2zM315 221h2v2h-2z"
+            />
+          }
+          @default {
+            <!-- Autumn twilight cruise: warm amber & gold overhead lanterns & crimson stern pennant -->
+            <path fill="var(--fx-crimson)" d="M273 221h4v2h-4z" />
+            <path fill="var(--fx-amber)" d="M281 221h1v1h-1zM289 222h1v1h-1zM297 222h1v1h-1zM305 222h1v1h-1zM313 221h1v1h-1z" />
+            <path fill="var(--fx-gold)" d="M285 222h1v1h-1zM293 222h1v1h-1zM301 222h1v1h-1zM309 222h1v1h-1z" />
+          }
+        }
+      }
+    }
+  </g>
+
+  <!-- Bayer-dithered bottom melt into --surface-canvas so #home flows cleanly into #about -->
+  <rect x="0" y="122" width="240" height="4" fill="url(#px-dither-fade-25)" />
+  <rect x="0" y="126" width="240" height="4" fill="url(#px-dither-fade-50)" />
+  <rect x="0" y="130" width="240" height="5" class="canvas-fill" />
+</svg>
