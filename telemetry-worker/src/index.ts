@@ -70,6 +70,7 @@ function corsHeaders(origin: string, allowedOrigin: string): HeadersInit {
   const allow = origin === allowedOrigin ? origin : allowedOrigin;
   return {
     'Access-Control-Allow-Origin': allow,
+    'Access-Control-Allow-Credentials': 'true',
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400',
@@ -335,7 +336,7 @@ export default {
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(origin, env.ALLOWED_ORIGIN) });
     }
-    if (url.pathname === '/collect' && request.method === 'POST') {
+    if ((url.pathname === '/v1/events' || url.pathname === '/collect') && request.method === 'POST') {
       return handleCollect(request, env, origin);
     }
     if (url.pathname === '/stats' && request.method === 'GET') {

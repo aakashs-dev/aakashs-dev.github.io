@@ -36,10 +36,16 @@ describe('Telemetry pure helpers', () => {
 
 describe('TelemetryService', () => {
   const originalSendBeacon = navigator.sendBeacon;
+  const originalFetch = window.fetch;
 
   afterEach(() => {
     Object.defineProperty(navigator, 'sendBeacon', {
       value: originalSendBeacon,
+      configurable: true,
+      writable: true,
+    });
+    Object.defineProperty(window, 'fetch', {
+      value: originalFetch,
       configurable: true,
       writable: true,
     });
@@ -51,9 +57,9 @@ describe('TelemetryService', () => {
   });
 
   it('sends initial page_view via sendBeacon and flushes tracked events when hidden', () => {
-    const calls: { url: string; body: Blob }[] = [];
+    const calls: { url: string; body: unknown }[] = [];
     Object.defineProperty(navigator, 'sendBeacon', {
-      value: (url: string, data: Blob) => {
+      value: (url: string, data: unknown) => {
         calls.push({ url, body: data });
         return true;
       },
@@ -62,15 +68,47 @@ describe('TelemetryService', () => {
     });
 
     const service = TestBed.inject(TelemetryService);
-    service.init('https://example.workers.dev/collect', true);
+    service.init('https://example.workers.dev/v1/events', true);
 
     expect(calls.length).toBe(1);
-    expect(calls[0].url).toBe('https://example.workers.dev/collect');
+    expect(calls[0].url).toBe('https://example.workers.dev/v1/events');
+    expect(typeof calls[0].body).toBe('string');
+    expect(JSON.parse(calls[0].body as string).events[0].type).toBe('page_view');
 
     service.track('dossier_open', 'the-numbers-game');
     service.track('section_view', 'portfolio');
     service.flush();
     expect(calls.length).toBe(2);
+  });
+
+  it('falls back to credential-less CORS-safelisted fetch when sendBeacon declines', () => {
+    Object.defineProperty(navigator, 'sendBeacon', {
+      value: () => false,
+      configurable: true,
+      writable: true,
+    });
+
+    const fetchCalls: { url: string; init: RequestInit | undefined }[] = [];
+    Object.defineProperty(window, 'fetch', {
+      value: (url: string, init?: RequestInit) => {
+        fetchCalls.push({ url, init });
+        return Promise.resolve(new Response(null, { status: 204 }));
+      },
+      configurable: true,
+      writable: true,
+    });
+
+    const service = TestBed.inject(TelemetryService);
+    service.init('https://example.workers.dev/v1/events', true);
+
+    expect(fetchCalls.length).toBe(1);
+    expect(fetchCalls[0].url).toBe('https://example.workers.dev/v1/events');
+    const init = fetchCalls[0].init!;
+    expect(typeof init.body).toBe('string');
+    expect(init.credentials).toBe('omit');
+    expect(init.keepalive).toBe(true);
+    expect(init.mode).toBe('cors');
+    expect(init.headers).toBeUndefined();
   });
 
   it('stays silent when Global Privacy Control is enabled', () => {

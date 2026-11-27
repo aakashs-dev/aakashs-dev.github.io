@@ -32,7 +32,7 @@ Run from `telemetry-worker/`:
    ```bash
    npx wrangler deploy
    ```
-5. Paste the deployed `https://portfolio-telemetry.<subdomain>.workers.dev/collect` URL into `src/app/telemetry.config.ts` and deploy the portfolio site.
+5. Paste the deployed `https://portfolio-telemetry.<subdomain>.workers.dev/v1/events` URL into `src/app/telemetry.config.ts` and deploy the portfolio site.
 
 ## Query your visit stats
 
