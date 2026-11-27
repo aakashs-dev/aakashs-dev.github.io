@@ -126,18 +126,17 @@ export class TelemetryService implements OnDestroy {
 
     try {
       if (typeof view?.navigator?.sendBeacon === 'function') {
-        const blob = new Blob([body], { type: 'application/json' });
-        const queued = view.navigator.sendBeacon(this.endpoint, blob);
+        const queued = view.navigator.sendBeacon(this.endpoint, body);
         if (queued) return;
       }
       if (typeof view?.fetch === 'function') {
         void view
           .fetch(this.endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body,
             keepalive: true,
             mode: 'cors',
+            credentials: 'omit',
           })
           .catch(() => {});
       }

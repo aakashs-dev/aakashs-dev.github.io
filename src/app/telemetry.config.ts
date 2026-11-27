@@ -1,7 +1,7 @@
 export interface TelemetryConfig {
   /**
-   * Deployed Cloudflare Worker collect endpoint, e.g.:
-   * 'https://portfolio-telemetry.<your-subdomain>.workers.dev/collect'
+   * Deployed Cloudflare Worker ingest endpoint, e.g.:
+   * 'https://portfolio-telemetry.<your-subdomain>.workers.dev/v1/events'
    * Leave empty to keep telemetry disabled until the worker is deployed.
    */
   readonly endpoint: string;
@@ -9,6 +9,6 @@ export interface TelemetryConfig {
 }
 
 export const TELEMETRY_CONFIG: TelemetryConfig = {
-  endpoint: 'https://portfolio-telemetry.foundry-ops.workers.dev/collect',
+  endpoint: 'https://portfolio-telemetry.foundry-ops.workers.dev/v1/events',
   maxEventsPerSession: 25,
 };
